@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import ArticleHead from '../components/journal/ArticleHead.astro';
+import Caption from '../components/journal/Caption.astro';
+import JSection from '../components/journal/JSection.astro';
+import NextSteps from '../components/journal/NextSteps.astro';
+import Layout from '../layouts/Layout.astro';
+import { fellows, leaders, mentors } from '../data/people';
+import { contact } from '../data/site';
+import { photo } from '../lib/photos';
+
+// Number each distinct affiliation once, the way a paper's byline does.
+const places = [...new Set(leaders.map((l) => l.place))];
+const aff = (place: string) => places.indexOf(place) + 1;
+
+const sections = [
+	{ id: 'faculty', label: 'Faculty' },
+	{ id: 'mentors', label: 'Mentors and analysts' },
+	{ id: 'fellows', label: 'Where mentees go' },
+	{ id: 'join', label: 'Joining the team' },
+];
+---
+
+<Layout title="Mentors" description="Research Consultancy's faculty, mentors and research analysts, and the mentees now in U.S. research posts.">
+	<ArticleHead
+		type="Author information"
+		title="Faculty, mentors and analysts"
+		dek="Four physician-scientists at U.S. academic centres lead RC. Near-peer mentors and research analysts, many of them former RC students, run the project groups."
+		sections={sections}
+	>
+		<div slot="byline" class="mt-7 max-w-[44rem] border-t border-hairline pt-4">
+			<p class="j-byline">
+				{leaders.map((l, i) => (
+					<span>{l.name.replace('Dr. ', '')}, MD<sup>{aff(l.place)}</sup>{i < leaders.length - 1 ? '; ' : ''}</span>
+				))}
+			</p>
+			<p class="j-affil mt-1.5">
+				{places.map((p, i) => (<span><sup>{i + 1}</sup>{p}. </span>))}
+			</p>
+		</div>
+	</ArticleHead>
+
+	<JSection title="Faculty" id="faculty">
+		<ul class="j-span grid gap-x-10 gap-y-12 md:grid-cols-2">
+			{leaders.map((p) => (
+				<li class="grid gap-5 sm:grid-cols-[9rem_1fr]">
+					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[288, 432]} sizes="144px" class="aspect-[4/5] w-full max-w-[9rem] object-cover object-top" />
+					<div>
+						<p class="text-[13px] font-semibold text-label">{p.role}</p>
+						<h3 class="mt-0.5 text-[1.5rem] leading-tight font-light tracking-[-0.015em]">{p.name}</h3>
+						<p class="mt-1 text-[14px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
+						<p class="mt-3 font-serif text-[16px] leading-relaxed text-ink-secondary">{p.bio}</p>
+						<p class="mt-3 text-[13.5px] font-medium tabular-nums">{p.publications} publications</p>
+					</div>
+				</li>
+			))}
+		</ul>
+	</JSection>
+
+	<JSection title="Mentors and analysts" id="mentors">
+		<div class="j-main j-prose">
+			<p>Mentors run the project groups each week and edit the drafts. Research analysts help teach the database courses and check the analyses. Mentors need at least 10 full papers before they join.</p>
+		</div>
+		<ul class="j-span mt-6 grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
+			{mentors.map((m) => (
+				<li>
+					<Image src={photo(m.photo)} alt={`Portrait of ${m.name}`} widths={[200, 400]} sizes="(min-width: 1024px) 14vw, 30vw" class="aspect-[4/5] w-full object-cover object-top" />
+					<p class="mt-2.5 text-[14.5px] leading-snug font-semibold">{m.name}</p>
+					<p class="mt-0.5 text-[12.5px] leading-snug text-ink-muted">{m.role}, {m.place}</p>
+					<p class="mt-1 text-[12.5px] text-ink-secondary tabular-nums">{m.publications} publications</p>
+				</li>
+			))}
+		</ul>
+	</JSection>
+
+	<JSection title="Where mentees go" id="fellows">
+		<div class="j-main j-prose">
+			<p>More than 20 mentees have moved on to postdoctoral research posts in the United States, and several of them now teach RC courses. Table 1 lists 12 of them.</p>
+		</div>
+		<figure class="j-span mt-4">
+			<Caption label="Table 1" title="RC mentees in U.S. research fellowships." class="j-caption-top" />
+			<div class="overflow-x-auto">
+				<table class="j-table min-w-[36rem]">
+					<thead><tr><th scope="col">Fellow</th><th scope="col">Medical school</th><th scope="col">U.S. institution</th></tr></thead>
+					<tbody>
+						{fellows.map((f) => (
+							<tr>
+								<th scope="row" class="font-medium">
+									<span class="flex items-center gap-3">
+										<Image src={photo(f.photo)} alt="" width={30} height={30} class="size-7.5 shrink-0 rounded-full object-cover" />
+										{f.name}
+									</span>
+								</th>
+								<td>{f.school}</td>
+								<td>{f.place}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<p class="j-tablenote">Selected from RC's fellowship announcements.</p>
+		</figure>
+	</JSection>
+
+	<JSection title="Joining the team" id="join">
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">Ambassadors</h3>
+			<p>
+				Ambassadors start an RC chapter at their medical school and share RC's courses with their classmates. They get
+				free or discounted courses, co-authorship on projects, letters from U.S. faculty and contact with U.S. and
+				Canada-based physicians for electives and career advice.
+			</p>
+			<p>
+				To apply, email your CV, school and year of graduation to <a href={`mailto:${contact.email}?subject=Ambassador%20Application`}>{contact.email}</a> with the subject line "Ambassador Application".
+			</p>
+			<h3 class="j-subhead">Mentors</h3>
+			<p>Students who have taken RC courses and published at least 10 full papers can apply to mentor project groups. Email your CV with the subject line "Mentor Application".</p>
+		</div>
+	</JSection>
+
+	<NextSteps />
+
+	<ArticleEnd citeTitle="Faculty, mentors and analysts" />
+</Layout>

@@ -1,0 +1,63 @@
+---
+// Figure: the three-tier mentoring model described in Khan MS, ACC 2024.
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const tiers = [
+	{
+		name: 'Faculty',
+		who: 'Physician-scientists at U.S. academic centres',
+		does: 'Choose the questions, check the methods and connect mentees with collaborators.',
+		width: 'sm:w-[58%]',
+		style: 'bg-navy text-white',
+		sub: 'text-white/70',
+	},
+	{
+		name: 'Near-peer mentors',
+		who: 'Former RC students, each with at least 10 full papers',
+		does: 'Teach the workshops, run project groups each week and review every draft.',
+		width: 'sm:w-[79%]',
+		style: 'bg-[#dfe7f1] text-navy',
+		sub: 'text-navy/70',
+	},
+	{
+		name: 'Students',
+		who: 'Medical students and graduates, 3,500+ since 2016',
+		does: 'Design the study, analyse the data and write the paper.',
+		width: 'sm:w-full',
+		style: 'bg-[#fde4d5] text-[#6e2e0b]',
+		sub: 'text-[#6e2e0b]/70',
+	},
+];
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<ol class="flex flex-col items-center" aria-label="Mentoring tiers, from most to least senior">
+			{tiers.map((t, i) => (
+				<li class:list={['w-full', t.width]}>
+					<div class:list={['px-5 py-4', t.style]}>
+						<p class="font-sans text-[15px] font-bold">{t.name}</p>
+						<p class:list={['font-sans text-[13px]', t.sub]}>{t.who}</p>
+						<p class="mt-1.5 font-serif text-[15px] leading-snug">{t.does}</p>
+					</div>
+					{i < tiers.length - 1 && (
+						<p class="flex items-center justify-center gap-2 py-1.5 font-sans text-[12px] font-semibold text-ink-muted" aria-hidden="true">
+							<svg viewBox="0 0 12 12" class="size-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7" /></svg>
+							mentor
+						</p>
+					)}
+				</li>
+			))}
+		</ol>
+	</div>
+	<Caption label={label} title="The three-tier mentoring model.">
+		Each tier mentors the one below it. Because mentors come from the student tier, the model grows as students progress.
+	</Caption>
+</figure>

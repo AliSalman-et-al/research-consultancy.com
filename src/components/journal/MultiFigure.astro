@@ -1,0 +1,48 @@
+---
+// A multi-panel figure: panels lettered A, B, C with one caption, as journals set them.
+import { Image } from 'astro:assets';
+import { photo } from '../../lib/photos';
+import Caption from './Caption.astro';
+
+interface Panel {
+	src: string;
+	alt: string;
+	caption: string;
+	position?: string;
+}
+
+interface Props {
+	label: string;
+	title: string;
+	panels: Panel[];
+	class?: string;
+	layout?: 'feature' | 'grid';
+}
+
+const { label, title, panels, class: className, layout = 'feature' } = Astro.props;
+const grid = layout === 'grid';
+const letters = 'ABCDEF';
+---
+
+<figure class:list={[className]}>
+	<div class:list={['grid gap-2 sm:grid-cols-2', grid ? 'lg:grid-cols-3' : 'lg:grid-cols-[1.35fr_1fr]']}>
+		{panels.map((p, i) => (
+			<div class:list={['relative overflow-hidden', !grid && i === 0 && 'sm:col-span-2 lg:col-span-1 lg:row-span-2']}>
+				<Image
+					src={photo(p.src)}
+					alt={p.alt}
+					widths={!grid && i === 0 ? [600, 900, 1200] : [400, 700]}
+					sizes={!grid && i === 0 ? '(min-width: 1024px) 45vw, 100vw' : '(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw'}
+					class:list={['h-full w-full object-cover', grid ? 'aspect-[4/3]' : i === 0 ? 'aspect-[4/3] lg:aspect-auto' : 'aspect-[16/10]']}
+					style={p.position ? `object-position:${p.position}` : undefined}
+				/>
+				<span class="panel-label" aria-hidden="true">{letters[i]}</span>
+			</div>
+		))}
+	</div>
+	<Caption label={label} title={title}>
+		{panels.map((p, i) => (
+			<span><b class="font-sans font-bold">{letters[i]},</b> {p.caption}{i < panels.length - 1 && ' '}</span>
+		))}
+	</Caption>
+</figure>

@@ -1,0 +1,26 @@
+---
+// A photo set as a numbered journal figure: bold label, serif caption.
+import { Image } from 'astro:assets';
+import { photo } from '../../lib/photos';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	src: string;
+	alt: string;
+	label?: string;
+	caption?: string;
+	class?: string;
+	imgClass?: string;
+	widths?: number[];
+	sizes?: string;
+	loading?: 'lazy' | 'eager';
+}
+
+const { src, alt, label, caption, class: className, imgClass = 'aspect-[4/3]', widths = [480, 800, 1200], sizes = '(min-width: 1024px) 40vw, 100vw', loading = 'lazy' } = Astro.props;
+---
+
+<figure class:list={['flex flex-col', className]}>
+	<Image src={photo(src)} alt={alt} widths={widths} sizes={sizes} loading={loading} class:list={['w-full object-cover', imgClass]} />
+	{label && caption && <Caption label={label} title={caption} />}
+	{!label && caption && <figcaption class="j-caption">{caption}</figcaption>}
+</figure>

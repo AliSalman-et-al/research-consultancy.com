@@ -1,0 +1,67 @@
+---
+import { courses } from '../../data/courses';
+import { contact, social } from '../../data/site';
+
+const columns = [
+	{
+		title: 'Courses',
+		items: courses.map((c) => ({ label: c.name, href: `/courses/${c.slug}` })),
+	},
+	{
+		title: 'Research Consultancy',
+		items: [
+			{ label: 'Match Mentorship', href: '/match-mentorship' },
+			{ label: 'Mentors', href: '/mentors' },
+			{ label: 'Results', href: '/results' },
+			{ label: 'About us', href: '/about' },
+			{ label: 'Contact', href: '/contact' },
+		],
+	},
+	{
+		title: 'Follow',
+		items: [
+			{ label: 'Instagram', href: social.instagram },
+			{ label: 'LinkedIn', href: social.linkedin },
+			{ label: 'Facebook', href: social.facebook },
+		],
+	},
+];
+---
+
+<footer class="border-t border-[#e2e0dc]">
+	<div class="container-rc py-14">
+		<div class="grid gap-10 md:grid-cols-[1.3fr_repeat(3,1fr)]">
+			<div>
+				<a href="/" class="flex items-center gap-2.5" aria-label="Research Consultancy home">
+					<img src="/RC-Logo-NoText.png" alt="" width="36" height="36" class="size-9 rounded-md" />
+					<span class="text-[15px] font-semibold">Research Consultancy</span>
+				</a>
+				<p class="mt-4 max-w-xs text-[14px] leading-relaxed text-ink-secondary">
+					Research training and mentorship for medical students and doctors, from a first study to a PubMed-indexed paper.
+				</p>
+				<p class="mt-4 text-[14px] leading-relaxed">
+					<a href={contact.whatsapp.href} class="text-ink-secondary hover:text-ink hover:underline" rel="noopener">WhatsApp {contact.whatsapp.label}</a><br />
+					<a href={`mailto:${contact.email}`} class="text-ink-secondary [overflow-wrap:anywhere] hover:text-ink hover:underline">{contact.email}</a>
+				</p>
+			</div>
+			{columns.map((col) => (
+				<nav aria-label={col.title}>
+					<p class="text-[13px] font-semibold text-ink">{col.title}</p>
+					<ul class="mt-4 flex flex-col gap-2.5">
+						{col.items.map((item) => (
+							<li><a href={item.href} class="text-[14px] text-ink-secondary hover:text-ink hover:underline">{item.label}</a></li>
+						))}
+					</ul>
+				</nav>
+			))}
+		</div>
+
+		<div class="mt-12 flex flex-col gap-3 border-t border-hairline pt-6 text-[13px] leading-relaxed text-ink-muted md:flex-row md:justify-between">
+			<p>© {new Date().getFullYear()} Research Consultancy</p>
+			<p class="max-w-xl md:text-right">
+				We offer mentorship and do not conduct or guarantee publications. Responsibility for content,
+				authorship and publication lies with each study's authors.
+			</p>
+		</div>
+	</div>
+</footer>

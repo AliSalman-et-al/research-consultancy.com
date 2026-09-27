@@ -1,0 +1,52 @@
+---
+// First page of an article, set after Circulation and EJHF: journal name,
+// article type with a rule to the margin, light title, byline, standfirst,
+// optional key words, a heavy rule, then a contents line for the page.
+interface Props {
+	type: string;
+	title: string;
+	dek?: string;
+	keywords?: string[];
+	sections?: { id: string; label: string }[];
+	dates?: string;
+}
+
+const { type, title, dek, keywords, sections, dates = 'Established 2016. Updated September 2026.' } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+
+<header class="relative bg-canvas">
+	<span class="j-tab hidden xl:block" aria-hidden="true">{type}</span>
+	<div class="pad pt-6 md:pt-8">
+		<div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+			<a href="/" class="j-journal">Research Consultancy</a>
+			<p class="text-[12.5px] text-ink-muted italic">{dates}</p>
+		</div>
+
+		<div class:list={['grid grid-cols-[minmax(0,1fr)] gap-10 pt-10 md:pt-14 [&>*]:min-w-0', hasAside && 'lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12']}>
+			<div>
+				<p class="j-kind">{type}</p>
+				<h1 class="j-title mt-4 max-w-[20ch]"><slot name="title">{title}</slot></h1>
+				<slot name="byline" />
+				{dek && <p class="j-dek mt-6 max-w-[38rem]">{dek}</p>}
+				<slot name="abstract" />
+				<slot name="actions" />
+			</div>
+			{hasAside && <div class="lg:pt-12"><slot name="aside" /></div>}
+		</div>
+
+		{keywords && (
+			<p class="j-keywords mt-10 text-center">
+				<span class="font-semibold text-navy">Key words</span>{' '}
+				{keywords.map((k, i) => (<span>{i > 0 && <span class="sq" aria-hidden="true"></span>}{k}</span>))}
+			</p>
+		)}
+		<div class:list={['h-[5px] bg-[#c9c7c3]', keywords ? 'mt-4' : 'mt-12']}></div>
+		{sections && (
+			<nav aria-label="On this page" class="j-contents flex flex-wrap items-baseline gap-x-5 gap-y-1.5 py-3 text-[13.5px]">
+				<span class="font-semibold text-navy">On this page</span>
+				{sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+			</nav>
+		)}
+	</div>
+</header>

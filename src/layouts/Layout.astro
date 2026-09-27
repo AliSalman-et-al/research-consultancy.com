@@ -1,27 +1,52 @@
 ---
 import '../styles/global.css';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Research Consultancy',
+	description = 'Research training and mentorship for medical students and doctors, from a first study to a PubMed-indexed paper and the U.S. Match.',
+} = Astro.props;
+const fullTitle = title === 'Research Consultancy' ? title : `${title} | Research Consultancy`;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" href="/RC-Logo-NoText.png" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#02264d" />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="/RC-Logo.png" />
+		<title>{fullTitle}</title>
 	</head>
 	<body>
-		<slot />
+		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-canvas focus:px-3 focus:py-2">Skip to content</a>
+		<SiteHeader />
+		<main id="main" class="lg:px-6 lg:py-10">
+			<div class="sheet relative">
+				<slot />
+			</div>
+		</main>
+		<SiteFooter />
+		<script>
+			// Citations: tooltip with the reference, and an anchor for "Back to text".
+			document.querySelectorAll<HTMLAnchorElement>('a.cite').forEach((a) => {
+				const n = a.dataset.ref;
+				const ref = n ? document.getElementById(`ref-${n}`) : null;
+				if (ref) a.title = (ref.textContent ?? '').replace('Back to text', '').replace(/\s+/g, ' ').trim();
+				if (n && !document.getElementById(`cite-${n}`)) a.id = `cite-${n}`;
+			});
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

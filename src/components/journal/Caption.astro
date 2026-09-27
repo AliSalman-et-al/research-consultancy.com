@@ -1,0 +1,16 @@
+---
+// One caption style for every figure and table, as journals set them:
+// an orange label, a bold title sentence, then the legend in serif.
+interface Props {
+	label: string;
+	title: string;
+	as?: 'figcaption' | 'p';
+	class?: string;
+}
+
+const { label, title, as: Tag = 'figcaption', class: className } = Astro.props;
+---
+
+<Tag class:list={['j-caption', className]}>
+	<span class="fig-label">{label}.</span> <span class="fig-title">{title}</span>{Astro.slots.has('default') && ' '}<slot />
+</Tag>

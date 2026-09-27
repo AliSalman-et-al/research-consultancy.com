@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import { match2026, type Matched } from '../../data/people';
+import { photo } from '../../lib/photos';
+import Caption from './Caption.astro';
+
+interface Props {
+	label?: string;
+	limit?: number;
+	showSchool?: boolean;
+	rows?: Matched[];
+	title?: string;
+	footnote?: string;
+}
+
+const {
+	label = 'Table 1',
+	limit,
+	showSchool = false,
+	rows: given,
+	title = 'Match 2026 results for RC mentees.',
+	footnote = 'Of the 2024-25 Match Mentorship cohort, 90% matched. Of the 2025-26 cohort, 80% matched.',
+} = Astro.props;
+const all = given ?? match2026;
+const rows = limit ? all.slice(0, limit) : all;
+const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('');
+---
+
+<figure>
+	<Caption label={label} title={title} class="j-caption-top">{limit && <span class="font-sans text-[13px] text-ink-muted">({limit} of {all.length} shown)</span>}</Caption>
+	<div class="overflow-x-auto">
+		<table class="j-table min-w-[36rem]">
+			<thead>
+				<tr>
+					<th scope="col">Mentee</th>
+					<th scope="col">Specialty</th>
+					<th scope="col">Programme</th>
+				</tr>
+			</thead>
+			<tbody>
+				{rows.map((m) => (
+					<tr>
+						<th scope="row" class="font-medium">
+							<span class="flex items-center gap-3">
+								{m.photo ? (
+									<Image src={photo(m.photo)} alt="" width={30} height={30} class="size-7.5 shrink-0 rounded-full object-cover" />
+								) : (
+									<span class="grid size-7.5 shrink-0 place-items-center rounded-full bg-navy/10 text-[10.5px] font-semibold text-navy" aria-hidden="true">{initials(m.name)}</span>
+								)}
+								<span>
+									{m.name}
+									{showSchool && m.school && <span class="block text-[12px] font-normal text-ink-muted">{m.school}</span>}
+								</span>
+							</span>
+						</th>
+						<td>{m.specialty}</td>
+						<td>{m.program}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+	<p class="j-tablenote">{footnote}</p>
+</figure>

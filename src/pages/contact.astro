@@ -1,0 +1,98 @@
+---
+import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import ArticleHead from '../components/journal/ArticleHead.astro';
+import JSection from '../components/journal/JSection.astro';
+import FaqList from '../components/site/FaqList.astro';
+import Layout from '../layouts/Layout.astro';
+import { contact, faqs, social } from '../data/site';
+
+const channels = [
+	{
+		title: 'Courses and general questions',
+		color: '#1b8a8f',
+		lines: [
+			{ label: 'WhatsApp, any time', value: contact.whatsapp.label, href: contact.whatsapp.href },
+			{ label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
+		],
+	},
+	{
+		title: 'Match, Fellowship and Green Card mentorship',
+		color: '#f67737',
+		lines: [
+			{ label: 'WhatsApp or text', value: contact.matchWhatsapp.label, href: contact.matchWhatsapp.href },
+			{ label: 'Email your CV', value: contact.email, href: `mailto:${contact.email}?subject=Mentorship%20application` },
+		],
+	},
+	{
+		title: 'Ambassador and mentor applications',
+		color: '#7b4fa0',
+		lines: [{ label: 'Email with "Ambassador Application" or "Mentor Application" as the subject', value: contact.email, href: `mailto:${contact.email}?subject=Ambassador%20Application` }],
+	},
+];
+
+const register = [
+	'The course or programme you want to join',
+	'Your full name',
+	'Your medical school',
+	'Your year of graduation, or your current role',
+];
+
+const sections = [
+	{ id: 'channels', label: 'Who to contact' },
+	{ id: 'register', label: 'Registering by email' },
+	{ id: 'questions', label: 'Questions' },
+];
+---
+
+<Layout title="Contact" description="Message Research Consultancy on WhatsApp or by email to register for a course or ask about Match Mentorship.">
+	<ArticleHead
+		type="Correspondence"
+		title="Contact Research Consultancy"
+		dek="WhatsApp is the fastest way to reach us. Tell us your year, your specialty and when you plan to apply, and a mentor will suggest where to start."
+		sections={sections}
+	>
+		<div slot="actions" class="mt-8 flex flex-wrap gap-3">
+			<a href={contact.whatsapp.href} class="btn-primary" rel="noopener">Message us on WhatsApp</a>
+			<a href={`mailto:${contact.email}`} class="btn-secondary border border-hairline">Send an email</a>
+		</div>
+	</ArticleHead>
+
+	<JSection title="Who to contact" id="channels">
+		<div class="j-span grid gap-5 md:grid-cols-3">
+			{channels.map((c) => (
+				<div class="border-t-[3px] bg-canvas-soft p-5" style={`border-color:${c.color}`}>
+					<h3 class="font-semibold">{c.title}</h3>
+					<dl class="mt-3 space-y-3">
+						{c.lines.map((l) => (
+							<div>
+								<dt class="text-[12.5px] text-ink-muted">{l.label}</dt>
+								<dd><a href={l.href} class="link text-[15px] font-normal [overflow-wrap:anywhere]" rel="noopener">{l.value}</a></dd>
+							</div>
+						))}
+					</dl>
+				</div>
+			))}
+		</div>
+	</JSection>
+
+	<JSection title="Registering by email" id="register">
+		<div class="j-main j-prose">
+			<p class="drop-cap">Most courses can be paid for online from the course page. To register by email instead, send us:</p>
+			<ol class="list-none space-y-2 pl-0">
+				{register.map((item, i) => (
+					<li class="flex gap-3"><span class="font-sans font-bold text-label tabular-nums">{i + 1}.</span>{item}</li>
+				))}
+			</ol>
+			<p>We confirm your seat and send the Zoom link before the first class. For a mentorship programme, attach your CV.</p>
+		</div>
+		<aside class="j-margin">
+			<p class="note"><b>Announcements.</b> Course dates, new papers and free webinars are posted on <a href={social.instagram} class="underline decoration-orange underline-offset-2" rel="noopener">Instagram</a>, <a href={social.linkedin} class="underline decoration-orange underline-offset-2" rel="noopener">LinkedIn</a> and <a href={social.facebook} class="underline decoration-orange underline-offset-2" rel="noopener">Facebook</a>.</p>
+		</aside>
+	</JSection>
+
+	<JSection title="Questions" id="questions">
+		<div class="j-main"><FaqList items={faqs} /></div>
+	</JSection>
+
+	<ArticleEnd citeTitle="Contact Research Consultancy" />
+</Layout>

@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import MethodFigure from '../../components/figures/MethodFigure.astro';
+import ArticleEnd from '../../components/journal/ArticleEnd.astro';
+import ArticleHead from '../../components/journal/ArticleHead.astro';
+import JSection from '../../components/journal/JSection.astro';
+import NextSteps from '../../components/journal/NextSteps.astro';
+import CourseArt from '../../components/site/CourseArt.astro';
+import FaqList from '../../components/site/FaqList.astro';
+import Layout from '../../layouts/Layout.astro';
+import { courses, type Course } from '../../data/courses';
+import { leaders } from '../../data/people';
+import { contact, faqs } from '../../data/site';
+import { photo } from '../../lib/photos';
+
+export function getStaticPaths() {
+	return courses.map((course) => ({ params: { slug: course.slug }, props: { course } }));
+}
+
+interface Props {
+	course: Course;
+}
+
+const { course } = Astro.props;
+const enrolHref = course.enrolHref ?? contact.whatsapp.href;
+const others = courses.filter((c) => c.slug !== course.slug);
+const refs = course.example ? [{ text: course.example.text, href: course.example.href }] : [];
+
+const sections = [
+	{ id: 'figure', label: 'What you will make' },
+	{ id: 'objectives', label: 'What you will learn' },
+	{ id: 'curriculum', label: 'Curriculum' },
+	{ id: 'after', label: 'After the course' },
+	{ id: 'faculty', label: 'Faculty' },
+	{ id: 'questions', label: 'Questions' },
+];
+---
+
+<Layout title={course.name} description={course.summary}>
+	<ArticleHead type="Course" title={course.name} dek={course.tagline} sections={sections}>
+		<div slot="abstract" class="j-prose mt-6 max-w-[40rem]">
+			<p class="drop-cap">{course.summary}</p>
+		</div>
+		<div slot="actions" class="mt-8 flex flex-wrap items-center gap-3">
+			<a href={enrolHref} class="btn-primary" rel="noopener">{course.enrolLabel ?? 'Enrol'}</a>
+			<a href={contact.whatsapp.href} class="btn-secondary border border-hairline" rel="noopener">Ask a question on WhatsApp</a>
+		</div>
+		<aside slot="aside" aria-label="Course details" class="border border-navy/80">
+			<div class:list={['h-28 p-3', course.tint, course.ink]}><CourseArt art={course.art} /></div>
+			<dl class="divide-y divide-hairline px-5">
+				{course.facts.map((f) => (
+					<div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2.5 text-[14.5px]">
+						<dt class="text-ink-muted">{f.label}</dt>
+						<dd class="font-medium">{f.value}</dd>
+					</div>
+				))}
+				<div class="grid grid-cols-[6.5rem_1fr] gap-3 py-2.5 text-[14.5px]">
+					<dt class="text-ink-muted">Before you join</dt>
+					<dd class="font-medium">{course.prerequisite}</dd>
+				</div>
+			</dl>
+		</aside>
+	</ArticleHead>
+
+	<JSection title="What you will make" id="figure">
+		<MethodFigure class="j-span" art={course.art} />
+	</JSection>
+
+	<JSection title="What you will learn" id="objectives">
+		<div class="j-main">
+			<p class="text-[15px] text-ink-muted">By the end of the course you will be able to:</p>
+			<ol class="mt-4 space-y-3">
+				{course.outcomes.map((o, i) => (
+					<li class="grid grid-cols-[2rem_1fr] font-serif text-[1.125rem] leading-snug">
+						<span class="font-sans text-[15px] font-semibold text-label tabular-nums">{i + 1}.</span>
+						{o}
+					</li>
+				))}
+			</ol>
+		</div>
+		<aside class="j-margin">
+			<p class="note"><b>{course.stage === 'Start' ? 'Step 1 of the RC pathway.' : 'Step 2 of the RC pathway.'}</b> {course.stage === 'Start' ? 'Take Level 1 before any other course.' : 'Take Level 1 first.'} <a href="/courses" class="underline decoration-orange underline-offset-2">Compare all courses</a></p>
+		</aside>
+	</JSection>
+
+	<JSection title="Curriculum" id="curriculum">
+		<div class:list={['j-span grid gap-10', course.curriculum.length === 2 && 'md:grid-cols-2', course.curriculum.length >= 3 && 'md:grid-cols-3']}>
+			{course.curriculum.map((block) => (
+				<div>
+					<h3 class="j-subhead border-b-2 border-ink pb-2">{block.title}</h3>
+					<ul class:list={['divide-y divide-hairline', course.curriculum.length === 1 && 'sm:columns-2 sm:gap-10 sm:divide-y-0']}>
+						{block.items.map((item) => (
+							<li class="break-inside-avoid py-3">
+								<p class="font-medium">{item.title}</p>
+								{item.body && <p class="mt-1 font-serif text-[15.5px] leading-relaxed text-ink-muted">{item.body}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</div>
+	</JSection>
+
+	{(course.afterClass || course.example) && (
+		<JSection title="After the course" id="after">
+			<div class="j-main j-prose">
+				{course.afterClass && <p>{course.afterClass}</p>}
+				{course.example && (
+					<p>{course.example.text}<sup><a class="cite" href="#ref-1" data-ref="1">1</a></sup></p>
+				)}
+			</div>
+		</JSection>
+	)}
+
+	<JSection title="Faculty" id="faculty">
+		<ul class="j-span grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			{leaders.map((p) => (
+				<li class="flex items-center gap-4">
+					<Image src={photo(p.photo)} alt="" width={64} height={64} class="size-16 shrink-0 rounded-full object-cover object-top" />
+					<div>
+						<p class="font-semibold">{p.name}</p>
+						<p class="text-[13.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
+					</div>
+				</li>
+			))}
+		</ul>
+		<p class="j-span text-[14.5px] text-ink-muted">Near-peer mentors and research analysts run the project groups. <a href="/mentors" class="link">Meet them</a></p>
+	</JSection>
+
+	<JSection title="Questions" id="questions">
+		<div class="j-main"><FaqList items={faqs} /></div>
+		<aside class="j-margin">
+			<p class="note"><b>Other courses.</b></p>
+			<ul class="mt-1.5 space-y-1.5">
+				{others.map((c) => <li class="note"><a href={`/courses/${c.slug}`} class="text-navy underline decoration-orange/60 underline-offset-2">{c.name}</a></li>)}
+			</ul>
+		</aside>
+	</JSection>
+
+	<NextSteps focus={course.stage === 'Start' ? 'start' : 'publish'} />
+
+	<ArticleEnd refs={refs} citeTitle={course.name} />
+</Layout>

@@ -1,0 +1,128 @@
+---
+import ArticleEnd from '../../components/journal/ArticleEnd.astro';
+import ArticleHead from '../../components/journal/ArticleHead.astro';
+import Caption from '../../components/journal/Caption.astro';
+import Cite from '../../components/journal/Cite.astro';
+import JSection from '../../components/journal/JSection.astro';
+import NextSteps from '../../components/journal/NextSteps.astro';
+import CourseArt from '../../components/site/CourseArt.astro';
+import Figure from '../../components/site/Figure.astro';
+import Layout from '../../layouts/Layout.astro';
+import { courses, method } from '../../data/courses';
+import { enrol } from '../../data/site';
+
+const short: Record<string, string> = {
+	'level-1': 'Level 1',
+	'meta-analysis': 'Meta-analysis',
+	'cdc-wonder': 'CDC WONDER',
+	nis: 'NIS',
+	nrd: 'NRD',
+};
+
+const sections = [
+	{ id: 'choosing', label: 'Choosing a course' },
+	...courses.map((c) => ({ id: c.slug, label: short[c.slug] })),
+	{ id: 'how', label: 'How a course runs' },
+];
+
+const refs = [
+	{ text: 'Research Consultancy. RC Level 1, a two-day research workshop. 2026.', href: enrol.level1 },
+	{ text: 'Research Consultancy. The year in review, 2025. December 2025.', href: 'https://www.facebook.com/researchconsultancyrc' },
+];
+---
+
+<Layout title="Courses" description="Live research courses on Zoom for medical students and doctors: Level 1, Meta-Analysis, CDC WONDER, National Inpatient Sample and Nationwide Readmissions Database.">
+	<ArticleHead
+		type="Review"
+		title="How to choose an RC course"
+		dek="All five courses are taught live on Zoom by researchers who publish with the same methods. Level 1 comes first. After it, choose the method that fits your question and join a mentored project."
+		sections={sections}
+	>
+		<Figure slot="aside" src="events/shariq-presentation.jpg" alt="Dr. Shariq Usman presenting at a lectern" label="Figure 1" caption="Dr. Shariq Usman, who teaches the Meta-Analysis Masterclass, presenting research." imgClass="aspect-[4/3]" loading="eager" sizes="(min-width: 1024px) 20rem, 100vw" />
+	</ArticleHead>
+
+	<JSection title="Choosing a course" id="choosing">
+		<div class="j-main j-prose">
+			<p class="drop-cap">
+				Start with Level 1 if you have not done research before. It covers study design, writing and statistics, and the
+				method courses assume what it teaches.<Cite n={1} /> Then choose by the question you want to answer. Pooled
+				published trials call for a meta-analysis. U.S. death records call for CDC WONDER. Hospital outcomes and costs call
+				for the National Inpatient Sample, and readmissions for the Nationwide Readmissions Database (Table 1).
+			</p>
+		</div>
+		<aside class="j-margin">
+			<p class="note"><b>In 2025</b> RC ran 20 workshops, and mentees published more than 150 papers.<Cite n={2} /></p>
+		</aside>
+
+		<figure class="j-span mt-6">
+			<Caption label="Table 1" title="RC courses and the questions they answer." class="j-caption-top" />
+			<div class="overflow-x-auto">
+				<table class="j-table min-w-[46rem]">
+					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Length</th><th scope="col">Before you join</th></tr></thead>
+					<tbody>
+						{courses.map((c) => (
+							<tr class="align-top">
+								<th scope="row" class="font-semibold">
+									<a href={`#${c.slug}`} class="flex items-center gap-2.5 hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-4">
+										<span class:list={['block h-7 w-10 shrink-0 p-0.5', c.tint, c.ink]}><CourseArt art={c.art} /></span>
+										{c.name}
+									</a>
+								</th>
+								<td class="font-serif text-[15px]">{c.question}</td>
+								<td>{c.facts.find((f) => f.label === 'Length')?.value ?? 'Live masterclass'}</td>
+								<td>{c.prerequisite}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<p class="j-tablenote">All courses are taught live on Zoom. Dates are announced on WhatsApp and Instagram before each cohort.</p>
+		</figure>
+	</JSection>
+
+	{courses.map((c) => (
+		<JSection title={c.name} id={c.slug}>
+			<div class="j-main">
+				<p class="font-serif text-[1.25rem] leading-snug text-ink-muted">{c.tagline}</p>
+				<p class="j-prose mt-4">{c.summary}</p>
+				<p class="mt-5 text-[14px] font-semibold text-navy">You will be able to</p>
+				<ul class="mt-2 space-y-1.5 text-[15px] leading-relaxed text-ink-secondary">
+					{c.outcomes.slice(0, 3).map((o) => (
+						<li class="flex gap-3"><span class="mt-[0.6em] size-1.5 shrink-0 bg-orange" aria-hidden="true"></span>{o}</li>
+					))}
+				</ul>
+				<p class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+					<a href={`/courses/${c.slug}`} class="btn-secondary border border-hairline">Read about {short[c.slug]}</a>
+					{c.enrolHref && <a href={c.enrolHref} class="link text-[15px]" rel="noopener">{c.enrolLabel}</a>}
+				</p>
+			</div>
+			<aside class="j-margin">
+				<div class:list={['h-24 p-2', c.tint, c.ink]}><CourseArt art={c.art} /></div>
+				<dl class="mt-4 space-y-2">
+					{c.facts.map((f) => (
+						<div class="note"><dt class="inline font-semibold text-ink">{f.label}. </dt><dd class="inline">{f.value}</dd></div>
+					))}
+				</dl>
+			</aside>
+		</JSection>
+	))}
+
+	<JSection title="How a course runs" id="how">
+		<div class="j-main j-prose">
+			<p>Every course follows the same four steps. The last three happen in your project group after the live classes end.</p>
+		</div>
+		<ol class="j-span mt-4 grid gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+			{method.map((step, i) => (
+				<li class="bg-canvas p-5">
+					<span class="font-sans text-[13px] font-semibold text-label tabular-nums">Step {i + 1}</span>
+					<p class="mt-1 text-[1.25rem] font-light tracking-[-0.01em]">{step.title}</p>
+					<p class="mt-1 font-serif text-[15px] leading-relaxed text-ink-secondary">{step.body}</p>
+				</li>
+			))}
+		</ol>
+	</JSection>
+
+	<NextSteps focus="publish" />
+
+	<ArticleEnd refs={refs} citeTitle="How to choose an RC course" />
+</Layout>

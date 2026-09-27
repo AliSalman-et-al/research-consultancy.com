@@ -1,0 +1,21 @@
+---
+// One article section: heading in the left rail, text in the measure,
+// notes in the right margin.
+interface Props {
+	title: string;
+	id?: string;
+	tint?: boolean;
+}
+
+const { title, id, tint = false } = Astro.props;
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section id={id} aria-labelledby={headingId} class:list={['scroll-mt-20', tint ? 'bg-canvas-soft' : 'bg-canvas']}>
+	<div class="pad j-grid py-12 md:py-16">
+		<div class="j-rail">
+			<h2 id={headingId} class="j-head lg:sticky lg:top-24">{title}</h2>
+		</div>
+		<slot />
+	</div>
+</section>

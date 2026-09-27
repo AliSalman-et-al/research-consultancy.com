@@ -1,0 +1,61 @@
+---
+// The same three doors close every page, so the reader always knows where to go.
+import { contact, enrol } from '../../data/site';
+
+interface Props {
+	title?: string;
+	/** Highlight the door that fits this page. */
+	focus?: 'start' | 'publish' | 'match';
+}
+
+const { title = 'Next steps', focus } = Astro.props;
+
+const doors = [
+	{
+		key: 'start',
+		who: 'New to research',
+		what: 'Start with Level 1. Two mornings on Zoom, $35.',
+		action: 'Enrol in Level 1',
+		href: enrol.level1,
+		color: '#1b8a8f',
+	},
+	{
+		key: 'publish',
+		who: 'Ready to publish',
+		what: 'Choose a method course and join a mentored project group.',
+		action: 'Compare courses',
+		href: '/courses',
+		color: '#7b4fa0',
+	},
+	{
+		key: 'match',
+		who: 'Applying for residency',
+		what: 'Twelve months of research and application support. 20 seats.',
+		action: 'See Match Mentorship',
+		href: '/match-mentorship',
+		color: '#f67737',
+	},
+] as const;
+---
+
+<section aria-labelledby="next-steps" class="no-print bg-canvas-soft">
+	<div class="pad j-grid py-12 md:py-16">
+		<div class="j-rail"><h2 id="next-steps" class="j-head lg:sticky lg:top-24">{title}</h2></div>
+		<div class="j-span">
+			<ul class="grid gap-4 md:grid-cols-3">
+				{doors.map((d) => (
+					<li class:list={['flex flex-col border-t-[3px] bg-white p-5', focus === d.key && 'ring-1 ring-navy/20']} style={`border-color:${d.color}`}>
+						<p class="font-sans text-[13px] font-semibold" style={`color:color-mix(in srgb, ${d.color} 75%, black)`}>{d.who}</p>
+						<p class="mt-1.5 font-serif text-[16px] leading-snug text-ink">{d.what}</p>
+						<div class="mt-auto pt-5">
+							<a href={d.href} class={focus === d.key ? 'btn-primary' : 'link text-[15px]'} rel={d.href.startsWith('http') ? 'noopener' : undefined}>{d.action}</a>
+						</div>
+					</li>
+				))}
+			</ul>
+			<p class="mt-5 text-[14.5px] text-ink-muted">
+				Not sure which fits? <a href={contact.whatsapp.href} class="link" rel="noopener">Message us on WhatsApp</a> with your year and your plans, and a mentor will suggest a route.
+			</p>
+		</div>
+	</div>
+</section>

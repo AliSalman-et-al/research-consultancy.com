@@ -1,0 +1,87 @@
+---
+// Figure: where mentees matched and where they hold research posts.
+// Rendered to static SVG at build time from us-atlas (Albers USA, 975×610).
+import { geoAlbersUsa, geoPath } from 'd3-geo';
+import { feature, mesh } from 'topojson-client';
+import states from 'us-atlas/states-albers-10m.json';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label?: string;
+	class?: string;
+}
+
+const { label = 'Figure 2', class: className } = Astro.props;
+
+const topo = states as any;
+const path = geoPath();
+const land = path(feature(topo, topo.objects.nation) as any);
+const borders = path(mesh(topo, topo.objects.states, (a: any, b: any) => a !== b) as any);
+const project = geoAlbersUsa().scale(1300).translate([487.5, 305]);
+
+type Kind = 'match26' | 'match25' | 'post';
+const sites: { name: string; at: [number, number]; kind: Kind }[] = [
+	{ name: 'Yale New Haven Hospital', at: [-72.93, 41.3], kind: 'match26' },
+	{ name: 'Yale New Haven Health / Bridgeport', at: [-73.19, 41.18], kind: 'match26' },
+	{ name: 'Quinnipiac University', at: [-72.9, 41.42], kind: 'match26' },
+	{ name: 'The Brooklyn Hospital Center', at: [-73.98, 40.69], kind: 'match26' },
+	{ name: 'Zucker School of Medicine at Hofstra/Northwell', at: [-73.64, 40.73], kind: 'match26' },
+	{ name: 'Capital Health, New Jersey', at: [-74.76, 40.22], kind: 'match26' },
+	{ name: 'West Virginia University / Camden Clark', at: [-81.56, 39.27], kind: 'match26' },
+	{ name: 'Marshall University', at: [-82.44, 38.42], kind: 'match26' },
+	{ name: 'ECU Health', at: [-77.37, 35.61], kind: 'match26' },
+	{ name: 'DMC Sinai-Grace / Wayne State', at: [-83.2, 42.42], kind: 'match26' },
+	{ name: "St. Luke's Hospital, St. Louis", at: [-90.52, 38.66], kind: 'match26' },
+	{ name: 'HCA Centerpoint, Kansas City', at: [-94.36, 39.03], kind: 'match26' },
+	{ name: 'Merit Health Wesley', at: [-89.29, 31.33], kind: 'match26' },
+	{ name: 'Louisiana State University', at: [-90.07, 29.95], kind: 'match26' },
+	{ name: 'Larkin Health System', at: [-80.29, 25.7], kind: 'match26' },
+	{ name: 'New Mexico Primary Care Training', at: [-106.65, 35.08], kind: 'match26' },
+	{ name: 'Doctors Hospital at Renaissance', at: [-98.16, 26.3], kind: 'match25' },
+	{ name: 'Hurley Medical Center', at: [-83.69, 43.01], kind: 'match25' },
+	{ name: 'UPMC', at: [-79.96, 40.44], kind: 'match25' },
+	{ name: 'SUNY Upstate', at: [-76.14, 43.04], kind: 'match25' },
+	{ name: 'Baylor Scott & White and UT Southwestern, Dallas', at: [-96.8, 32.78], kind: 'post' },
+	{ name: 'University of Mississippi Medical Center', at: [-90.18, 32.33], kind: 'post' },
+	{ name: 'Emory University', at: [-84.32, 33.79], kind: 'post' },
+	{ name: 'Houston Methodist', at: [-95.4, 29.71], kind: 'post' },
+	{ name: 'University of Oklahoma', at: [-97.5, 35.48], kind: 'post' },
+	{ name: 'Endeavor Health, Chicago', at: [-87.68, 42.05], kind: 'post' },
+	{ name: 'Massachusetts General Hospital', at: [-71.07, 42.36], kind: 'post' },
+];
+const placed = sites.map((s) => ({ ...s, xy: project(s.at) as [number, number] })).filter((s) => s.xy);
+const count = (k: Kind) => sites.filter((s) => s.kind === k).length;
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate relative overflow-hidden">
+		<svg viewBox="0 0 975 610" class="h-auto w-full" role="img" aria-labelledby="map-title map-desc">
+			<title id="map-title">Map of U.S. residency programmes and research posts held by RC mentees</title>
+			<desc id="map-desc">{placed.map((s) => s.name).join('; ')}</desc>
+			<path d={land} fill="#e8e3d9" />
+			<path d={borders} fill="none" stroke="#fbfaf7" stroke-width="1.2" stroke-linejoin="round" />
+			{placed.filter((s) => s.kind === 'post').map((s) => (
+				<g transform={`translate(${s.xy[0]},${s.xy[1]})`}>
+					<rect x="-7" y="-7" width="14" height="14" fill="#02264d" stroke="#fff" stroke-width="2" transform="rotate(45)" />
+					<title>{s.name}</title>
+				</g>
+			))}
+			{placed.filter((s) => s.kind !== 'post').map((s) => (
+				<g transform={`translate(${s.xy[0]},${s.xy[1]})`}>
+					<circle r="12" fill={s.kind === 'match26' ? '#f67737' : '#e3a93b'} opacity="0.22" />
+					<circle r="6.5" fill={s.kind === 'match26' ? '#f67737' : '#e3a93b'} stroke="#fff" stroke-width="2" />
+					<title>{s.name}</title>
+				</g>
+			))}
+		</svg>
+		<ul class="mt-2 flex flex-wrap gap-x-6 gap-y-2 px-1 text-[12.5px] text-ink-secondary sm:absolute sm:bottom-5 sm:left-6 sm:mt-0 sm:flex-col sm:gap-y-1.5 sm:bg-[#fbfaf7]/90 sm:py-2 sm:pr-3">
+			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-orange shadow-[0_0_0_1px_#f67737]"></span>Match 2026 ({count('match26')} programmes)</li>
+			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-[#e3a93b] shadow-[0_0_0_1px_#e3a93b]"></span>Match 2025 (selected programmes)</li>
+			<li class="flex items-center gap-2"><span class="size-2.5 rotate-45 bg-navy"></span>Postdoctoral research posts</li>
+		</ul>
+	</div>
+	<Caption label={label} title="Where mentees went next.">
+		Orange circles mark residency programmes where RC mentees matched in 2026, gold circles selected programmes from 2025, and navy
+		diamonds U.S. centres where mentees hold postdoctoral research posts. Hover over a point for its name.
+	</Caption>
+</figure>

@@ -1,0 +1,191 @@
+---
+// "What you will make": one example figure per course, drawn the way it would
+// appear in a paper. Data are illustrative and labelled as such.
+import type { Art } from '../../data/courses';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	art: Art;
+	label?: string;
+	class?: string;
+}
+
+const { art, label = 'Figure 1', class: className } = Astro.props;
+
+const captions: Record<Art, { title: string; body: string }> = {
+	manuscript: {
+		title: 'The parts of a paper, and where most students start.',
+		body: 'Level 1 teaches each section of a manuscript and three kinds of paper a beginner can write.',
+	},
+	forest: {
+		title: 'A forest plot.',
+		body: 'Each square is one trial, sized by its weight in the analysis. Lines show 95% CIs, and the diamond is the pooled estimate. Illustrative data.',
+	},
+	network: {
+		title: 'A network of treatment comparisons.',
+		body: 'Circles are treatments and lines are head-to-head trials. Illustrative data.',
+	},
+	trend: {
+		title: 'Age-adjusted mortality by sex, 1999 to 2020.',
+		body: 'A joinpoint splits the trend where its direction changes. APC indicates annual percent change; AAMR, age-adjusted mortality rate. Illustrative data.',
+	},
+	bars: {
+		title: 'In-hospital outcomes by insurance.',
+		body: 'Weighted national estimates of the kind you produce in STATA during the course. Illustrative data.',
+	},
+	loop: {
+		title: 'Cumulative readmission in the 30 days after discharge.',
+		body: 'The database links admissions across hospitals, so a return to a different hospital still counts. Illustrative data.',
+	},
+};
+
+const c = captions[art];
+
+// Forest plot rows: estimate, lower, upper, weight
+const forest = [
+	['Trial A 2019', 0.78, 0.6, 1.02, 14],
+	['Trial B 2020', 0.7, 0.58, 0.85, 22],
+	['Trial C 2021', 0.92, 0.66, 1.28, 9],
+	['Trial D 2022', 0.74, 0.63, 0.87, 26],
+	['Trial E 2023', 0.81, 0.62, 1.06, 12],
+	['Trial F 2024', 0.69, 0.5, 0.95, 17],
+] as const;
+const fx = (v: number) => 330 + Math.log(v) / Math.log(2) * 170; // log scale, 1.0 at x=330
+
+// Trend lines (1999–2020)
+const yrs = Array.from({ length: 22 }, (_, i) => 1999 + i);
+const men = yrs.map((y, i) => (i < 11 ? 9.2 - i * 0.28 : 6.1 + (i - 11) * 0.22));
+const women = yrs.map((y, i) => (i < 11 ? 7.1 - i * 0.2 : 4.9 + (i - 11) * 0.12));
+const tx = (i: number) => 60 + i * 20;
+const ty = (v: number) => 230 - (v - 3) * 26;
+const line = (arr: number[]) => arr.map((v, i) => `${i ? 'L' : 'M'}${tx(i)},${ty(v)}`).join(' ');
+
+// Readmission curves (days 0–30)
+const days = Array.from({ length: 31 }, (_, d) => d);
+const curve = (k: number) => days.map((d) => `${d ? 'L' : 'M'}${60 + d * 14},${220 - (1 - Math.exp(-d / 11)) * k * 7}`).join(' ');
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		{art === 'forest' && (
+			<svg viewBox="0 0 640 300" class="w-full" role="img" aria-label="Illustrative forest plot of six trials with a pooled hazard ratio of 0.76">
+				<g font-family="Inter Variable, sans-serif" font-size="12" fill="#31302e">
+					<text x="0" y="16" font-weight="700">Study</text>
+					<text x="520" y="16" font-weight="700">HR (95% CI)</text>
+					{forest.map(([n, e, l, u, w], i) => (
+						<g transform={`translate(0 ${44 + i * 30})`}>
+							<text x="0" y="4">{n}</text>
+							<line x1={fx(l)} x2={fx(u)} y1="0" y2="0" stroke="#31302e" stroke-width="1.4" />
+							<rect x={fx(e) - Math.sqrt(w) * 1.6} y={-Math.sqrt(w) * 1.6} width={Math.sqrt(w) * 3.2} height={Math.sqrt(w) * 3.2} fill="#7b4fa0" />
+							<text x="520" y="4" class="tabular-nums">{e.toFixed(2)} ({l.toFixed(2)}–{u.toFixed(2)})</text>
+						</g>
+					))}
+					<g transform="translate(0 232)">
+						<text x="0" y="4" font-weight="700">Pooled (random effects)</text>
+						<path d={`M${fx(0.71)},0 L${fx(0.76)},-8 L${fx(0.81)},0 L${fx(0.76)},8 Z`} fill="#f67737" />
+						<text x="520" y="4" font-weight="700">0.76 (0.71–0.81)</text>
+					</g>
+					<line x1="330" x2="330" y1="26" y2="252" stroke="#a39e98" stroke-dasharray="3 4" />
+					<line x1="160" x2="420" y1="262" y2="262" stroke="#31302e" />
+					{[0.5, 0.71, 1, 1.41].map((v) => (<g><line x1={fx(v)} x2={fx(v)} y1="262" y2="267" stroke="#31302e" /><text x={fx(v)} y="280" text-anchor="middle" font-size="11">{v === 0.71 ? '0.7' : v === 1.41 ? '1.4' : v}</text></g>))}
+					<text x="270" y="296" text-anchor="middle" font-size="11" fill="#615d59">Favours treatment</text>
+					<text x="385" y="296" text-anchor="middle" font-size="11" fill="#615d59">Favours control</text>
+					<text x="0" y="296" font-size="11" fill="#615d59">I² = 12%</text>
+				</g>
+			</svg>
+		)}
+
+		{art === 'trend' && (
+			<svg viewBox="0 0 560 290" class="w-full" role="img" aria-label="Illustrative line chart of age-adjusted mortality falling until 2009 then rising, higher in men than women">
+				<g font-family="Inter Variable, sans-serif" font-size="11" fill="#615d59">
+					{[4, 5, 6, 7, 8, 9].map((v) => (<g><line x1="60" x2="480" y1={ty(v)} y2={ty(v)} stroke="#e6e2da" /><text x="50" y={ty(v) + 4} text-anchor="end">{v}</text></g>))}
+					{yrs.filter((y) => y % 3 === 0).map((y) => (<text x={tx(y - 1999)} y="258" text-anchor="middle">{y}</text>))}
+					<text x="14" y="140" transform="rotate(-90 14 140)" text-anchor="middle">AAMR per 100,000</text>
+					<line x1={tx(11)} x2={tx(11)} y1="40" y2="236" stroke="#a39e98" stroke-dasharray="3 4" />
+					<text x={tx(11) + 4} y="48" fill="#31302e">Joinpoint, 2010</text>
+					<path d={line(men)} fill="none" stroke="#1b8a8f" stroke-width="2.5" />
+					<path d={line(women)} fill="none" stroke="#f67737" stroke-width="2.5" />
+					{men.map((v, i) => <circle cx={tx(i)} cy={ty(v)} r="2.6" fill="#1b8a8f" />)}
+					{women.map((v, i) => <circle cx={tx(i)} cy={ty(v)} r="2.6" fill="#f67737" />)}
+					<text x="486" y={ty(men[21]) + 4} fill="#1b8a8f" font-weight="700">Men</text>
+					<text x="486" y={ty(women[21]) + 4} fill="#f67737" font-weight="700">Women</text>
+					<text x="150" y={ty(9.6)} fill="#31302e">APC −3.4%</text>
+					<text x="380" y={ty(8.9)} fill="#31302e">APC +3.1%</text>
+				</g>
+			</svg>
+		)}
+
+		{art === 'bars' && (
+			<svg viewBox="0 0 560 280" class="w-full" role="img" aria-label="Illustrative grouped bar chart comparing complications, non-home discharge and length of stay by insurance">
+				<g font-family="Inter Variable, sans-serif" font-size="11" fill="#615d59">
+					{[0, 10, 20, 30].map((v) => (<g><line x1="60" x2="540" y1={220 - v * 6} y2={220 - v * 6} stroke="#e6e2da" /><text x="50" y={224 - v * 6} text-anchor="end">{v}%</text></g>))}
+					{[
+						{ n: 'Complications', a: 12.4, b: 8.1 },
+						{ n: 'Non-home discharge', a: 21.6, b: 13.2 },
+						{ n: 'Prolonged stay', a: 27.8, b: 18.5 },
+					].map((g, i) => (
+						<g transform={`translate(${110 + i * 150} 0)`}>
+							<rect x="0" y={220 - g.a * 6} width="42" height={g.a * 6} fill="#f67737" />
+							<rect x="46" y={220 - g.b * 6} width="42" height={g.b * 6} fill="#02264d" />
+							<text x="21" y={214 - g.a * 6} text-anchor="middle" fill="#31302e">{g.a}</text>
+							<text x="67" y={214 - g.b * 6} text-anchor="middle" fill="#31302e">{g.b}</text>
+							<text x="44" y="240" text-anchor="middle" fill="#31302e">{g.n}</text>
+						</g>
+					))}
+					<rect x="360" y="262" width="10" height="10" fill="#f67737" /><text x="376" y="271">Medicaid</text>
+					<rect x="446" y="262" width="10" height="10" fill="#02264d" /><text x="462" y="271">Private insurance</text>
+				</g>
+			</svg>
+		)}
+
+		{art === 'loop' && (
+			<svg viewBox="0 0 560 270" class="w-full" role="img" aria-label="Illustrative cumulative readmission curves over 30 days, higher in one group">
+				<g font-family="Inter Variable, sans-serif" font-size="11" fill="#615d59">
+					{[0, 5, 10, 15, 20].map((v) => (<g><line x1="60" x2="480" y1={220 - v * 7} y2={220 - v * 7} stroke="#e6e2da" /><text x="50" y={224 - v * 7} text-anchor="end">{v}%</text></g>))}
+					{[0, 5, 10, 15, 20, 25, 30].map((d) => (<text x={60 + d * 14} y="240" text-anchor="middle">{d}</text>))}
+					<text x="270" y="262" text-anchor="middle">Days since discharge</text>
+					<path d={curve(21)} fill="none" stroke="#d9546e" stroke-width="2.6" />
+					<path d={curve(13.7)} fill="none" stroke="#02264d" stroke-width="2.6" />
+					<text x="486" y="92" fill="#d9546e" font-weight="700">Group A</text>
+					<text x="486" y="138" fill="#02264d" font-weight="700">Group B</text>
+				</g>
+			</svg>
+		)}
+
+		{art === 'manuscript' && (
+			<div class="grid gap-3 sm:grid-cols-[1.1fr_1fr]">
+				<ol class="space-y-1.5 font-sans text-[13px]">
+					{[
+						['Title and authors', 'Who did the work, and where', '#02264d'],
+						['Abstract', 'The whole paper in 250 words', '#4c9be8'],
+						['Introduction', 'What is known, what is not, your question', '#1b8a8f'],
+						['Methods', 'Design, data and statistics, in enough detail to repeat', '#7b4fa0'],
+						['Results', 'Numbers, tables and figures', '#e3a93b'],
+						['Discussion', 'What the results mean, and their limits', '#f67737'],
+					].map(([h, b, col]) => (
+						<li class="flex items-stretch gap-3 bg-white p-2.5 ring-1 ring-hairline">
+							<span class="w-1.5 shrink-0" style={`background:${col}`}></span>
+							<span><b class="block text-ink">{h}</b><span class="text-ink-muted">{b}</span></span>
+						</li>
+					))}
+				</ol>
+				<div class="bg-white p-4 ring-1 ring-hairline">
+					<p class="font-sans text-[14px] font-bold text-navy">Where most students start</p>
+					<ul class="mt-2 space-y-2 font-serif text-[14px] leading-snug text-ink-secondary">
+						<li><b class="font-sans text-ink">Letter to the editor.</b> A short response to a recently published paper. Some mentees publish one as sole author.</li>
+						<li><b class="font-sans text-ink">Case report.</b> An unusual patient, written up with a short review of the literature.</li>
+						<li><b class="font-sans text-ink">Cross-sectional study.</b> A survey or audit that you design, collect and analyse in SPSS.</li>
+					</ul>
+				</div>
+			</div>
+		)}
+
+		{art === 'network' && (
+			<svg viewBox="0 0 560 260" class="w-full" role="img" aria-label="Illustrative network plot of five treatments">
+				<g stroke="#a39e98" stroke-width="2"><line x1="280" y1="50" x2="140" y2="140" /><line x1="280" y1="50" x2="420" y2="140" /><line x1="140" y1="140" x2="200" y2="220" /><line x1="420" y1="140" x2="360" y2="220" /><line x1="200" y1="220" x2="360" y2="220" /><line x1="280" y1="50" x2="360" y2="220" stroke-width="4" /></g>
+				{[[280, 50, 18, 'Placebo'], [140, 140, 12, 'Drug A'], [420, 140, 14, 'Drug B'], [200, 220, 10, 'Drug C'], [360, 220, 16, 'Drug D']].map(([x, y, r, n]) => (<g><circle cx={x} cy={y} r={r} fill="#4c9be8" stroke="#fff" stroke-width="3" /><text x={x} y={(y as number) + (r as number) + 16} text-anchor="middle" font-family="Inter Variable, sans-serif" font-size="12" fill="#31302e">{n}</text></g>))}
+			</svg>
+		)}
+	</div>
+	<Caption label={label} title={c.title}>{c.body}</Caption>
+</figure>

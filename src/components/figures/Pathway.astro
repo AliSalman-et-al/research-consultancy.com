@@ -1,0 +1,118 @@
+---
+// Central Illustration: the RC pathway. Five stages, each with its own colour
+// and icon; the two teaching stages link to their courses. Replaces a separate
+// graphical abstract and course ladder, which told the same story twice.
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+
+type Key = 'you' | 'learn' | 'do' | 'publish' | 'match';
+const stages: {
+	key: Key;
+	title: string;
+	body: string;
+	color: string;
+	tint: string;
+	links?: { label: string; href: string }[];
+	stat?: string;
+}[] = [
+	{ key: 'you', title: 'You', body: 'A medical student or graduate, anywhere in the world. No research experience needed.', color: '#4c9be8', tint: '#e8f2fc', stat: 'Any year, any school' },
+	{ key: 'learn', title: 'Learn', body: 'Two mornings of study design, writing and statistics.', color: '#1b8a8f', tint: '#e3f3f3', links: [{ label: 'Level 1', href: '/courses/level-1' }] },
+	{
+		key: 'do',
+		title: 'Do',
+		body: 'Pick a method course, then join a mentored project group.',
+		color: '#7b4fa0',
+		tint: '#f0e9f6',
+		links: [
+			{ label: 'Meta-analysis', href: '/courses/meta-analysis' },
+			{ label: 'CDC WONDER', href: '/courses/cdc-wonder' },
+			{ label: 'NIS', href: '/courses/nis' },
+			{ label: 'NRD', href: '/courses/nrd' },
+		],
+	},
+	{ key: 'publish', title: 'Publish', body: 'Submit to PubMed-indexed journals and present at AHA, ACC and other meetings.', color: '#c98a12', tint: '#fbf3e1', stat: '150+ papers in 2025' },
+	{ key: 'match', title: 'Match', body: 'Apply with papers, U.S. mentors and letters.', color: '#f67737', tint: '#fdeee5', links: [{ label: 'Match Mentorship', href: '/match-mentorship' }], stat: '90% matched, 2024-25' },
+];
+---
+
+<figure class:list={['pathway bg-white text-ink', className]}>
+	<p class="flex flex-wrap items-baseline justify-between gap-x-4 bg-[#0b1f3a] px-4 py-2 font-sans text-[12.5px] text-white">
+		<span><b>Central Illustration.</b> The RC pathway</span>
+		<span class="text-white/60">Select a course to read more</span>
+	</p>
+	<ol class="relative grid sm:grid-cols-5">
+		<span class="pw-rule absolute top-[3.4rem] right-[10%] left-[10%] hidden h-[2px] sm:block" aria-hidden="true"></span>
+		{stages.map((s, i) => (
+			<li class="pw-stage relative flex gap-4 border-b border-hairline px-4 py-5 last:border-0 sm:flex-col sm:items-center sm:gap-3 sm:border-b-0 sm:text-center" style={`--c:${s.color};--t:${s.tint};--i:${i}`}>
+				<span class="pw-icon relative z-10 grid size-14 shrink-0 place-items-center rounded-full ring-4 ring-white" style="background:var(--t);color:var(--c)" aria-hidden="true">
+					<svg viewBox="0 0 32 32" class="size-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+						{s.key === 'you' && (<g><circle cx="16" cy="12" r="4.5" /><path d="M7.5 26.5c1.1-4.6 4.4-7.5 8.5-7.5s7.4 2.9 8.5 7.5" /><path d="M10.5 8.2 16 5.5l5.5 2.7-5.5 2.7z" fill="currentColor" stroke-width="1.2" /></g>)}
+						{s.key === 'learn' && (<g><rect x="4.5" y="6.5" width="23" height="14.5" rx="1.5" /><path d="M2.5 25h27" /><path d="M9 11h7M9 14.5h11M9 18h5" /></g>)}
+						{s.key === 'do' && (<g><path d="M17 6v21" stroke-dasharray="2 2.4" /><path d="M8 10h11M11 15h10M9 20h9" /><rect x="12" y="8.5" width="3" height="3" fill="currentColor" stroke="none" /><rect x="15" y="13.5" width="3" height="3" fill="currentColor" stroke="none" /><rect x="11.5" y="18.5" width="3" height="3" fill="currentColor" stroke="none" /><path d="m11 25.5 4-2.2 4 2.2-4 2.2z" fill="currentColor" stroke="none" /></g>)}
+						{s.key === 'publish' && (<g><path d="M9 4.5h10l5 5V27.5H9z" /><path d="M19 4.5v5h5" /><path d="M12.5 14h8M12.5 18h8M12.5 22h5" /></g>)}
+						{s.key === 'match' && (<g><path d="M6.5 27V13l9.5-6 9.5 6v14" /><path d="M13 27v-6.5h6V27" /><path d="M16 11v5M13.5 13.5h5" /><path d="M3.5 27h25" /></g>)}
+					</svg>
+				</span>
+				<div class="sm:flex sm:flex-col sm:items-center">
+					<p class="font-sans text-[15px] font-bold" style="color:color-mix(in srgb, var(--c) 80%, black)"><span class="mr-1.5 font-semibold text-ink-faint tabular-nums">{i + 1}</span>{s.title}</p>
+					<p class="mt-1 max-w-[15rem] font-serif text-[14px] leading-snug text-ink-secondary">{s.body}</p>
+					{s.links && (
+						<ul class="mt-2.5 flex flex-wrap gap-1.5 sm:justify-center">
+							{s.links.map((l) => (
+								<li><a href={l.href} class="pw-chip inline-block rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}</a></li>
+							))}
+						</ul>
+					)}
+					{s.stat && !s.links && <p class="mt-2.5 font-sans text-[12.5px] font-semibold" style="color:color-mix(in srgb, var(--c) 72%, black)">{s.stat}</p>}
+				</div>
+			</li>
+		))}
+	</ol>
+</figure>
+
+<style>
+	.pw-rule {
+		background: linear-gradient(90deg, #4c9be8, #1b8a8f, #7b4fa0, #c98a12, #f67737);
+		transform-origin: left;
+	}
+	.pw-chip {
+		transition: filter 150ms ease;
+	}
+	.pw-chip:hover {
+		filter: brightness(0.94);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	/* One orchestrated entrance: the path draws, and each stage arrives on it. */
+	@media (prefers-reduced-motion: no-preference) {
+		.pw-rule {
+			animation: pw-draw 1100ms cubic-bezier(0.4, 0, 0.2, 1) 200ms both;
+		}
+		.pw-stage {
+			animation: pw-in 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+			animation-delay: calc(250ms + var(--i) * 200ms);
+		}
+		@keyframes pw-draw {
+			from {
+				transform: scaleX(0);
+			}
+			to {
+				transform: scaleX(1);
+			}
+		}
+		@keyframes pw-in {
+			from {
+				opacity: 0;
+				transform: translateY(6px);
+			}
+			to {
+				opacity: 1;
+				transform: none;
+			}
+		}
+	}
+</style>

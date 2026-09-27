@@ -1,0 +1,21 @@
+---
+import ArticleHead from '../components/journal/ArticleHead.astro';
+import JSection from '../components/journal/JSection.astro';
+import Layout from '../layouts/Layout.astro';
+import { nav } from '../data/site';
+---
+
+<Layout title="Page not found">
+	<ArticleHead
+		type="Erratum"
+		title="This page does not exist"
+		dek="The link may be old, or the address may have a typo. The pages below are the ones that do exist."
+	/>
+	<JSection title="Contents" id="contents">
+		<ul class="j-main space-y-2.5 text-[16px]">
+			<li><a href="/" class="link">Home</a></li>
+			{nav.map((n) => <li><a href={n.href} class="link">{n.label}</a></li>)}
+			<li><a href="/contact" class="link">Contact</a></li>
+		</ul>
+	</JSection>
+</Layout>

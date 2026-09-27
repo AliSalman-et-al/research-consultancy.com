@@ -1,0 +1,68 @@
+---
+// Figure: a Match Mentorship year laid against the U.S. Match calendar.
+// Timing is indicative; ERAS and the NRMP publish exact dates each cycle.
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+// [start, end] as month indexes, inclusive
+const rows: { name: string; span: [number, number]; color: string }[] = [
+	{ name: 'Workshops: Level 1, meta-analysis, CDC WONDER, NIS, NRD', span: [0, 5], color: '#1b8a8f' },
+	{ name: 'Research projects, submitted by September', span: [0, 5], color: '#7b4fa0' },
+	{ name: 'Conference abstract', span: [2, 7], color: '#4c9be8' },
+	{ name: 'CV and personal statement editing', span: [3, 5], color: '#c98a12' },
+	{ name: 'Mock interviews', span: [6, 9], color: '#f67737' },
+	{ name: 'Programme choice and rank order list', span: [8, 10], color: '#d9546e' },
+	{ name: 'Mentor group on WhatsApp', span: [0, 11], color: '#02264d' },
+];
+const marks = [
+	{ at: 2, label: 'ERAS opens' },
+	{ at: 5.7, label: 'Programmes receive applications' },
+	{ at: 11.5, label: 'Match Day' },
+];
+const pct = (m: number) => `${(m / 12) * 100}%`;
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<div class="grid grid-cols-[minmax(0,1fr)] gap-y-2 md:grid-cols-[15rem_minmax(0,1fr)] md:gap-x-4">
+			<div class="hidden md:block"></div>
+			<div class="relative grid grid-cols-12 border-b border-ink/40 pb-1.5 font-sans text-[11.5px] text-ink-muted" aria-hidden="true">
+				{months.map((m) => <span class="text-center">{m}</span>)}
+			</div>
+			{rows.map((r) => (
+				<>
+					<p class="font-sans text-[13px] leading-snug text-ink-secondary md:self-center md:text-right">{r.name}</p>
+					<div class="relative h-5 bg-white ring-1 ring-hairline" role="img" aria-label={`${r.name}, ${months[r.span[0]]} to ${months[r.span[1]]}`}>
+						<span class="my-bar absolute inset-y-0.5" style={`left:${pct(r.span[0])};width:${pct(r.span[1] - r.span[0] + 1)};background:${r.color}`}></span>
+					</div>
+				</>
+			))}
+			<div class="hidden md:block"></div>
+			<div class="relative mt-1 h-10">
+				{marks.map((m) => (
+					<span class:list={['absolute top-0 flex flex-col font-sans text-[11.5px] leading-tight text-navy', m.at > 11 ? 'items-end' : '-translate-x-1/2 items-center']} style={m.at > 11 ? `right:${pct(12 - m.at)}` : `left:${pct(m.at)}`}>
+						<span class="h-3 w-px bg-navy" aria-hidden="true"></span>
+						<span class:list={['mt-0.5 max-w-[7rem] font-semibold', m.at > 11 ? 'text-right' : 'text-center']}>{m.label}</span>
+					</span>
+				))}
+			</div>
+		</div>
+	</div>
+	<Caption label={label} title="A mentorship year against the U.S. Match calendar.">
+		Research and workshops fill the months before applications open. Editing, interviews and the rank order list follow the
+		Match timeline. Timing is indicative; ERAS and the NRMP publish exact dates each cycle.
+	</Caption>
+</figure>
+
+<style>
+	.my-bar {
+		border-radius: 1px;
+	}
+</style>

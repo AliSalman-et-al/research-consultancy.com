@@ -1,0 +1,12 @@
+---
+// A superscript citation. A small script in the layout gives the first citation
+// of each reference an id (for "Back to text") and a tooltip with the reference.
+interface Props {
+	n: number | string;
+}
+
+const { n } = Astro.props;
+const first = String(n).split(',')[0];
+---
+
+<sup><a class="cite" href={`#ref-${first}`} data-ref={first} aria-label={`Reference ${n}`}>{n}</a></sup>

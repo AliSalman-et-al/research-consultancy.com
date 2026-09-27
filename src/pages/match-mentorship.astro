@@ -1,0 +1,204 @@
+---
+import { Image } from 'astro:assets';
+import MatchYear from '../components/figures/MatchYear.astro';
+import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import ArticleHead from '../components/journal/ArticleHead.astro';
+import Caption from '../components/journal/Caption.astro';
+import Cite from '../components/journal/Cite.astro';
+import JSection from '../components/journal/JSection.astro';
+import MatchTable from '../components/journal/MatchTable.astro';
+import NextSteps from '../components/journal/NextSteps.astro';
+import FaqList from '../components/site/FaqList.astro';
+import Layout from '../layouts/Layout.astro';
+import { leaders, match2025, match2026 } from '../data/people';
+import { contact, enrol } from '../data/site';
+import { photo } from '../lib/photos';
+
+const included = [
+	{ title: 'Research papers', body: 'You join several projects in your specialty. The goal is at least two papers submitted or published by September, when programmes start reading applications.', target: '2 or more papers' },
+	{ title: 'A conference abstract', body: 'At least one abstract presented at an international meeting.', target: '1 or more' },
+	{ title: 'All RC courses', body: 'Level 1, Meta-Analysis, CDC WONDER, NIS and NRD, as many times as you like.', target: 'Worth $450+' },
+	{ title: 'CV and personal statement', body: 'Line-by-line edits from mentors who have been through the Match.', target: '' },
+	{ title: 'Mock interviews', body: 'One-to-one practice interviews with a senior mentor, with feedback on each answer.', target: '' },
+	{ title: 'Letters of recommendation', body: 'U.S. faculty write letters for mentees who have contributed substantially to projects.', target: '' },
+	{ title: 'A mentor group', body: 'A WhatsApp group with RC faculty and U.S. physicians for questions on research, programme choice, signals and your rank order list.', target: 'Open all year' },
+];
+
+const voices = match2026.filter((m) => m.quote);
+
+const steps = [
+	{ title: 'Send your CV', body: `Email it to ${contact.email}, or message ${contact.matchWhatsapp.label} on WhatsApp.` },
+	{ title: 'Talk to a mentor', body: 'We discuss your specialty, your timeline and what your application needs.' },
+	{ title: 'Secure your seat', body: 'Pay online, or ask us about another payment method. Seats go in the order people enrol.' },
+];
+
+const matchFaqs = [
+	{ q: 'Who is this for?', a: 'Final-year students and graduates applying to U.S. residency in the 2026-27 Match. Mentees have matched into Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and Psychiatry.' },
+	{ q: 'I have no research experience. Can I still join?', a: 'Yes. Many mentees learn research during the year, starting with Level 1.' },
+	{ q: 'Will I get a publication?', a: 'We cannot promise one. You join several projects, and authorship depends on your contribution under ICMJE criteria.' },
+	{ q: 'How many seats are there?', a: 'Twenty, filled in the order people enrol.' },
+	{ q: 'Can I pay another way?', a: `Yes. Email ${contact.email} and we will arrange it.` },
+];
+
+const sections = [
+	{ id: 'introduction', label: 'Introduction' },
+	{ id: 'included', label: 'What is included' },
+	{ id: 'year', label: 'The year' },
+	{ id: 'results', label: 'Results' },
+	{ id: 'mentors', label: 'Mentors' },
+	{ id: 'apply', label: 'How to apply' },
+	{ id: 'questions', label: 'Questions' },
+];
+
+const refs = [
+	{ text: 'Research Consultancy. RC Match Mentorship Program, 2026-2027.', href: enrol.match },
+	{ text: 'Research Consultancy. Match 2025 and Match 2026 results and mentee stories. 2025-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
+];
+---
+
+<Layout title="Match Mentorship" description="A 12-month research and application programme for U.S. residency applicants, supervised by RC faculty.">
+	<ArticleHead
+		type="Special report"
+		title="A year of research and mentorship for the U.S. Match"
+		dek="Twelve months of research projects, every RC course, application editing, mock interviews and a mentor group, for applicants to the 2026-27 Match. Twenty seats."
+		sections={sections}
+	>
+		<div slot="actions" class="mt-8 flex flex-wrap gap-3">
+			<a href={enrol.match} class="btn-primary" rel="noopener">Secure your seat</a>
+			<a href={contact.matchWhatsapp.href} class="btn-secondary border border-hairline" rel="noopener">Talk to a mentor first</a>
+		</div>
+		<aside slot="aside" aria-labelledby="kp" class="bg-desk p-6">
+			<h2 id="kp" class="j-box-title text-[1.0625rem]">Key Points</h2>
+			<dl class="mt-3 space-y-3 font-serif text-[15.5px] leading-relaxed text-ink-secondary">
+				<div><dt class="inline font-sans text-[14.5px] font-bold text-ink">Question </dt><dd class="inline">What does a residency applicant need from a research year?</dd></div>
+				<div><dt class="inline font-sans text-[14.5px] font-bold text-ink">Findings </dt><dd class="inline">Of the 2024-25 cohort, 90% matched; of the 2025-26 cohort, 80%.</dd></div>
+				<div><dt class="inline font-sans text-[14.5px] font-bold text-ink">Meaning </dt><dd class="inline">Papers, letters and interview practice can be planned into one year, timed to the Match calendar.</dd></div>
+			</dl>
+		</aside>
+	</ArticleHead>
+
+	<JSection title="Introduction" id="introduction">
+		<div class="j-main j-prose">
+			<p class="drop-cap">
+				Residency programmes now weigh the whole application. Scores still count, but so do publications, U.S. clinical
+				experience, letters and interviews. Match Mentorship plans all of these into one year and assigns each part to a
+				mentor.<Cite n={1} />
+			</p>
+			<p>
+				RC faculty run the programme themselves. They supervise your projects, review your personal statement and conduct
+				your mock interviews.
+			</p>
+		</div>
+		<aside class="j-margin">
+			<p class="note"><b>Specialties matched.</b> Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and Psychiatry, and a Transitional Year.</p>
+		</aside>
+	</JSection>
+
+	<JSection title="What is included" id="included">
+		<figure class="j-span">
+			<Caption label="Table 1" title="What the programme includes, 2026-27." class="j-caption-top" />
+			<div class="overflow-x-auto">
+				<table class="j-table min-w-[36rem]">
+					<thead><tr><th scope="col">Component</th><th scope="col">What you get</th><th scope="col">Target</th></tr></thead>
+					<tbody>
+						{included.map((item) => (
+							<tr class="align-top">
+								<th scope="row" class="font-semibold">{item.title}</th>
+								<td class="font-serif text-[15px]">{item.body}</td>
+								<td class="whitespace-nowrap">{item.target}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<p class="j-tablenote">Publication depends on each mentee's contribution under ICMJE authorship criteria. RC does not guarantee publications.</p>
+		</figure>
+	</JSection>
+
+	<JSection title="The year" id="year">
+		<div class="j-main j-prose">
+			<p>Research comes first, so that papers are submitted before programmes read applications in September. Editing, interviews and the rank order list follow the Match calendar (Figure 1).</p>
+		</div>
+		<MatchYear class="j-span mt-4" label="Figure 1" />
+	</JSection>
+
+	<JSection title="Results" id="results">
+		<div class="j-main j-prose">
+			<p>
+				Sixteen RC mentees matched in 2026, into programmes from Yale New Haven to Louisiana State University (Table 2).
+				They include a graduate who had gone unmatched the year before and a graduate from the class of 2007.<Cite n={2} />
+			</p>
+		</div>
+		<div class="j-span mt-4"><MatchTable label="Table 2" showSchool footnote="Schools as reported by mentees. Of the 2025-26 cohort, 80% matched." /></div>
+		<div class="j-span mt-8"><MatchTable label="Table 3" rows={match2025} showSchool title="Match 2025 results, selected mentees from the 2024-25 cohort." footnote="Of the 2024-25 cohort, 90% matched." /></div>
+
+		<div class="j-span mt-10">
+			<h3 class="j-subhead">In mentees' words</h3>
+			<div class="mt-5 grid gap-x-10 gap-y-7 md:grid-cols-2">
+				{voices.map((m) => (
+					<blockquote class="flex gap-4">
+						{m.photo ? (
+							<Image src={photo(m.photo)} alt="" width={44} height={44} class="size-11 shrink-0 rounded-full object-cover" />
+						) : (
+							<span class="grid size-11 shrink-0 place-items-center rounded-full bg-navy/10 text-[13px] font-semibold text-navy" aria-hidden="true">{m.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>
+						)}
+						<div>
+							<p class="font-serif text-[1.0625rem] leading-relaxed italic">"{m.quote}"</p>
+							<footer class="mt-1.5 text-[13px] text-ink-muted"><span class="font-semibold text-ink">{m.name}</span>, {m.specialty}, {m.program}</footer>
+						</div>
+					</blockquote>
+				))}
+			</div>
+		</div>
+	</JSection>
+
+	<JSection title="Mentors" id="mentors">
+		<div class="j-main j-prose">
+			<p>RC's four faculty supervise the projects, edit the applications and run the mock interviews themselves.</p>
+		</div>
+		<ul class="j-span mt-4 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+			{leaders.map((p) => (
+				<li>
+					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[300, 600]} sizes="(min-width: 1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
+					<p class="mt-3 font-semibold">{p.name}</p>
+					<p class="mt-0.5 text-[13.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
+				</li>
+			))}
+		</ul>
+	</JSection>
+
+	<JSection title="How to apply" id="apply">
+		<ol class="j-span grid gap-px overflow-hidden border border-hairline bg-hairline md:grid-cols-3">
+			{steps.map((s, i) => (
+				<li class="bg-canvas p-5">
+					<span class="font-sans text-[13px] font-semibold text-label tabular-nums">Step {i + 1}</span>
+					<p class="mt-1 text-[1.25rem] font-light tracking-[-0.01em]">{s.title}</p>
+					<p class="mt-1 font-serif text-[15px] leading-relaxed text-ink-secondary [overflow-wrap:anywhere]">{s.body}</p>
+				</li>
+			))}
+		</ol>
+		<div class="j-span mt-2 flex flex-wrap gap-3">
+			<a href={enrol.match} class="btn-primary" rel="noopener">Secure your seat</a>
+			<a href={contact.matchWhatsapp.href} class="btn-secondary border border-hairline" rel="noopener">Message {contact.matchWhatsapp.label}</a>
+		</div>
+
+		<div class="j-span mt-10 grid gap-6 md:grid-cols-2">
+			<div class="border-t-[3px] border-navy bg-canvas-soft p-5">
+				<h3 class="font-semibold">Fellowship Mentorship</h3>
+				<p class="mt-1.5 font-serif text-[15.5px] leading-relaxed text-ink-secondary">The same twelve-month programme for fellowship applicants, open to U.S. and international graduates.</p>
+			</div>
+			<div class="border-t-[3px] border-navy bg-canvas-soft p-5">
+				<h3 class="font-semibold">Green Card Research Mentorship</h3>
+				<p class="mt-1.5 font-serif text-[15.5px] leading-relaxed text-ink-secondary">For graduates building a research record for EB-1A or National Interest Waiver petitions: papers, peer-review roles and documentation.</p>
+			</div>
+		</div>
+	</JSection>
+
+	<JSection title="Questions" id="questions">
+		<div class="j-main"><FaqList items={matchFaqs} /></div>
+	</JSection>
+
+	<NextSteps focus="match" />
+
+	<ArticleEnd refs={refs} citeTitle="A year of research and mentorship for the U.S. Match" />
+</Layout>

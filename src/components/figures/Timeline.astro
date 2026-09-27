@@ -1,0 +1,39 @@
+---
+// Figure: a decade of RC, from first workshop to Match 2026.
+// Milestones are taken from RC's posts and the 2024 ACC feature.
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label?: string;
+	class?: string;
+}
+
+const { label = 'Figure 3', class: className } = Astro.props;
+
+const years = [
+	{ year: '2016', items: ['First workshops for students with no research experience'] },
+	{ year: '2020', items: ['Classes move to Zoom and open to students in any country'] },
+	{ year: '2022', items: ["Dr. Khan's CDC WONDER paper is named one of JAMA's top 10 of the year"] },
+	{ year: '2023', items: ['Mentees present at AHA Scientific Sessions', 'Former students, Laibah Khan among them, become project mentors'] },
+	{ year: '2024', items: ['The American College of Cardiology publishes an article on the RC model', 'NIS and STATA course starts', 'More than 50 abstracts accepted at AHA'] },
+	{ year: '2025', items: ['40 abstracts at ACC.25, all published in JACC', 'NRD course starts', '90% of the 2024-25 Match cohort matches'] },
+	{ year: '2026', items: ['16 mentees match, 2 of them at Yale programmes', 'NRD studies published in Neurology and Blood'] },
+];
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<ol class="relative grid gap-6 sm:grid-cols-2 md:grid-cols-4 md:gap-x-4 md:gap-y-8 xl:grid-cols-7 xl:gap-3">
+			<span class="absolute top-[1.1rem] right-0 left-0 hidden h-px bg-navy/25 xl:block" aria-hidden="true"></span>
+			{years.map((y, i) => (
+				<li class="relative flex gap-4 sm:flex-col sm:gap-3">
+					<span class:list={['relative z-10 grid h-9 shrink-0 place-items-center self-start rounded-full px-3 font-sans text-[13px] font-bold tabular-nums ring-4 ring-[#fbfaf7]', i === years.length - 1 ? 'bg-orange text-navy' : 'bg-navy text-white']}>{y.year}</span>
+					<ul class="space-y-1.5 font-serif text-[14px] leading-snug text-ink-secondary">
+						{y.items.map((it) => <li class="border-l-2 border-navy/15 pl-2.5">{it}</li>)}
+					</ul>
+				</li>
+			))}
+		</ol>
+	</div>
+	<Caption label={label} title="Ten years of Research Consultancy.">Selected milestones, 2016 to 2026.</Caption>
+</figure>

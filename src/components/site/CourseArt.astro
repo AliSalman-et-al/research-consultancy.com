@@ -1,0 +1,74 @@
+---
+// Decorative course illustrations. Strokes use currentColor so the sticker-palette
+// text colour of the parent tints each drawing.
+import type { Art } from '../../data/courses';
+
+interface Props {
+	art: Art;
+}
+
+const { art } = Astro.props;
+---
+
+<svg viewBox="0 0 160 80" class="h-full w-full" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+	{art === 'manuscript' && (
+		<g>
+			<rect x="46" y="10" width="54" height="64" rx="4" fill="#fff" />
+			<path d="M56 24h34M56 33h34M56 42h22M56 51h28" stroke-width="2" opacity="0.55" />
+			<path d="M104 58l22-22 7 7-22 22-10 3z" fill="#fff" />
+			<path d="M121 41l7 7" />
+		</g>
+	)}
+	{art === 'forest' && (
+		<g>
+			<path d="M80 8v64" stroke-dasharray="3 4" opacity="0.6" />
+			<path d="M44 18h40M60 30h36M52 42h30M66 54h40" />
+			<rect x="60" y="15" width="6" height="6" fill="currentColor" />
+			<rect x="75" y="26" width="8" height="8" fill="currentColor" />
+			<rect x="64" y="39" width="5" height="6" fill="currentColor" />
+			<rect x="83" y="50" width="8" height="8" fill="currentColor" />
+			<path d="M64 68l10-5 10 5-10 5z" fill="currentColor" />
+		</g>
+	)}
+	{art === 'network' && (
+		<g>
+			<path d="M56 22L104 22M56 22L80 60M104 22L80 60M56 22L40 50M40 50L80 60M104 22L122 52M122 52L80 60" stroke-width="2" opacity="0.6" />
+			<circle cx="56" cy="22" r="7" fill="#fff" />
+			<circle cx="104" cy="22" r="9" fill="currentColor" />
+			<circle cx="80" cy="60" r="8" fill="#fff" />
+			<circle cx="40" cy="50" r="5" fill="#fff" />
+			<circle cx="122" cy="52" r="6" fill="#fff" />
+		</g>
+	)}
+	{art === 'trend' && (
+		<g>
+			<path d="M28 68h104" opacity="0.4" />
+			<path d="M32 56l20-8 18 6 20-22 18 4 20-20" />
+			<circle cx="52" cy="48" r="4" fill="#fff" />
+			<circle cx="70" cy="54" r="4" fill="#fff" />
+			<circle cx="90" cy="32" r="4" fill="#fff" />
+			<circle cx="108" cy="36" r="4" fill="#fff" />
+			<circle cx="128" cy="16" r="5" fill="currentColor" />
+		</g>
+	)}
+	{art === 'bars' && (
+		<g>
+			<path d="M34 70h92" opacity="0.4" />
+			<rect x="42" y="44" width="12" height="26" rx="2" fill="#fff" />
+			<rect x="62" y="30" width="12" height="40" rx="2" fill="#fff" />
+			<rect x="82" y="20" width="12" height="50" rx="2" fill="currentColor" />
+			<rect x="102" y="36" width="12" height="34" rx="2" fill="#fff" />
+			<path d="M88 8v8M84 12h8" />
+		</g>
+	)}
+	{art === 'loop' && (
+		<g>
+			<path d="M58 40a22 22 0 0 1 40-13" />
+			<path d="M92 20l7 7-9 3" />
+			<path d="M102 40a22 22 0 0 1-40 13" />
+			<path d="M68 60l-7-7 9-3" />
+			<rect x="72" y="32" width="16" height="16" rx="3" fill="#fff" />
+			<path d="M80 36v8M76 40h8" />
+		</g>
+	)}
+</svg>

@@ -1,11 +1,338 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { Image } from 'astro:assets';
+import MatchMap from '../components/figures/MatchMap.astro';
+import ModelFigure from '../components/figures/ModelFigure.astro';
+import Pathway from '../components/figures/Pathway.astro';
+import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import Caption from '../components/journal/Caption.astro';
+import Cite from '../components/journal/Cite.astro';
+import JSection from '../components/journal/JSection.astro';
+import MatchTable from '../components/journal/MatchTable.astro';
+import MultiFigure from '../components/journal/MultiFigure.astro';
+import NextSteps from '../components/journal/NextSteps.astro';
+import CourseArt from '../components/site/CourseArt.astro';
 import Layout from '../layouts/Layout.astro';
+import { courses } from '../data/courses';
+import { leaders, match2026 } from '../data/people';
+import { menteePapers, stories, yearInReview } from '../data/research';
+import { accArticle, enrol } from '../data/site';
+import { photo } from '../lib/photos';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const laibah = stories[0];
+const quotes = match2026.filter((m) => m.quote && ['Ezza Bashir', 'Zainab Pervaiz', 'Marian Harrison'].includes(m.name));
+
+const sections = [
+	{ id: 'introduction', label: 'Introduction' },
+	{ id: 'methods', label: 'Methods' },
+	{ id: 'results', label: 'Results' },
+	{ id: 'discussion', label: 'Discussion' },
+	{ id: 'next-steps', label: 'Next steps' },
+];
+
+const abbreviations = [
+	['CDC WONDER', 'CDC Wide-ranging Online Data for Epidemiologic Research'],
+	['ERAS', 'Electronic Residency Application Service'],
+	['ICMJE', 'International Committee of Medical Journal Editors'],
+	['IMG', 'international medical graduate'],
+	['NIS', 'National Inpatient Sample'],
+	['NRD', 'Nationwide Readmissions Database'],
+	['USMLE', 'United States Medical Licensing Examination'],
+];
+
+const refs = [
+	{ text: 'Research Consultancy. The Meta-Analysis Masterclass. 2026.', href: 'https://research-consultancy.org/static-pages/meta-analysis-masterclass/' },
+	{ text: 'Khan MS. Fostering the next generation of physician-scientists in developing countries. American College of Cardiology, Fellows in Training Section. January 22, 2024.', href: accArticle },
+	{ text: 'Research Consultancy. RC Match Mentorship Program, 2026-2027.', href: enrol.match },
+	{ text: 'Research Consultancy. Match 2026 results and mentee stories. March 2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
+	{ text: 'Research Consultancy. The year in review, 2025. December 2025.', href: 'https://www.facebook.com/researchconsultancyrc' },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout description="Research training and mentorship for medical students and doctors worldwide: study design, statistics, meta-analysis and U.S. database research, from a first paper to the U.S. Match.">
+	<!-- Cover: who this is for, the pathway, and two doors in -->
+	<header class="cover relative overflow-hidden bg-navy text-white">
+		<div class="pad relative pt-6 pb-10 md:pt-8 md:pb-14">
+			<div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/20 pb-3">
+				<p class="flex items-center gap-3">
+					<img src="/RC-Logo-NoText.png" alt="" width="32" height="32" class="size-8 rounded-[4px] ring-1 ring-white/25" />
+					<span class="text-[1.25rem] font-light tracking-[-0.01em]">Research Consultancy</span>
+				</p>
+				<p class="text-[12.5px] text-white/60 italic">Established 2016. Updated September 2026.</p>
+			</div>
+
+			<div class="grid grid-cols-[minmax(0,1fr)] gap-10 pt-10 md:pt-14 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-14 [&>*]:min-w-0">
+				<div>
+					<p class="j-kind text-orange [&::after]:bg-orange/60">Original investigation</p>
+					<h1 class="j-title mt-4 text-white"><span class="block">Publish earlier.</span> <span class="block">Match stronger.</span> <span class="block">Lead in medicine.</span></h1>
+
+					<p class="j-byline mt-7 text-white/85">
+						<span class="relative inline-block font-semibold text-white">
+							<span class="marker absolute inset-x-[-4px] bottom-[0.06em] h-[0.5em] rounded-[2px] bg-orange/70"></span>
+							<span class="relative">Your Name<sup>1</sup></span>
+						</span>; M. Shahzeb Khan, MD, MS<sup>2</sup>; Kaneez Fatima, MD<sup>2</sup>; M. Shariq Usman, MD<sup>3</sup>; Tariq Jamal Siddiqi, MD<sup>2</sup>
+					</p>
+					<p class="j-affil mt-1.5 text-white/55"><sup>1</sup>Your medical school, anywhere in the world. <sup>2</sup>Baylor Scott &amp; White, Dallas, Texas. <sup>3</sup>UT Southwestern Medical Center, Dallas, Texas.</p>
+
+					<p class="j-dek mt-7 max-w-[36rem] text-white/80">
+						We teach medical students and doctors to design studies, analyse data and publish in PubMed-indexed journals.
+						Mentors at U.S. academic centres supervise the work and stay with you through the residency Match.
+					</p>
+					<div class="mt-8 flex flex-wrap gap-3">
+						<a href="/courses/level-1" class="btn-primary">Start with Level 1</a>
+						<a href="/match-mentorship" class="btn-secondary">See Match Mentorship</a>
+					</div>
+				</div>
+				<aside aria-labelledby="key-points" class="self-start bg-white/[0.07] p-5 ring-1 ring-white/15 sm:p-6">
+					<h2 id="key-points" class="font-sans text-[1rem] font-bold text-orange">Key Points</h2>
+					<dl class="mt-3 space-y-3 font-serif text-[15px] leading-relaxed text-white/80">
+						<div><dt class="inline font-sans text-[14px] font-bold text-white">Question </dt><dd class="inline">Can a medical student with no research experience publish before applying for residency?</dd></div>
+						<div><dt class="inline font-sans text-[14px] font-bold text-white">Findings </dt><dd class="inline">Since 2016, RC has mentored more than 3,500 students, and mentees have published more than 600 papers. Of the 2024-25 Match Mentorship cohort, 90% matched.</dd></div>
+						<div><dt class="inline font-sans text-[14px] font-bold text-white">Meaning </dt><dd class="inline">Research can be learned in a structured course and practised under supervision, early enough to count on an application.</dd></div>
+					</dl>
+				</aside>
+			</div>
+
+			<Pathway class="mt-12 shadow-[0_20px_60px_-20px_rgb(0_0_0/0.5)]" />
+		</div>
+	</header>
+
+	<nav aria-label="On this page" class="j-contents pad flex flex-wrap items-baseline gap-x-5 gap-y-1.5 border-b border-hairline py-3 text-[13.5px]">
+		<span class="font-semibold text-navy">On this page</span>
+		{sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+	</nav>
+
+	<JSection title="Introduction" id="introduction">
+		<div class="j-main j-prose">
+			<p class="drop-cap">
+				Each year, many international medical graduates apply for U.S. residency with strong scores and no research.
+				Since Step 1 became pass/fail, programme directors look harder at the rest of an application, and research is
+				one of the few parts of it that can still be built in a year.<Cite n={1} />
+			</p>
+			<p>
+				Few medical schools outside the United States teach research methods, and students who want to learn them rarely
+				find a mentor.<Cite n={2} /> Physician-scientists who trained in the United States set up Research Consultancy in
+				2016 to teach those methods and to supervise students' first projects.
+			</p>
+		</div>
+		<aside class="j-margin">
+			<p class="note"><b>Why meta-analysis first?</b> It needs no lab, no funding and no patients, only published trials and a method.<Cite n={1} /></p>
+		</aside>
+
+		<div class="j-main mt-8 bg-panel px-6 py-5">
+			<h3 class="j-box-title text-center text-[15px]">What is different</h3>
+			<ul class="mt-2 space-y-1.5 font-serif text-[16px] leading-relaxed text-ink-secondary">
+				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>You learn methods that U.S. research fellows use: meta-analysis, CDC WONDER, the National Inpatient Sample and the Nationwide Readmissions Database.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>Every student in a method course joins a project group, supervised until the paper is submitted.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>Database studies need no hospital access or ethics approval, so you can start straight away.</li>
+			</ul>
+			<h3 class="j-box-title mt-4 text-center text-[15px]">What it means for you</h3>
+			<ul class="mt-2 space-y-1.5 font-serif text-[16px] leading-relaxed text-ink-secondary">
+				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-orange"></span>You can have papers, an abstract and U.S. mentors before you apply.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-orange"></span>You keep a method you can use again on your own.</li>
+			</ul>
+		</div>
+	</JSection>
+
+	<JSection title="Methods" id="methods">
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">Courses</h3>
+			<p>
+				Every student starts with Level 1. After it, you choose the method that fits the question you want to answer
+				(Table 1). Each method course ends in a mentored project.
+			</p>
+		</div>
+		<aside class="j-margin">
+			<div class="j-box p-3.5">
+				<p class="j-box-title border-b border-navy/30 pb-1.5 text-[13.5px]">Abbreviations</p>
+				<dl class="mt-2 space-y-1.5 text-[12.5px] leading-snug">
+					{abbreviations.map(([a, b]) => (<div><dt class="inline font-bold">{a}</dt>{' '}<dd class="inline text-ink-secondary">{b}</dd></div>))}
+				</dl>
+			</div>
+		</aside>
+
+		<figure class="j-span mt-6">
+			<Caption label="Table 1" title="RC courses and the questions they answer." class="j-caption-top" />
+			<div class="overflow-x-auto">
+				<table class="j-table min-w-[40rem]">
+					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Format</th><th scope="col">Before you join</th></tr></thead>
+					<tbody>
+						{courses.map((c) => (
+							<tr class="align-top">
+								<th scope="row" class="font-semibold">
+									<a href={`/courses/${c.slug}`} class="flex items-center gap-2.5 hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-4">
+										<span class:list={['block h-7 w-10 shrink-0 p-0.5', c.tint, c.ink]}><CourseArt art={c.art} /></span>
+										{c.name}
+									</a>
+								</th>
+								<td class="font-serif text-[15px]">{c.question}</td>
+								<td>{c.facts.find((f) => f.label === 'Length')?.value ?? 'Live on Zoom'}</td>
+								<td>{c.prerequisite}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<p class="j-tablenote">All courses are taught live on Zoom. <a href="/courses" class="text-navy underline decoration-orange/60 underline-offset-2">Compare the courses in detail</a>.</p>
+		</figure>
+
+		<div class="j-main j-prose mt-10">
+			<h3 class="j-subhead">Mentorship</h3>
+			<p>
+				Faculty choose the questions and check the methods. Near-peer mentors, former RC students with at least 10 papers
+				each, run the project groups and review each draft. Students do the analysis and the writing (Figure 1).<Cite n={2} />{' '}
+				Authorship follows ICMJE criteria.
+			</p>
+		</div>
+		<ModelFigure class="j-main mt-4" label="Figure 1" />
+	</JSection>
+
+	<JSection title="Results" id="results">
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">Publications and presentations</h3>
+			<p>
+				Since 2016, RC has mentored more than 3,500 students. Seventy percent were women, and a third came from rural
+				areas.<Cite n={2} /> In 2025, mentees published more than 150 peer-reviewed papers, including correspondence in{' '}
+				<em>The Lancet</em> and <em>JAMA</em> and readmission studies in <em>Neurology</em> and <em>Blood</em>.<Cite n={5} />{' '}
+				At ACC.25, mentees presented 40 abstracts, all published in <em>JACC</em> (Figure 2).
+			</p>
+		</div>
+		<aside class="j-margin">
+			<dl class="grid grid-cols-3 gap-3 border-y border-hairline py-4 lg:grid-cols-1 lg:gap-4" aria-label="2025 in numbers">
+				{yearInReview.map((s) => (
+					<div class="flex flex-col">
+						<dt class="note">{s.label} in 2025</dt>
+						<dd class="order-first text-[1.75rem] leading-none font-light tracking-[-0.02em] text-navy tabular-nums">{s.value}</dd>
+					</div>
+				))}
+			</dl>
+		</aside>
+
+		<MultiFigure
+			class="j-span mt-6"
+			label="Figure 2"
+			title="Mentees presenting at international meetings."
+			panels={[
+				{ src: 'events/cheema-hrs-2025.jpg', alt: 'Asad Cheema standing beside a research poster at Heart Rhythm 2025', caption: 'Asad Cheema at Heart Rhythm 2025, eight months after taking Level 1. A year later, Dr. Cheema reviewed 100 abstracts for the same meeting.', position: '50% 35%' },
+				{ src: 'events/leadership-aha-2023.jpg', alt: 'RC faculty and mentees in suits at the AHA Health Innovation Pavilion', caption: 'Faculty and mentees at AHA Scientific Sessions, 2023.' },
+				{ src: 'events/sheraz-acg-2025.jpg', alt: 'Sheraz Hakeem standing beside a poster at the ACG annual meeting', caption: 'Sheraz Hakeem with a first-author poster at ACG 2025.', position: '50% 30%' },
+			]}
+		/>
+
+		<div class="j-main j-prose mt-12">
+			<h3 class="j-subhead">Careers</h3>
+			<p>
+				More than 20 mentees hold postdoctoral research posts in the United States (Figure 3). In the Match, 90% of the
+				2024-25 Match Mentorship cohort and 80% of the 2025-26 cohort matched (Table 2).<Cite n="3,4" />
+			</p>
+		</div>
+		<div class="j-span mt-6"><MatchTable label="Table 2" limit={8} /></div>
+		<p class="j-span -mt-2 text-[14.5px]"><a href="/match-mentorship#results" class="link">All {match2026.length} results, with schools and mentees' comments</a></p>
+		<MatchMap class="j-span mt-8" label="Figure 3" />
+
+		<div class="j-main mt-12">
+			<h3 class="j-subhead">Case report</h3>
+			<article class="mt-4 border-l-[3px] border-orange bg-canvas-soft p-6">
+				<div class="flex items-center gap-4">
+					<Image src={photo(laibah.portrait)} alt={`Portrait of ${laibah.name}`} width={64} height={64} class="size-16 rounded-full object-cover" />
+					<p class="text-[1.25rem] leading-snug font-light tracking-[-0.01em]">{laibah.name}: from Level 1 to a Yale residency in three and a half years</p>
+				</div>
+				<ol class="mt-5 space-y-3">
+					{laibah.steps.map((s) => (
+						<li class="grid grid-cols-[6.5rem_1fr] gap-4 text-[15px] leading-relaxed">
+							<span class="font-semibold text-navy tabular-nums">{s.when}</span>
+							<span class="font-serif text-[16px] text-ink-secondary">{s.what}</span>
+						</li>
+					))}
+				</ol>
+			</article>
+			<p class="mt-4 text-[14.5px]"><a href="/results#stories" class="link">Read two more case reports</a></p>
+		</div>
+		<aside class="j-margin lg:mt-12">
+			<h3 class="note"><b>Selected mentee papers</b></h3>
+			<ul class="mt-2 space-y-3">
+				{menteePapers.slice(0, 3).map((p) => (
+					<li class="note">
+						<a href={p.href} class="font-serif text-[14px] leading-snug text-ink hover:underline hover:decoration-orange" rel="noopener">{p.title}.</a>{' '}
+						<i>{p.journal}</i>. {p.year}.
+					</li>
+				))}
+			</ul>
+			<a href="/results#publications" class="note mt-3 inline-block text-navy underline decoration-orange/60 underline-offset-2">More papers</a>
+		</aside>
+	</JSection>
+
+	<JSection title="Discussion" id="discussion">
+		<div class="j-main j-prose">
+			<p>
+				The people who teach at RC publish in the journals they teach you to write for. They also stay after the class ends:
+				they supervise projects, run mock interviews and write letters for the mentees who earn them.
+			</p>
+		</div>
+		<ul class="j-span mt-4 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+			{leaders.map((p) => (
+				<li>
+					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[300, 600]} sizes="(min-width: 1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
+					<p class="mt-3 font-semibold">{p.name}</p>
+					<p class="mt-0.5 text-[13.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
+					<p class="mt-1 text-[13px] text-ink-secondary tabular-nums">{p.publications} publications</p>
+				</li>
+			))}
+		</ul>
+		<p class="j-span text-[14.5px]"><a href="/mentors" class="link">Meet the mentors and analysts</a></p>
+
+		<div class="j-main mt-10">
+			<h3 class="j-subhead">In mentees' words</h3>
+			<div class="mt-4 space-y-7">
+				{quotes.map((q) => (
+					<blockquote class="border-l-[3px] border-navy pl-5">
+						<p class="font-serif text-[1.1875rem] leading-snug italic">"{q.quote}"</p>
+						<footer class="mt-2 text-[13.5px] text-ink-muted"><span class="font-semibold text-ink">{q.name}</span>, matched in {q.specialty}, {q.program}</footer>
+					</blockquote>
+				))}
+			</div>
+		</div>
+
+		<div class="j-main j-prose mt-10">
+			<h3 class="j-subhead">Limitations</h3>
+			<p>
+				We cannot promise a paper or a match. Mentees join real projects, and authorship depends on each person's
+				contribution under ICMJE criteria. Match outcomes also depend on scores, clinical experience and interviews, which
+				RC can help with but cannot control.
+			</p>
+		</div>
+	</JSection>
+
+	<NextSteps />
+
+	<ArticleEnd refs={refs} citeTitle="Publish earlier. Match stronger. Lead in medicine" />
 </Layout>
+
+<style>
+	.cover::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image:
+			radial-gradient(ellipse 60% 55% at 90% 10%, rgb(76 155 232 / 0.2), transparent 70%),
+			radial-gradient(ellipse 50% 45% at 0% 90%, rgb(246 119 55 / 0.14), transparent 70%),
+			repeating-linear-gradient(90deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 48px),
+			repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 48px);
+		pointer-events: none;
+	}
+
+	/* After the pathway has drawn, your name is highlighted on the byline. */
+	@media (prefers-reduced-motion: no-preference) {
+		.marker {
+			transform-origin: left;
+			animation: mark 700ms cubic-bezier(0.3, 0.7, 0.2, 1) 1.6s both;
+		}
+		@keyframes mark {
+			from {
+				transform: scaleX(0);
+			}
+			to {
+				transform: scaleX(1);
+			}
+		}
+	}
+</style>
