@@ -56,32 +56,32 @@ const count = (k: Kind) => sites.filter((s) => s.kind === k).length;
 <figure class:list={[className]}>
 	<div class="j-plate relative overflow-hidden">
 		<svg viewBox="0 0 975 610" class="h-auto w-full" role="img" aria-labelledby="map-title map-desc">
-			<title id="map-title">Map of U.S. residency programmes and research posts held by RC mentees</title>
+			<title id="map-title">Map of U.S. residency programs and research posts held by RC mentees</title>
 			<desc id="map-desc">{placed.map((s) => s.name).join('; ')}</desc>
 			<path d={land} fill="#e8e3d9" />
 			<path d={borders} fill="none" stroke="#fbfaf7" stroke-width="1.2" stroke-linejoin="round" />
 			{placed.filter((s) => s.kind === 'post').map((s) => (
 				<g transform={`translate(${s.xy[0]},${s.xy[1]})`}>
-					<rect x="-7" y="-7" width="14" height="14" fill="#02264d" stroke="#fff" stroke-width="2" transform="rotate(45)" />
+					<rect x="-7" y="-7" width="14" height="14" fill="#7b4fa0" stroke="#fff" stroke-width="2" transform="rotate(45)" />
 					<title>{s.name}</title>
 				</g>
 			))}
 			{placed.filter((s) => s.kind !== 'post').map((s) => (
 				<g transform={`translate(${s.xy[0]},${s.xy[1]})`}>
-					<circle r="12" fill={s.kind === 'match26' ? '#f67737' : '#e3a93b'} opacity="0.22" />
-					<circle r="6.5" fill={s.kind === 'match26' ? '#f67737' : '#e3a93b'} stroke="#fff" stroke-width="2" />
+					<circle r="12" fill={s.kind === 'match26' ? '#f67737' : '#4c9be8'} opacity="0.22" />
+					<circle r="6.5" fill={s.kind === 'match26' ? '#f67737' : '#4c9be8'} stroke="#fff" stroke-width="2" />
 					<title>{s.name}</title>
 				</g>
 			))}
 		</svg>
 		<ul class="mt-2 flex flex-wrap gap-x-6 gap-y-2 px-1 text-[12.5px] text-ink-secondary sm:absolute sm:bottom-5 sm:left-6 sm:mt-0 sm:flex-col sm:gap-y-1.5 sm:bg-[#fbfaf7]/90 sm:py-2 sm:pr-3">
-			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-orange shadow-[0_0_0_1px_#f67737]"></span>Match 2026 ({count('match26')} programmes)</li>
-			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-[#e3a93b] shadow-[0_0_0_1px_#e3a93b]"></span>Match 2025 (selected programmes)</li>
-			<li class="flex items-center gap-2"><span class="size-2.5 rotate-45 bg-navy"></span>Postdoctoral research posts</li>
+			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-orange shadow-[0_0_0_1px_#f67737]"></span>Match 2026 ({count('match26')} programs)</li>
+			<li class="flex items-center gap-2"><span class="size-3 rounded-full border-2 border-white bg-[#4c9be8] shadow-[0_0_0_1px_#4c9be8]"></span>Match 2025 (selected programs)</li>
+			<li class="flex items-center gap-2"><span class="size-2.5 rotate-45 bg-[#7b4fa0]"></span>Postdoctoral research posts</li>
 		</ul>
 	</div>
-	<Caption label={label} title="Where mentees went next.">
-		Orange circles mark residency programmes where RC mentees matched in 2026, gold circles selected programmes from 2025, and navy
-		diamonds U.S. centres where mentees hold postdoctoral research posts. Hover over a point for its name.
+	<Caption label={label} title="U.S. residency programs and research posts of RC students.">
+		Orange circles mark programs where RC students matched in 2026, blue circles selected programs from 2025, and purple
+		diamonds U.S. centers where students hold postdoctoral research posts. Hover over a point for its name.
 	</Caption>
 </figure>

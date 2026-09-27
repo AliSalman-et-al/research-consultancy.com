@@ -1,0 +1,65 @@
+---
+// Horizontal bar chart for one measure, set as a journal figure. Bars grow in when the
+// figure scrolls into view; every bar carries its value, so color never carries meaning alone.
+import Caption from '../journal/Caption.astro';
+
+interface Row {
+	label: string;
+	sub?: string;
+	value: number;
+	/** Printed value, when it differs from the number (e.g. "150+"). */
+	text?: string;
+	/** Draw this bar in the action color. */
+	highlight?: boolean;
+}
+
+interface Props {
+	label: string;
+	title: string;
+	rows: Row[];
+	max?: number;
+	ticks?: number[];
+	unit?: string;
+	axis?: string;
+	/** A reference line, e.g. a threshold. */
+	mark?: { at: number; label: string };
+	class?: string;
+}
+
+const { label, title, rows, unit = '', axis, mark, class: className } = Astro.props;
+const max = Astro.props.max ?? Math.max(...rows.map((r) => r.value));
+const ticks = Astro.props.ticks ?? [0, max / 2, max];
+const pct = (v: number) => (v / max) * 100;
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate reveal">
+		<div class:list={['grid grid-cols-[minmax(0,max-content)_minmax(0,1fr)] items-center gap-x-4 gap-y-2', mark && 'pt-4']} role="img" aria-label={`${title} ${rows.map((r) => `${r.label}: ${r.text ?? r.value}${unit}`).join('; ')}`}>
+			<div class="pointer-events-none relative self-stretch" style={`grid-column:2;grid-row:1 / span ${rows.length}`} aria-hidden="true">
+				{ticks.map((t) => <span class="absolute inset-y-[-0.25rem] w-px bg-[#e4e1db]" style={`left:${pct(t)}%`}></span>)}
+				{mark && (
+					<span class="absolute inset-y-[-0.5rem] border-l-[1.5px] border-dashed border-label" style={`left:${pct(mark.at)}%`}>
+						<span class="absolute -top-4 left-1 font-sans text-[10.5px] font-semibold whitespace-nowrap text-label">{mark.label}</span>
+					</span>
+				)}
+			</div>
+			{rows.map((r, i) => (
+				<>
+					<div class="max-w-[13rem] py-0.5 text-right font-sans text-[13px] leading-tight" style={`grid-column:1;grid-row:${i + 1}`} aria-hidden="true">
+						<span class:list={['block', r.highlight ? 'font-semibold text-ink' : 'text-ink-secondary']}>{r.label}</span>
+						{r.sub && <span class="block text-[11.5px] text-ink-muted">{r.sub}</span>}
+					</div>
+					<div class="relative flex h-6 items-center" style={`grid-column:2;grid-row:${i + 1}`} title={`${r.label}: ${r.text ?? r.value}${unit}`} aria-hidden="true">
+						<span class:list={['grow-x h-4 rounded-r-[4px]', r.highlight ? 'bg-orange' : 'bg-navy/80']} style={`width:${pct(r.value)}%;--i:${i}`}></span>
+						<span class="ml-2 font-sans text-[13px] font-semibold text-ink tabular-nums">{r.text ?? r.value}{unit}</span>
+					</div>
+				</>
+			))}
+			<div class="relative h-4" style={`grid-column:2;grid-row:${rows.length + 1}`} aria-hidden="true">
+				{ticks.map((t) => <span class="j-axis absolute -translate-x-1/2 text-[11px]" style={`left:${pct(t)}%`}>{Math.round(t * 10) / 10}{unit}</span>)}
+			</div>
+			{axis && <p class="j-axis text-center text-[11.5px]" style={`grid-column:2;grid-row:${rows.length + 2}`} aria-hidden="true">{axis}</p>}
+		</div>
+	</div>
+	<Caption label={label} title={title}><slot /></Caption>
+</figure>

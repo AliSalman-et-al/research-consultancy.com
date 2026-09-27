@@ -1,26 +1,28 @@
 ---
 import { Image } from 'astro:assets';
-import MatchMap from '../components/figures/MatchMap.astro';
+import BarFigure from '../components/figures/BarFigure.astro';
+import Dumbbell from '../components/figures/Dumbbell.astro';
 import ModelFigure from '../components/figures/ModelFigure.astro';
 import Pathway from '../components/figures/Pathway.astro';
+import StudyAnatomy from '../components/figures/StudyAnatomy.astro';
+import StudyNeeds from '../components/figures/StudyNeeds.astro';
+import Abbreviations from '../components/journal/Abbreviations.astro';
+import ActionPanel from '../components/journal/ActionPanel.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import ArticleHead from '../components/journal/ArticleHead.astro';
 import Caption from '../components/journal/Caption.astro';
 import Cite from '../components/journal/Cite.astro';
 import JSection from '../components/journal/JSection.astro';
-import MatchTable from '../components/journal/MatchTable.astro';
 import MultiFigure from '../components/journal/MultiFigure.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
-import CourseArt from '../components/site/CourseArt.astro';
+import WhatIsNew from '../components/journal/WhatIsNew.astro';
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
-import { courses } from '../data/courses';
-import { leaders, match2026 } from '../data/people';
-import { menteePapers, stories, yearInReview } from '../data/research';
-import { accArticle, enrol } from '../data/site';
+import { pick } from '../data/abbreviations';
+import { leaders } from '../data/people';
+import { events } from '../data/research';
+import { accArticle, contact, nrmp } from '../data/site';
 import { photo } from '../lib/photos';
-
-const laibah = stories[0];
-const quotes = match2026.filter((m) => m.quote && ['Ezza Bashir', 'Zainab Pervaiz', 'Marian Harrison'].includes(m.name));
 
 const sections = [
 	{ id: 'introduction', label: 'Introduction' },
@@ -30,302 +32,336 @@ const sections = [
 	{ id: 'next-steps', label: 'Next steps' },
 ];
 
-const abbreviations = [
-	['CDC WONDER', 'CDC Wide-ranging Online Data for Epidemiologic Research'],
-	['ERAS', 'Electronic Residency Application Service'],
-	['ICMJE', 'International Committee of Medical Journal Editors'],
-	['IMG', 'international medical graduate'],
-	['NIS', 'National Inpatient Sample'],
-	['NRD', 'Nationwide Readmissions Database'],
-	['USMLE', 'United States Medical Licensing Examination'],
+const abstract = [
+	{
+		label: 'Background',
+		text: 'U.S. residency programs expect applicants to have done research, and international graduates who match have usually published more than those who do not. Few medical schools outside the United States teach research methods, and students who want to learn seldom find a mentor.',
+	},
+	{
+		label: 'Methods',
+		text: 'Research Consultancy (RC) teaches research in live online courses: Level 1, an introduction for beginners, followed by courses in meta-analysis and in 3 U.S. national databases. After each method course, students join a small project group, led by a near-peer mentor and supervised by physician-scientists at U.S. academic hospitals, and work on a study until it is submitted for publication.',
+	},
+	{
+		label: 'Results',
+		text: "Between 2016 and 2026, more than 3,500 students trained with RC. They published more than 600 papers, 150 of them in 2025, and presented 40 abstracts at the 2025 American College of Cardiology Scientific Session. In RC's 12-month Match Mentorship program, 90% of students matched in 2025 and 80% in 2026.",
+	},
+	{
+		label: 'Conclusions',
+		text: 'Students without research experience can learn research methods and publish before they apply for residency when teaching is followed by supervised projects. Level 1 is the first step.',
+	},
+];
+
+const keywords = [
+	{ label: 'Level 1', href: '/courses/level-1' },
+	{ label: 'meta-analysis', href: '/courses/meta-analysis' },
+	{ label: 'CDC WONDER', href: '/courses/cdc-wonder' },
+	{ label: 'National Inpatient Sample', href: '/courses/nis' },
+	{ label: 'Nationwide Readmissions Database', href: '/courses/nrd' },
+	{ label: 'Match Mentorship', href: '/match-mentorship' },
+];
+
+// NRMP Charting Outcomes, non-U.S. IMGs, 2026 Main Residency Match, Table 9: median publications
+// by preferred specialty and Match status. The ten specialties with the most non-U.S. IMG applicants.
+const pubsBySpecialty = [
+	{ label: 'Internal Medicine', sub: '5,379 applicants', a: 3, b: 2 },
+	{ label: 'Family Medicine', sub: '833', a: 2, b: 2 },
+	{ label: 'Pediatrics', sub: '604', a: 2, b: 3 },
+	{ label: 'Neurology', sub: '397', a: 5, b: 3 },
+	{ label: 'General Surgery', sub: '332', a: 8, b: 5 },
+	{ label: 'Psychiatry', sub: '297', a: 3, b: 2 },
+	{ label: 'Pathology', sub: '284', a: 7, b: 4 },
+	{ label: 'Anesthesiology', sub: '184', a: 4, b: 2 },
+	{ label: 'Diagnostic Radiology', sub: '127', a: 6, b: 4 },
+	{ label: 'Obstetrics and Gynecology', sub: '114', a: 3, b: 2 },
+];
+
+const menteeOutput = [
+	{ label: 'Aimen Shafiq', sub: 'Level 1 in first year; now a cardiology postdoc, UMMC', value: 47 },
+	{ label: 'Asad Cheema', sub: 'about a year after Level 1', value: 35 },
+	{ label: 'Adeena Jamil', sub: 'Level 1 in second year; now a postdoc, Baylor Scott & White', value: 24 },
+	{ label: 'Ezza Bashir', sub: 'submitted by the time of ERAS; matched in 2026', value: 10 },
 ];
 
 const refs = [
-	{ text: 'Research Consultancy. The Meta-Analysis Masterclass. 2026.', href: 'https://research-consultancy.org/static-pages/meta-analysis-masterclass/' },
+	{ text: 'National Resident Matching Program. Charting Outcomes: characteristics of applicants who matched to their preferred specialty. Non-U.S. IMGs, 2026 Main Residency Match. July 2026.', href: nrmp },
+	{ text: 'United States Medical Licensing Examination. USMLE Step 1 transition to pass/fail only score reporting. January 2022.', href: 'https://www.usmle.org/usmle-step-1-transition-passfail-only-score-reporting' },
 	{ text: 'Khan MS. Fostering the next generation of physician-scientists in developing countries. American College of Cardiology, Fellows in Training Section. January 22, 2024.', href: accArticle },
-	{ text: 'Research Consultancy. RC Match Mentorship Program, 2026-2027.', href: enrol.match },
-	{ text: 'Research Consultancy. Match 2026 results and mentee stories. March 2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 	{ text: 'Research Consultancy. The year in review, 2025. December 2025.', href: 'https://www.facebook.com/researchconsultancyrc' },
+	{ text: 'Research Consultancy. Match 2025 and Match 2026 results. March 2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 ];
 ---
 
-<Layout description="Research training and mentorship for medical students and doctors worldwide: study design, statistics, meta-analysis and U.S. database research, from a first paper to the U.S. Match.">
-	<!-- Cover: who this is for, the pathway, and two doors in -->
-	<header class="cover relative overflow-hidden bg-navy text-white">
-		<div class="pad relative pt-6 pb-10 md:pt-8 md:pb-14">
-			<div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/20 pb-3">
-				<p class="flex items-center gap-3">
-					<img src={withBase('/RC-Logo-NoText.png')} alt="" width="32" height="32" class="size-8 rounded-[4px] ring-1 ring-white/25" />
-					<span class="text-[1.25rem] font-light tracking-[-0.01em]">Research Consultancy</span>
-				</p>
-				<p class="text-[12.5px] text-white/60 italic">Established 2016. Updated September 2026.</p>
-			</div>
-
-			<div class="grid grid-cols-[minmax(0,1fr)] gap-10 pt-10 md:pt-14 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-14 [&>*]:min-w-0">
-				<div>
-					<p class="j-kind text-orange [&::after]:bg-orange/60">Original investigation</p>
-					<h1 class="j-title mt-4 text-white"><span class="block">Publish earlier.</span> <span class="block">Match stronger.</span> <span class="block">Lead in medicine.</span></h1>
-
-					<p class="j-byline mt-7 text-white/85">
-						<span class="relative inline-block font-semibold text-white">
-							<span class="marker absolute inset-x-[-4px] bottom-[0.06em] h-[0.5em] rounded-[2px] bg-orange/70"></span>
-							<span class="relative">Your Name<sup>1</sup></span>
-						</span>; M. Shahzeb Khan, MD, MS<sup>2</sup>; Kaneez Fatima, MD<sup>2</sup>; M. Shariq Usman, MD<sup>3</sup>; Tariq Jamal Siddiqi, MD<sup>2</sup>
-					</p>
-					<p class="j-affil mt-1.5 text-white/55"><sup>1</sup>Your medical school, anywhere in the world. <sup>2</sup>Baylor Scott &amp; White, Dallas, Texas. <sup>3</sup>UT Southwestern Medical Center, Dallas, Texas.</p>
-
-					<p class="j-dek mt-7 max-w-[36rem] text-white/80">
-						We teach medical students and doctors to design studies, analyse data and publish in PubMed-indexed journals.
-						Mentors at U.S. academic centres supervise the work and stay with you through the residency Match.
-					</p>
-					<div class="mt-8 flex flex-wrap gap-3">
-						<a href={withBase('/courses/level-1')} class="btn-primary">Start with Level 1</a>
-						<a href={withBase('/match-mentorship')} class="btn-secondary">See Match Mentorship</a>
-					</div>
-				</div>
-				<aside aria-labelledby="key-points" class="self-start bg-white/[0.07] p-5 ring-1 ring-white/15 sm:p-6">
-					<h2 id="key-points" class="font-sans text-[1rem] font-bold text-orange">Key Points</h2>
-					<dl class="mt-3 space-y-3 font-serif text-[15px] leading-relaxed text-white/80">
-						<div><dt class="inline font-sans text-[14px] font-bold text-white">Question </dt><dd class="inline">Can a medical student with no research experience publish before applying for residency?</dd></div>
-						<div><dt class="inline font-sans text-[14px] font-bold text-white">Findings </dt><dd class="inline">Since 2016, RC has mentored more than 3,500 students, and mentees have published more than 600 papers. Of the 2024-25 Match Mentorship cohort, 90% matched.</dd></div>
-						<div><dt class="inline font-sans text-[14px] font-bold text-white">Meaning </dt><dd class="inline">Research can be learned in a structured course and practised under supervision, early enough to count on an application.</dd></div>
-					</dl>
-				</aside>
-			</div>
-
-			<Pathway class="mt-12 shadow-[0_20px_60px_-20px_rgb(0_0_0/0.5)]" />
+<Layout accent="rust" runningHead="Your Name et al." description="Research Consultancy teaches medical students research in live online courses, then supervises their first studies until submission. From a first course to a first publication and the U.S. Match.">
+	<ArticleHead
+		type="Original Article"
+		page="e001"
+		dateline="Received the day you enroll; revised with your mentor; accepted when your paper is."
+		title="From First Course to First Publication: A Mentored Research Training Model for International Medical Students"
+		abstract={abstract}
+		keywords={keywords}
+		sections={sections}
+	>
+		<div slot="byline" class="mt-5">
+			<p class="j-byline text-ink-secondary">
+				<span class="relative inline-block font-semibold text-ink">
+					<span class="marker absolute inset-x-[-4px] bottom-[0.06em] h-[0.45em] rounded-[2px] bg-orange/60"></span>
+					<span class="relative">Your Name<sup>1</sup></span>
+				</span>; M. Shahzeb Khan, MD, MS<sup>2</sup>; Kaneez Fatima, MD<sup>2</sup>; M. Shariq Usman, MD<sup>3</sup>; Tariq Jamal Siddiqi, MD<sup>2</sup>
+			</p>
+			<p class="j-affil mt-1"><sup>1</sup>Your medical school, anywhere in the world. <sup>2</sup>Baylor Scott &amp; White, Dallas, Texas. <sup>3</sup>UT Southwestern Medical Center, Dallas, Texas.</p>
 		</div>
-	</header>
+		<ActionPanel
+			slot="aside"
+			title="Start here"
+			lead={{ label: 'Level 1, the first course', value: '$35' }}
+			facts={[
+				{ label: 'Length', value: '2 days, 6 hours each' },
+				{ label: 'Where', value: 'Live on Zoom' },
+				{ label: 'Before you join', value: 'No research experience needed' },
+			]}
+			primary={{ label: 'See Level 1 and enroll', href: withBase('/courses/level-1') }}
+			secondary={{ label: 'Ask us on WhatsApp', href: contact.whatsapp.href }}
+			note={`Applying for residency this cycle? <a href="${withBase('/match-mentorship')}" class="link font-medium">Match Mentorship</a>`}
+		/>
+		<Pathway slot="illustration" class="ring-1 ring-hairline" />
+	</ArticleHead>
 
-	<nav aria-label="On this page" class="j-contents pad flex flex-wrap items-baseline gap-x-5 gap-y-1.5 border-b border-hairline py-3 text-[13.5px]">
-		<span class="font-semibold text-navy">On this page</span>
-		{sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
-	</nav>
-
-	<JSection title="Introduction" id="introduction">
+	<JSection title="Introduction" id="introduction" hideTitle>
 		<div class="j-main j-prose">
 			<p class="drop-cap">
-				Each year, many international medical graduates apply for U.S. residency with strong scores and no research.
-				Since Step 1 became pass/fail, programme directors look harder at the rest of an application, and research is
-				one of the few parts of it that can still be built in a year.<Cite n={1} />
+				Research has become a routine part of the U.S. residency application. Since Step 1 became pass/fail in 2022, Step 2
+				CK, clinical experience in the United States, letters of recommendation and research carry more of the
+				application.<Cite n={2} /> The stakes are highest for international graduates. In the 2026 Match, 41.5% of non-U.S.
+				international medical graduates (IMGs) matched in the specialty they ranked first.<Cite n={1} />
 			</p>
 			<p>
-				Few medical schools outside the United States teach research methods, and students who want to learn them rarely
-				find a mentor.<Cite n={2} /> Physician-scientists who trained in the United States set up Research Consultancy in
-				2016 to teach those methods and to supervise students' first projects.
+				Publications track with success in the Match. In 8 of the 10 specialties to which non-U.S. IMGs apply most often,
+				applicants who matched reported more publications than applicants who did not (Figure 1). In Internal Medicine, the
+				specialty with the most applicants, the median was 3 publications among matched applicants and 2 among unmatched
+				applicants; in Neurology, 5 and 3; and in Pathology, 7 and 4.<Cite n={1} />
+			</p>
+			<p>
+				To a student who has never done it, research can seem opaque. In practice, a clinical study follows a fixed
+				sequence: a question about patients, data that can answer it, an analysis, an abstract presented at a scientific
+				meeting, and a paper that other physicians review before a journal publishes it (Figure 2).
+			</p>
+			<p>
+				Most international students never get started. Few medical schools outside the United States teach research
+				methods, and students who want to learn seldom find a mentor.<Cite n={3} /> Research Consultancy (RC) was founded in
+				2016 to teach those methods and to supervise students' first projects until they are submitted.
+			</p>
+			<p>
+				Here we describe how RC teaches research to students with no prior experience, and we report the publications,
+				presentations and Match results of its students from 2016 to 2026.
 			</p>
 		</div>
-		<aside class="j-margin">
-			<p class="note"><b>Why meta-analysis first?</b> It needs no lab, no funding and no patients, only published trials and a method.<Cite n={1} /></p>
-		</aside>
+		<div class="j-margin space-y-6">
+			<WhatIsNew
+				columns={1}
+				blocks={[
+					{
+						title: 'What is new?',
+						items: [
+							'RC teaches research methods online to medical students in any country and supervises their first projects until submission.',
+							'Its methods, meta-analysis and U.S. database research, need no patients, laboratory or hospital access.',
+							'Mentors are former RC students; faculty are physician-scientists at U.S. academic hospitals.',
+						],
+					},
+					{
+						title: 'What it means for you',
+						items: [
+							'You can start with no research experience.',
+							'Your name appears on work you did, in journals residency programs recognize.',
+							'You work with U.S. faculty who can write your letters of recommendation.',
+						],
+					},
+				]}
+			/>
+			<Abbreviations items={pick('IMG', 'NRMP', 'USMLE', 'Step 2 CK', 'CDC WONDER', 'NIS', 'NRD', 'ICMJE')} />
+		</div>
 
-		<div class="j-main mt-8 bg-panel px-6 py-5">
-			<h3 class="j-box-title text-center text-[15px]">What is different</h3>
-			<ul class="mt-2 space-y-1.5 font-serif text-[16px] leading-relaxed text-ink-secondary">
-				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>You learn methods that U.S. research fellows use: meta-analysis, CDC WONDER, the National Inpatient Sample and the Nationwide Readmissions Database.</li>
-				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>Every student in a method course joins a project group, supervised until the paper is submitted.</li>
-				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-navy"></span>Database studies need no hospital access or ethics approval, so you can start straight away.</li>
-			</ul>
-			<h3 class="j-box-title mt-4 text-center text-[15px]">What it means for you</h3>
-			<ul class="mt-2 space-y-1.5 font-serif text-[16px] leading-relaxed text-ink-secondary">
-				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-orange"></span>You can have papers, an abstract and U.S. mentors before you apply.</li>
-				<li class="flex gap-2.5"><span class="mt-[0.62em] size-1.5 shrink-0 bg-orange"></span>You keep a method you can use again on your own.</li>
-			</ul>
+		<div class="j-span grid gap-8 lg:grid-cols-2">
+			<Dumbbell
+				label="Figure 1"
+				title="Median publications of non-U.S. international medical graduates who did and did not match, by preferred specialty, 2026 Main Residency Match."
+				rows={pubsBySpecialty}
+				aName="Matched"
+				bName="Did not match"
+				max={10}
+				ticks={[0, 2, 4, 6, 8, 10]}
+				axis="Median publications"
+			>
+				The 10 specialties with the most non-U.S. IMG applicants are shown, with the number of applicants. Publication counts
+				are self-reported, and matched applicants also had higher Step 2 CK scores, so research is one factor among
+				several.<Cite n={1} /> IMG indicates international medical graduate; and Step 2 CK, United States Medical Licensing
+				Examination Step 2 Clinical Knowledge.
+			</Dumbbell>
+			<StudyAnatomy label="Figure 2" />
 		</div>
 	</JSection>
 
-	<JSection title="Methods" id="methods">
+	<JSection title="Methods" id="methods" newPage>
 		<div class="j-main j-prose">
+			<h3 class="j-subhead">Setting and Participants</h3>
+			<p>
+				RC is an online research school. Classes are taught live on Zoom, in the morning U.S. Central time, and are open to
+				medical students in any year, graduates and practicing physicians. Most students enroll without having worked on a
+				study.
+			</p>
 			<h3 class="j-subhead">Courses</h3>
 			<p>
-				Every student starts with Level 1. After it, you choose the method that fits the question you want to answer
-				(Table 1). Each method course ends in a mentored project.
+				Every student begins with Level 1, 2 days of teaching in study design, scientific writing and statistics with SPSS.
+				Students then choose a method course. RC teaches 2 families of methods because both can be started from any country
+				as soon as the course ends (Figure 3). A meta-analysis pools the results of trials that have already been
+				published. Studies of U.S. national databases (CDC WONDER, the National Inpatient Sample and the Nationwide
+				Readmissions Database) use de-identified records and are therefore usually exempt from ethics review.{' '}
+				<a href={withBase('/courses')}>Compare the 5 courses</a>.
 			</p>
 		</div>
-		<aside class="j-margin">
-			<div class="j-box p-3.5">
-				<p class="j-box-title border-b border-navy/30 pb-1.5 text-[13.5px]">Abbreviations</p>
-				<dl class="mt-2 space-y-1.5 text-[12.5px] leading-snug">
-					{abbreviations.map(([a, b]) => (<div><dt class="inline font-bold">{a}</dt>{' '}<dd class="inline text-ink-secondary">{b}</dd></div>))}
-				</dl>
-			</div>
-		</aside>
+		<StudyNeeds class="j-margin" label="Figure 3" />
 
-		<figure class="j-span mt-6">
-			<Caption label="Table 1" title="RC courses and the questions they answer." class="j-caption-top" />
-			<div class="overflow-x-auto">
-				<table class="j-table min-w-[40rem]">
-					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Format</th><th scope="col">Before you join</th></tr></thead>
-					<tbody>
-						{courses.map((c) => (
-							<tr class="align-top">
-								<th scope="row" class="font-semibold">
-									<a href={withBase(`/courses/${c.slug}`)} class="flex items-center gap-2.5 hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-4">
-										<span class:list={['block h-7 w-10 shrink-0 p-0.5', c.tint, c.ink]}><CourseArt art={c.art} /></span>
-										{c.name}
-									</a>
-								</th>
-								<td class="font-serif text-[15px]">{c.question}</td>
-								<td>{c.facts.find((f) => f.label === 'Length')?.value ?? 'Live on Zoom'}</td>
-								<td>{c.prerequisite}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-			<p class="j-tablenote">All courses are taught live on Zoom. <a href={withBase('/courses')} class="text-navy underline decoration-orange/60 underline-offset-2">Compare the courses in detail</a>.</p>
-		</figure>
-
-		<div class="j-main j-prose mt-10">
-			<h3 class="j-subhead">Mentorship</h3>
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">Mentored Projects</h3>
 			<p>
-				Faculty choose the questions and check the methods. Near-peer mentors, former RC students with at least 10 papers
-				each, run the project groups and review each draft. Students do the analysis and the writing (Figure 1).<Cite n={2} />{' '}
-				Authorship follows ICMJE criteria.
+				When a method course ends, each student joins a project group of a few students. Faculty choose the research
+				questions and check the methods, a near-peer mentor leads the group and reviews every draft, and the students
+				perform the analysis and write the manuscript (Figure 4).<Cite n={3} /> Authorship follows ICMJE criteria, so each
+				student is credited for the work they did.
+			</p>
+			<h3 class="j-subhead">Outcomes</h3>
+			<p>
+				We report papers published in PubMed-indexed journals, abstracts accepted at scientific meetings and residency
+				matches among students in Match Mentorship. Data come from RC records and students' reports. There is no comparison
+				group.
 			</p>
 		</div>
-		<ModelFigure class="j-main mt-4" label="Figure 1" />
+		<ModelFigure class="j-margin" label="Figure 4" />
 	</JSection>
 
-	<JSection title="Results" id="results">
+	<JSection title="Results" id="results" newPage>
 		<div class="j-main j-prose">
-			<h3 class="j-subhead">Publications and presentations</h3>
+			<h3 class="j-subhead">Students</h3>
 			<p>
-				Since 2016, RC has mentored more than 3,500 students. Seventy percent were women, and a third came from rural
-				areas.<Cite n={2} /> In 2025, mentees published more than 150 peer-reviewed papers, including correspondence in{' '}
-				<em>The Lancet</em> and <em>JAMA</em> and readmission studies in <em>Neurology</em> and <em>Blood</em>.<Cite n={5} />{' '}
-				At ACC.25, mentees presented 40 abstracts, all published in <em>JACC</em> (Figure 2).
+				More than 3,500 students trained with RC between 2016 and 2024; 70% were women and one-third came from rural
+				areas.<Cite n={3} /> In 2025, RC taught 20 courses.<Cite n={4} />
+			</p>
+			<h3 class="j-subhead">Publications and Presentations</h3>
+			<p>
+				Students have published more than 600 papers, 150 of them in 2025, in journals including <em>The Lancet</em>,{' '}
+				<em>JAMA</em>, <em>Circulation</em>, <em>Neurology</em> and <em>Blood</em>.<Cite n="3,4" /> Output increased with time in
+				the program; Figure 5 shows 4 students who began with Level 1 and stayed. At the 2025 American College of Cardiology
+				Scientific Session, students presented 40 abstracts, all of which were published in <em>JACC</em> (Figure 6).
 			</p>
 		</div>
-		<aside class="j-margin">
-			<dl class="grid grid-cols-3 gap-3 border-y border-hairline py-4 lg:grid-cols-1 lg:gap-4" aria-label="2025 in numbers">
-				{yearInReview.map((s) => (
-					<div class="flex flex-col">
-						<dt class="note">{s.label} in 2025</dt>
-						<dd class="order-first text-[1.75rem] leading-none font-light tracking-[-0.02em] text-navy tabular-nums">{s.value}</dd>
-					</div>
-				))}
-			</dl>
-		</aside>
+		<BarFigure
+			class="j-margin"
+			label="Figure 5"
+			title="Publications by 4 RC students after Level 1."
+			rows={menteeOutput}
+			ticks={[0, 10, 20, 30, 40, 50]}
+			max={50}
+			axis="Publications"
+		>
+			Counts are published papers, except for Ezza Bashir's, which were submitted by the time of the residency application.
+			The 4 students were chosen to show what is possible and are not typical; most students publish fewer. ERAS indicates
+			Electronic Residency Application Service; and UMMC, University of Mississippi Medical Center.
+		</BarFigure>
 
 		<MultiFigure
-			class="j-span mt-6"
-			label="Figure 2"
-			title="Mentees presenting at international meetings."
-			panels={[
-				{ src: 'events/cheema-hrs-2025.jpg', alt: 'Asad Cheema standing beside a research poster at Heart Rhythm 2025', caption: 'Asad Cheema at Heart Rhythm 2025, eight months after taking Level 1. A year later, Dr. Cheema reviewed 100 abstracts for the same meeting.', position: '50% 35%' },
-				{ src: 'events/leadership-aha-2023.jpg', alt: 'RC faculty and mentees in suits at the AHA Health Innovation Pavilion', caption: 'Faculty and mentees at AHA Scientific Sessions, 2023.' },
-				{ src: 'events/sheraz-acg-2025.jpg', alt: 'Sheraz Hakeem standing beside a poster at the ACG annual meeting', caption: 'Sheraz Hakeem with a first-author poster at ACG 2025.', position: '50% 30%' },
-			]}
+			class="j-span"
+			label="Figure 6"
+			title="RC students and faculty presenting at scientific meetings."
+			panels={events.slice(0, 3).map((e) => ({ src: e.photo, alt: e.caption, caption: e.caption }))}
 		/>
 
-		<div class="j-main j-prose mt-12">
-			<h3 class="j-subhead">Careers</h3>
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">The Match</h3>
 			<p>
-				More than 20 mentees hold postdoctoral research posts in the United States (Figure 3). In the Match, 90% of the
-				2024-25 Match Mentorship cohort and 80% of the 2025-26 cohort matched (Table 2).<Cite n="3,4" />
+				Match Mentorship is RC's 12-month program for residency applicants. In 2025, 90% of participants matched; in 2026,
+				80% matched, 16 students in total (Table 1).<Cite n={5} /> More than 20 other students obtained research positions
+				at U.S. hospitals, a common step before applying.<Cite n={3} />
+			</p>
+			<p>
+				Each student's program and comments are listed under <a href={withBase('/match-mentorship#results')}>Match
+				Mentorship</a>; their papers, careers and awards are in the <a href={withBase('/results')}>Supplemental Material</a>.
 			</p>
 		</div>
-		<div class="j-span mt-6"><MatchTable label="Table 2" limit={8} /></div>
-		<p class="j-span -mt-2 text-[14.5px]"><a href={withBase('/match-mentorship#results')} class="link">All {match2026.length} results, with schools and mentees' comments</a></p>
-		<MatchMap class="j-span mt-8" label="Figure 3" />
+		<figure class="j-margin">
+			<Caption label="Table 1" title="Match rates of RC Match Mentorship participants and of all non-U.S. international medical graduates." class="j-caption-top" />
+			<table class="j-table">
+				<thead><tr><th scope="col">Group</th><th scope="col" class="text-right">Matched</th></tr></thead>
+				<tbody>
+					<tr><th scope="row" class="font-normal">RC Match Mentorship, 2025</th><td class="text-right font-bold text-navy">90%</td></tr>
+					<tr><th scope="row" class="font-normal">RC Match Mentorship, 2026</th><td class="text-right font-bold text-navy">80%</td></tr>
+					<tr><th scope="row" class="font-normal">All non-U.S. IMGs, 2026, in their preferred specialty</th><td class="text-right">41.5%</td></tr>
+				</tbody>
+			</table>
+			<p class="j-tablenote">RC rates count any match; the national rate counts matches in the preferred specialty. RC participants chose to join, so the comparison is not controlled.<Cite n="1,5" /> IMG indicates international medical graduate.</p>
+		</figure>
+	</JSection>
 
-		<div class="j-main mt-12">
-			<h3 class="j-subhead">Case report</h3>
-			<article class="mt-4 border-l-[3px] border-orange bg-canvas-soft p-6">
-				<div class="flex items-center gap-4">
-					<Image src={photo(laibah.portrait)} alt={`Portrait of ${laibah.name}`} width={64} height={64} class="size-16 rounded-full object-cover" />
-					<p class="text-[1.25rem] leading-snug font-light tracking-[-0.01em]">{laibah.name}: from Level 1 to a Yale residency in three and a half years</p>
-				</div>
-				<ol class="mt-5 space-y-3">
-					{laibah.steps.map((s) => (
-						<li class="grid grid-cols-[6.5rem_1fr] gap-4 text-[15px] leading-relaxed">
-							<span class="font-semibold text-navy tabular-nums">{s.when}</span>
-							<span class="font-serif text-[16px] text-ink-secondary">{s.what}</span>
-						</li>
-					))}
-				</ol>
-			</article>
-			<p class="mt-4 text-[14.5px]"><a href={withBase('/results#stories')} class="link">Read two more case reports</a></p>
+	<JSection title="Discussion" id="discussion" newPage>
+		<div class="j-main j-prose">
+			<h3 class="j-subhead">Why the Model Works</h3>
+			<p>
+				Three features of the model account for most of these results. First, the methods suit a student outside the United
+				States: they require no patients, laboratory or ethics committee. Second, supervision does not end with the course
+				but continues until the manuscript is submitted. Third, supervisors have recent experience of the same work. Mentors
+				completed the same courses a year or two earlier, and faculty publish in the journals to which students submit.
+			</p>
+			<h3 class="j-subhead">Faculty and Mentors</h3>
+			<p>
+				RC's 4 faculty have more than 900 publications between them. They supervise projects, conduct mock interviews and
+				write letters for students whose work merits them. Twelve mentors and research analysts, with more than 250 papers
+				between them, lead the project groups day to day.
+			</p>
 		</div>
-		<aside class="j-margin lg:mt-12">
-			<h3 class="note"><b>Selected mentee papers</b></h3>
-			<ul class="mt-2 space-y-3">
-				{menteePapers.slice(0, 3).map((p) => (
-					<li class="note">
-						<a href={p.href} class="font-serif text-[14px] leading-snug text-ink hover:underline hover:decoration-orange" rel="noopener">{p.title}.</a>{' '}
-						<i>{p.journal}</i>. {p.year}.
+		<aside class="j-margin j-box self-start p-5">
+			<h3 class="j-box-title text-[15px]">Limitations</h3>
+			<ul class="mt-3 space-y-2.5 text-[14.5px] leading-snug text-ink-secondary">
+				<li class="flex gap-2.5"><span class="mt-[0.5em] size-1.5 shrink-0 bg-navy"></span>No program can guarantee publication or a match. Be wary of any that does.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.5em] size-1.5 shrink-0 bg-navy"></span>Authorship depends on each student's contribution to a project.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.5em] size-1.5 shrink-0 bg-navy"></span>The results describe students who chose RC and stayed. There is no control group.</li>
+				<li class="flex gap-2.5"><span class="mt-[0.5em] size-1.5 shrink-0 bg-navy"></span>Match outcomes also depend on examination scores, clinical experience and interviews, which RC can support but not control.</li>
+			</ul>
+		</aside>
+
+		<figure class="j-span">
+			<ul class="grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4">
+				{leaders.map((p) => (
+					<li class="flex items-start gap-3.5">
+						<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[160, 320]} sizes="5.5rem" class="aspect-[4/5] w-[5.5rem] shrink-0 object-cover object-top" />
+						<div class="min-w-0">
+							<p class="text-[14.5px] leading-tight font-semibold">{p.name}</p>
+							<p class="mt-1 text-[12.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
+							<p class="mt-1.5 text-[12.5px] font-semibold text-navy tabular-nums">{p.publications} publications</p>
+						</div>
 					</li>
 				))}
 			</ul>
-			<a href={withBase('/results#publications')} class="note mt-3 inline-block text-navy underline decoration-orange/60 underline-offset-2">More papers</a>
-		</aside>
-	</JSection>
+			<Caption label="Figure 7" title="RC faculty.">Publication counts as of September 2026. <a href={withBase('/mentors')} class="link font-normal">Meet the faculty, mentors and analysts</a>.</Caption>
+		</figure>
 
-	<JSection title="Discussion" id="discussion">
 		<div class="j-main j-prose">
+			<h3 class="j-subhead">Conclusions</h3>
 			<p>
-				The people who teach at RC publish in the journals they teach you to write for. They also stay after the class ends:
-				they supervise projects, run mock interviews and write letters for the mentees who earn them.
-			</p>
-		</div>
-		<ul class="j-span mt-4 grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
-			{leaders.map((p) => (
-				<li>
-					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[300, 600]} sizes="(min-width: 1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
-					<p class="mt-3 font-semibold">{p.name}</p>
-					<p class="mt-0.5 text-[13.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
-					<p class="mt-1 text-[13px] text-ink-secondary tabular-nums">{p.publications} publications</p>
-				</li>
-			))}
-		</ul>
-		<p class="j-span text-[14.5px]"><a href={withBase('/mentors')} class="link">Meet the mentors and analysts</a></p>
-
-		<div class="j-main mt-10">
-			<h3 class="j-subhead">In mentees' words</h3>
-			<div class="mt-4 space-y-7">
-				{quotes.map((q) => (
-					<blockquote class="border-l-[3px] border-navy pl-5">
-						<p class="font-serif text-[1.1875rem] leading-snug italic">"{q.quote}"</p>
-						<footer class="mt-2 text-[13.5px] text-ink-muted"><span class="font-semibold text-ink">{q.name}</span>, matched in {q.specialty}, {q.program}</footer>
-					</blockquote>
-				))}
-			</div>
-		</div>
-
-		<div class="j-main j-prose mt-10">
-			<h3 class="j-subhead">Limitations</h3>
-			<p>
-				We cannot promise a paper or a match. Mentees join real projects, and authorship depends on each person's
-				contribution under ICMJE criteria. Match outcomes also depend on scores, clinical experience and interviews, which
-				RC can help with but cannot control.
+				Students without research experience can learn to publish before they apply for residency, provided that teaching
+				is followed by supervised work on real studies. For most students, the first step is Level 1.
 			</p>
 		</div>
 	</JSection>
 
 	<NextSteps />
 
-	<ArticleEnd refs={refs} citeTitle="Publish earlier. Match stronger. Lead in medicine" />
+	<ArticleEnd page="e001" refs={refs} supplement />
 </Layout>
 
 <style>
-	.cover::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background-image:
-			radial-gradient(ellipse 60% 55% at 90% 10%, rgb(76 155 232 / 0.2), transparent 70%),
-			radial-gradient(ellipse 50% 45% at 0% 90%, rgb(246 119 55 / 0.14), transparent 70%),
-			repeating-linear-gradient(90deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 48px),
-			repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 48px);
-		pointer-events: none;
-	}
-
-	/* After the pathway has drawn, your name is highlighted on the byline. */
+	/* Your name is highlighted on the byline once the page settles. */
 	@media (prefers-reduced-motion: no-preference) {
 		.marker {
 			transform-origin: left;
-			animation: mark 700ms cubic-bezier(0.3, 0.7, 0.2, 1) 1.6s both;
+			animation: mark 700ms cubic-bezier(0.3, 0.7, 0.2, 1) 1.2s both;
 		}
 		@keyframes mark {
 			from {

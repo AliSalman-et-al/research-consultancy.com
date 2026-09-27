@@ -1,0 +1,34 @@
+---
+// "On this page" line. It sticks under the site header so a long page stays navigable,
+// and marks the section being read.
+interface Props {
+	sections: { id: string; label: string }[];
+}
+
+const { sections } = Astro.props;
+---
+
+<nav aria-label="On this page" class="j-contents no-print sticky top-16 z-40 border-b border-hairline bg-white/95 backdrop-blur-md">
+	<div class="pad flex items-baseline gap-x-5 overflow-x-auto py-2.5 text-[13.5px] whitespace-nowrap [scrollbar-width:none]">
+		<span class="font-semibold text-navy">On this page</span>
+		{sections.map((s) => <a href={`#${s.id}`} data-section={s.id} class="py-0.5">{s.label}</a>)}
+	</div>
+</nav>
+
+<script>
+	const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('.j-contents a[data-section]')].map((a) => [a.dataset.section!, a]));
+	const spy = new IntersectionObserver(
+		(entries) => {
+			for (const e of entries) {
+				if (!e.isIntersecting) continue;
+				links.forEach((a) => a.removeAttribute('aria-current'));
+				links.get(e.target.id)?.setAttribute('aria-current', 'true');
+			}
+		},
+		{ rootMargin: '-20% 0px -70% 0px' },
+	);
+	links.forEach((_, id) => {
+		const el = document.getElementById(id);
+		if (el) spy.observe(el);
+	});
+</script>

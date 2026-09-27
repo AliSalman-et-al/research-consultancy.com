@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Research Consultancy Journal
-description: Research Consultancy's design language — the website typeset as a journal article (after Circulation, JAMA, JACC and EJHF) on a white sheet over a warm desk, with RC navy structure, a single orange action colour, a light sans title over serif body text, and a full-colour figure palette that makes the graphical abstract, maps, charts and central illustrations the richest thing on every page.
+description: Research Consultancy's design language — the website typeset as a journal article (after Circulation, JAMA, JACC and EJHF) on a white sheet over a warm desk, with RC navy structure, a single orange action colour, a light sans title over sans body text set as AHA journals set theirs, and a full-colour figure palette that makes the graphical abstract, maps, charts and central illustrations the richest thing on every page.
 
 colors:
   primary: "#f67737"
@@ -62,16 +62,16 @@ typography:
     lineHeight: 1.4
     letterSpacing: 0
   dek:
-    fontFamily: Source Serif 4
-    fontSize: 21px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  body-serif:
-    fontFamily: Source Serif 4
+    fontFamily: Inter
     fontSize: 19px
     fontWeight: 400
-    lineHeight: 1.68
+    lineHeight: 1.55
+    letterSpacing: 0
+  body-serif:
+    fontFamily: Inter
+    fontSize: 17px
+    fontWeight: 400
+    lineHeight: 1.65
     letterSpacing: 0
   body-md:
     fontFamily: Inter
@@ -92,10 +92,10 @@ typography:
     lineHeight: 1.5
     letterSpacing: 0
   caption:
-    fontFamily: Source Serif 4
-    fontSize: 14.5px
+    fontFamily: Inter
+    fontSize: 13.5px
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.55
     letterSpacing: 0
   label:
     fontFamily: Inter
@@ -155,7 +155,7 @@ components:
   sheet:
     backgroundColor: "{colors.canvas}"
     pageBackground: "{colors.desk}"
-    maxWidth: 1240px
+    maxWidth: 1280px
     border: "1px solid #e2e0dc (desktop only)"
   cover:
     backgroundColor: "{colors.secondary}"
@@ -250,11 +250,11 @@ Research Consultancy teaches medical students to publish, so the website is set 
 
 The structure speaks in **RC navy** (`{colors.secondary}`), taken from the logo, and acts in **RC orange** (`{colors.primary}`), the only colour that fills a button. Labels such as "Figure 1." and "Table 1." use a darker orange, `{colors.label-ink}`, for contrast. Personality lives in the **figures**. A graphical abstract, a map of where mentees matched, a decade timeline, a Central Illustration and method charts (forest plot, trend line, bar chart, readmission curve) use a full-colour figure palette. They are the richest things on every page, as they are in a good paper.
 
-The homepage opens on a single navy **cover**: the journal's front page, with a faint grid, the title in white, Key Points, and the graphical abstract. Every other page opens on a white article head. Body text is set in Source Serif 4 for long reading. Titles, heads, labels, tables and interface use Inter.
+The homepage opens on a single navy **cover**: the journal's front page, with a faint grid, the title in white, Key Points, and the graphical abstract. Every other page opens on a white article head. Every word is set in Inter, as AHA journals (Circulation, Circulation: Heart Failure) set theirs in one sans family.
 
 **Key characteristics:**
 - Article on a white sheet over a warm desk, `{colors.canvas}` on `{colors.desk}`
-- Light, large Inter title (`{typography.display-1}`) over serif body text (`{typography.body-serif}`)
+- Light, large Inter title (`{typography.display-1}`) over Inter body text (`{typography.body-serif}`)
 - Navy structure and one orange action colour; figure labels in `{colors.label-ink}`
 - Journal furniture that carries real information: Key Points, structured abstract, key words, margin notes, abbreviations, numbered figures and tables, citations, references
 - A full-colour figure palette, used in figures, illustrations, maps and charts, never for buttons
@@ -264,6 +264,27 @@ The homepage opens on a single navy **cover**: the journal's front page, with a 
 ## Colors
 
 > Source: the RC logo (navy #02264d, orange #f67737) and the typeset PDFs of Circulation, Circulation: Heart Failure, EJHF and Current Problems in Cardiology papers co-authored by RC faculty and mentees.
+
+### Article-type colours
+AHA colours each journal's article types; RC gives each page's article type one colour, and nothing else changes. The colour (`--journal`, set by the layout's `accent`) appears only in the article type line and the side tab. Heads, labels, boxes, tables and the drop cap are the same navy and orange on every page, and orange stays reserved for buttons and the drop cap.
+
+| Page | Article type | Colour |
+|---|---|---|
+| Home | Original Article | rust `#a3440d` |
+| Courses | State of the Art | teal `#0f6b69` |
+| Level 1 · Meta-Analysis · CDC WONDER · NIS · NRD | Design and Rationale | green · purple · teal · rust · magenta |
+| Match Mentorship | Special Report | red `#ad2338` |
+| Results | Supplemental Material | purple `#5e3b92` |
+| Mentors | Editorial Board | blue `#1b5aa0` |
+| About | Perspective | gold `#855600` |
+| Contact | Correspondence | navy `#02264d` |
+
+The desk stays warm grey (`#efeeeb`) and the site header and footer stay light. A navy desk was tried and rejected.
+
+### The physical page
+- **Paper.** Pages are plain white, as a PDF renders them, with a soft layered shadow. An off-white stock with grain was tried and rejected; the page breaks and shadows carry the effect.
+- **Pages.** Sections marked `newPage` start a new page: the foot of the page that ends (copyright, page number), a strip of desk that cuts through the sheet's edges, and the head of the next page (page number, italic running head). Page numbers are a CSS counter; the running head is the layout's `runningHead` ("Your Name et al." on the homepage).
+- **First page, after EJHF.** Journal mark and name on the left, *Res Consult* (2026) · Volume 10 and the page number (e001…) on the right; an italic dateline under the byline ("Received the day you enroll; revised with your mentor; accepted when your paper is."); the abstract in a warm grey panel with labels in their own column and dotted rules between parts.
 
 ### Brand & Accent
 - **RC Orange** (`{colors.primary}`, #f67737): the single action colour. Primary button fill with navy text (`{colors.on-primary}`) for contrast, the byline highlighter, drop-cap bar, key-word squares and the last stage of the graphical abstract.
@@ -302,9 +323,7 @@ There is no separate status palette. Positive ticks use `{colors.accent-green}`.
 ## Typography
 
 ### Font Family
-Two families, clearly distinct, as in the journals this site borrows from:
-- **Inter Variable** (`@fontsource-variable/inter`) for titles, section heads, labels, tables, figures, notes and the interface. Circulation and JAMA set their titles and furniture in a clean sans.
-- **Source Serif 4 Variable** (`@fontsource-variable/source-serif-4`, optical sizes) for long reading: the standfirst, body text, figure captions, Key Points answers, reference entries and quotations.
+One family, **Inter Variable** (`@fontsource-variable/inter`), for everything: titles, body, captions, tables and the interface. AHA journals set the whole article in a single sans, and the site follows them. Hierarchy comes from size, weight, capitals and the journal colours, never from a second face.
 
 OpenType `lnum` and `locl` are on. Use `tabular-nums` in tables and numeric columns.
 
@@ -317,12 +336,12 @@ OpenType `lnum` and `locl` are on. Use `tabular-nums` in tables and numeric colu
 | `{typography.article-type}` | 18px | 800 caps | 1.2 | +0.01em | "ORIGINAL INVESTIGATION", "SPECIAL REPORT" |
 | `{typography.section-head}` | 17px | 600 caps | 1.3 | +0.02em | INTRODUCTION, METHODS, RESULTS |
 | `{typography.subhead}` | 17px | 600 | 1.4 | 0 | Curriculum, Careers, Case report |
-| `{typography.dek}` | 21px serif | 400 | 1.5 | 0 | Standfirst under the title |
-| `{typography.body-serif}` | 19px serif | 400 | 1.68 | 0 | Article body text |
+| `{typography.dek}` | 19px Inter | 400 | 1.55 | 0 | Standfirst under the title |
+| `{typography.body-serif}` | 17px Inter | 400 | 1.65 | 0 | Article body text |
 | `{typography.body-md}` | 16px | 400 | 1.5 | 0 | Interface copy |
 | `{typography.body-sm}` | 15px | 400 | 1.33 | 0 | Tables, nav |
 | `{typography.button}` | 16px | 500 | 1.5 | 0 | Button labels |
-| `{typography.caption}` | 14.5px serif | 400 | 1.6 | 0 | Figure and table captions |
+| `{typography.caption}` | 13.5px Inter | 400 | 1.55 | 0 | Figure and table captions |
 | `{typography.label}` | 13px | 700 caps | 1.33 | +0.04em | Abstract labels ("IMPORTANCE:"), step labels |
 | `{typography.note}` | 13px | 400 | 1.55 | 0 | Margin notes, abbreviations |
 
@@ -342,22 +361,25 @@ Inter has no true small caps, so labels use `text-transform: uppercase` at a sma
 - Card interior padding lands around `{spacing.lg}` (24px); utility buttons use a tight 4px/14px; form fields pad at `{spacing.xxs}`-scale 6px. Section gaps stack the larger steps.
 
 ### Grid & Container
-Every page is one **sheet**, at most 1240px wide, centred on the desk with 56px inner margins on desktop. Inside it, each article section uses a three-column **article grid**:
+Every page is one **sheet**, at most 1280px wide, centred on the desk with 56px inner margins on desktop. The site header and footer share the sheet's width (`.frame`), so their edges line up with the page. Inside the sheet, each article section uses a two-column **article grid** (a spread):
 
 ```
-| rail 10.5rem | measure (≈640px) | margin 14.5rem |
-| SECTION HEAD | serif body text  | margin notes   |
-|              | figure/table spanning measure + margin |
+| SECTION HEAD across the full width, under a 3px rule        |
+| measure (41rem at xl, 7fr at lg) | figure column (1fr / 5fr) |
+| body text                        | the figure, table or panel |
+|                                  | that the text refers to    |
+| wide figures and tables span both columns                   |
 ```
 
-- The **rail** holds the section head, sticky on desktop.
-- The **measure** holds body text.
-- The **margin** holds notes, abbreviations and small stats.
+- The **head** runs across the page under its rule. There is no empty left rail.
+- The **measure** (`j-main`) holds body text, 65 to 75 characters a line.
+- The **figure column** (`j-margin`) holds the figure or table the paragraph cites, set beside it as a journal places a figure in the next column. Small notes go here only when a section has no figure.
+- **Spans** (`j-span`) hold wide tables, multi-panel photographs and timelines.
 
-Figures, tables and illustrations span the measure and the margin together. On the homepage, the navy cover spans the full sheet width at the top.
+Every section should pair its text with a visual. On the homepage, the navy cover spans the full sheet width at the top.
 
 ### Whitespace Philosophy
-Sections are separated by generous vertical space and a grey rule over each section head, not by boxes. Inside a section, related elements group tightly: a subhead sits close to its paragraph, and a caption sits close to its figure. The effect is a well-set journal page: calm margins, dense where the information is dense.
+Sections are separated by a grey rule over each section head and a moderate gap (32 to 56px), not by boxes or large empty bands. Inside a section, related elements group tightly: a subhead sits close to its paragraph, and a caption sits close to its figure. The effect is a well-set journal page: dense, with text and figures side by side, never a narrow column beside empty space.
 
 ### Responsive Strategy
 
@@ -374,7 +396,8 @@ Buttons keep a 44px minimum height. Links in body text are underlined in orange,
 
 #### Collapsing Strategy
 - Below 1024px, the sheet loses its border and shadow and fills the screen.
-- The article grid collapses to one column: section head, then text, then margin notes.
+- The article grid collapses to one column: section head, then text, then its figure.
+- The "On this page" contents line sticks under the site header and scrolls sideways on phones.
 - The navigation condenses to a menu below 1024px.
 - Wide tables scroll horizontally inside their own container, never the page.
 - The graphical abstract stacks its stages vertically.
@@ -403,6 +426,7 @@ Richness comes from **figures**, not effects:
 - **Central Illustration** with a navy title bar
 - **Method figures** for each course
 - **Multi-panel conference photographs**
+- **Data figures** from real numbers: bar charts, waffle charts and comparison tables
 
 The cover adds a faint 48px grid and two soft colour glows (sky and orange) behind the title.
 
@@ -443,7 +467,15 @@ Printed elements are square: that is what makes the page read as a journal. Roun
 **`button-secondary`** (Message a mentor, Ask a question)
 - White surface, ink text, pill `{rounded.full}`, with a hairline border on white. On the navy cover it sits without a border.
 
-**`button-utility`** (nav Contact and WhatsApp)
+**Actions.** The paper is the costume; the buttons are plain website. Every page names one primary action (`cta` on the layout):
+- The **header** carries it as a small orange button beside a quiet WhatsApp link.
+- On phones, a **sticky action bar** at the bottom repeats it next to WhatsApp.
+- Course pages put it inside a **booking panel** that leads with the fee.
+- **Next steps** closes every page as three rows (who you are, where to start, what it takes) with a real button on each row, the page's own row in orange.
+
+Defaults: "Start with Level 1 · $35" site-wide, the course's enroll action on course pages, "Apply with your CV" on Match Mentorship.
+
+**`button-utility`** (mobile menu toggle)
 - White surface, ink text, `{rounded.md}`, padding `4px 14px`, 1px `{colors.hairline}` border.
 
 ### Journal Furniture
@@ -474,9 +506,15 @@ Article types map to page purpose:
 | About | Perspective |
 | Contact | Correspondence |
 
-**`section-head`**: navy caps under a 3px grey rule, in the left rail. Sections follow IMRaD where the content allows: Introduction, Methods, Results, Discussion, Limitations, Conclusions.
+**`contents`**: the "On this page" line under the article head. It sticks below the site header, and the section being read is marked with an orange underline.
 
-**`key-points`**: after JAMA. "Key Points" in bold; Question, Findings and Meaning with bold sans lead-ins and serif answers. Desk-tinted on white pages; translucent white with a hairline ring on the navy cover.
+**`section-head`**: bold navy capitals under a thin (1.5px) grey rule, across the full width of the sheet, as Circulation sets METHODS and DISCUSSION. Subheads are navy, semibold, sentence case, and say something ("Why research matters for the Match").
+
+**`drop-cap`**: the first letter of a page's first paragraph, a solid orange capital across three lines, as Circulation sets its red one.
+
+**`what-is-new`**: after AHA's "What Is New? / What Are the Clinical Implications?" box. A pale blue panel with centred navy capitals and round bullets. The homepage uses it for "What is RC?" and "What it means for you". Sections follow IMRaD where the content allows: Introduction, Methods, Results, Discussion, Limitations, Conclusions.
+
+**`key-points`**: after JAMA. "Key Points" in bold; Question, Findings and Meaning with bold lead-ins and regular answers. Desk-tinted on white pages; translucent white with a hairline ring on the navy cover.
 
 **`panel`**: after Circulation's "What Is New?" box. Panel-blue tint, a centred navy caps title, and square bullets (navy for facts, orange for what it means for you). About uses a Lancet-style "Research in context" panel in the margin, with a navy title bar.
 
@@ -484,29 +522,35 @@ Article types map to page purpose:
 
 **`table`**: captioned "Table 1." in label orange followed by a bold title in title case. It has a grey header band and a 1px border on every cell. The footnote sits in small muted text below. Mentee rows carry a round avatar.
 
-**`figure-caption`**: "Figure 1." in label orange and a bold title sentence, then a serif legend. Multi-panel figures letter each panel A, B, C, both in a white square on the photo and in the legend.
+**`figure-caption`**: "Figure 1." in label orange and a bold navy title sentence, then the legend in regular text. Multi-panel figures letter each panel A, B, C, both in a white square on the photo and in the legend.
 
 **`central-illustration`**: after JACC. A navy title bar ("**Central Illustration.** The RC ladder…") over a pale blue body divided into steps, each with its own figure-palette tile.
 
-**`graphical-abstract`**: after EJHF. A dark title bar, then five stages (You, Learn, Do, Publish, Match). Each stage has a coloured icon disc, a serif sentence and a tinted stat chip. It is horizontal on desktop and stacked on mobile, and lives on the homepage cover.
+**`graphical-abstract`**: after EJHF. A dark title bar, then five stages (You, Learn, Do, Publish, Match). Each stage has a coloured icon disc, a one-line description and linked course chips. It is horizontal on desktop and stacked on mobile, and lives on the homepage cover.
 
 **`cover`**: the homepage only. A navy sheet-top carrying the logo, the article type in orange, the title in white, the standfirst, actions, Key Points and the graphical abstract, over a faint grid with sky and orange glows.
 
-**`article-end`**: Article information, then references and a running foot:
-- **Corresponding author:** WhatsApp and email.
-- **Author contributions:** "You design the study, analyse the data and write the paper…".
-- **Conflict of interest disclosures:** "does not conduct or guarantee publications".
-- **References:** numbered, with the source hostname linked.
-- **Running foot:** research-consultancy.org on the left; "Publish earlier. Match stronger. Lead in medicine." in italic on the right.
+**`article-end`**: the references the page cites, in two columns, each with a link back to the text, then the running foot (research-consultancy.org on the left; "Volume 10 · September 2026" on the right). No article-information boilerplate: contact lives in Next steps and the footer, and the disclaimer in the footer.
 
-**`footer`**: a site directory on the desk colour below the sheet.
+**`next-steps`**: closes every page as a decision table, not three cards: If (where you are now) · Start with · What it takes · the action. The row that fits the page gets the primary button.
+
+**`pull-quote`**: mentee words in italic under a short 3px orange rule, never a coloured left border.
+
+**`footer`**: a site directory on the desk colour below the sheet, ending with the tagline "Publish earlier. Match stronger. Lead in medicine." in italic.
 
 ### Figures
 
 Figures are the richest element on every page and must carry real information:
 - **Graphical abstract.** The RC pathway, with real numbers.
-- **Map.** Match 2026 programmes (orange), selected Match 2025 programmes (gold) and postdoctoral research posts (navy diamonds). Rendered at build time from `us-atlas` with `d3-geo`; no client JavaScript.
+- **Map.** Match 2026 programs (orange circles), selected Match 2025 programs (sky circles) and postdoctoral research posts (purple diamonds). The three colours pass a colour-vision check; shape carries the posts as well. Rendered at build time from `us-atlas` with `d3-geo`; no client JavaScript.
 - **Timeline.** Milestones from 2016 to 2026, one colour per year band.
+- **Bar figures** (`BarFigure`). One measure, navy bars, orange for RC's own rows, the value printed at the end of every bar, recessive gridlines and an optional dashed threshold line. Bars grow in once when scrolled into view.
+- **Study anatomy** (`StudyAnatomy`). One real student paper traced through its five stages (question, data, analysis, abstract, paper), each stage named with the real detail and the paper linked. It answers "what is research, concretely?" for a first-time visitor.
+- **Dumbbell chart** (`Dumbbell`). Two values per row joined by a line, filled orange for the group that did better and hollow grey for the other, with the pair printed at the end. The homepage uses it for median publications of matched and unmatched non-U.S. IMGs in the ten specialties they apply to most (NRMP 2026).
+- **Swimmer plot** (`Swimmer`). After oncology papers: one lane per mentee from the first RC course to today, with a shape per milestone (open circle course, diamond first abstracts, filled circle first paper, triangle mentor role, star fellowship, match or major paper). Year-only dates sit at mid-year and the caption says so.
+- **Match table** (`MatchTable`). One table for every Match year, grouped by year, with each mentee's own words in their row instead of a separate quote list.
+- **Waffle figures** (`Waffle`). 100 squares per panel for shares of RC's students (70% women, 33% rural).
+- **Comparison tables with external data.** The homepage and Match Mentorship open with NRMP Charting Outcomes 2026 (non-U.S. IMGs): matched and unmatched applicants reported the same median number of publications, which is why RC argues for mentorship, letters and interviews as well as papers. External numbers are cited; RC's numbers are never presented as a controlled comparison.
 - **Method figures, one per course.** Level 1: the anatomy of a paper. Meta-analysis: a forest plot. CDC WONDER: a joinpoint trend line. NIS: grouped bars. NRD: a cumulative readmission curve. Every caption says **Illustrative data**.
 
 ### Examples (illustrative)
@@ -530,9 +574,23 @@ Figures are the richest element on every page and must carry real information:
 - Keep `{colors.primary}` for buttons and small accents (drop-cap bar, key-word squares, highlighter). Use navy text on orange.
 - Use `{colors.label-ink}` whenever orange appears as text.
 - Keep printed things square (figures, tables, panels, photos) and interactive things round (buttons, avatars).
-- Write in plain, specific, active sentences, like a well-edited paper: numbers over adjectives, names over "our students".
+- Write in plain, specific, active sentences, like a well-edited paper: numbers over adjectives, names over "our students". Speak to the reader as "you" and about RC as "we". Keep the journal furniture (article types, Key Points, IMRaD, figure captions) and let the whimsy live in it: the "Your Name" byline, "Received the day you enroll. Accepted when your paper is." Use American spelling (program, center, analyze, enroll), as JAMA and Circulation do.
+- Put the figure a paragraph cites beside that paragraph.
+- Give every fact, figure and table one owner page, and link to it from elsewhere instead of repeating it:
+
+| Page | Owns |
+|---|---|
+| Home | The argument: Key Points, pathway, the NRMP comparison, what a first study needs, the mentoring model, mentee output, match rates, faculty in brief, limitations |
+| Courses | The course comparison, how a method course runs, students' words about the classes |
+| A course | Its facts, outcomes, method figure, curriculum and what follows it |
+| Match Mentorship | What is included, the year, the results table with mentees' words, how to apply |
+| Results | Headline numbers, careers map, swimmer plot, papers, meeting photos, awards |
+| Mentors | Faculty bios, mentors and analysts, fellows, joining the team |
+| About | Why RC exists, who it has trained, the decade, mission |
+| Contact | Channels, registering by email, the two questions everyone asks |
+
 - Honour the disclaimer everywhere it matters: RC offers mentorship and does not guarantee publications; authorship follows ICMJE.
-- Keep one orchestrated motion per page: the graphical abstract lighting up stage by stage, then your name highlighted on the byline. Respect `prefers-reduced-motion`.
+- Keep one orchestrated motion on the cover: the graphical abstract lighting up stage by stage, then your name highlighted on the byline. Charts draw once as they scroll into view. Respect `prefers-reduced-motion`; without JavaScript every chart is simply drawn.
 
 ### Don't
 - Don't mention RCOP anywhere on the RC site. RC serves international students; RCOP has its own site. RCOP statistics may be presented as RC's.
@@ -542,3 +600,7 @@ Figures are the richest element on every page and must carry real information:
 - Don't add a second dark band; the navy cover appears once, on the homepage.
 - Don't invent data. If a chart is an example, say so in its caption.
 - Don't chop content into identical rounded cards; use sections, tables, figures and panels the way a journal would.
+- Don't make the page full-bleed. The sheet on the desk is what makes the site read as a typeset paper.
+- Don't leave a column empty beside text; give the section a figure or tighten it.
+- Don't repeat a figure, table, quote list or FAQ on a second page. Don't add boilerplate blocks (how to cite, author contributions) to every page.
+- Don't use eyebrow labels above headings or coloured left borders on callouts and quotes.

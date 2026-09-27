@@ -54,7 +54,7 @@ export const menteePapers: Paper[] = [
 		year: 2026,
 		href: 'https://doi.org/10.1186/s12982-026-02595-6',
 		kind: 'CDC WONDER',
-		note: '170,610 deaths analysed.',
+		note: '170,610 deaths analyzed.',
 	},
 	{
 		title: 'Safety of discontinuing oral anticoagulation after atrial fibrillation ablation: an updated systematic review and meta-analysis',
@@ -152,41 +152,66 @@ export const facultyPapers: Paper[] = [
 	},
 ];
 
-export interface Story {
+// Four mentees' paths from their first RC course, for the swimmer plot on Results.
+// Dates are month-precise where RC's posts give a month; `approx` marks a year-only date,
+// drawn at mid-year.
+export type Milestone = 'course' | 'abstract' | 'paper' | 'mentor' | 'outcome';
+
+export interface MenteePath {
 	name: string;
-	portrait: string;
-	steps: { when: string; what: string }[];
+	origin: string;
+	/** Where the lane ends, as two lines: the role, then the place. */
+	outcome: [string, string];
+	events: { at: string; kind: Milestone; what: string; approx?: boolean }[];
 }
 
-export const stories: Story[] = [
+export const paths: MenteePath[] = [
 	{
-		name: 'Dr. Laibah Arshad Khan',
-		portrait: 'match/laibah-arshad-khan.jpg',
-		steps: [
-			{ when: 'October 2022', what: 'Took Level 1 as a graduate of King Edward Medical University.' },
-			{ when: '2023', what: 'Became an RC mentor and led more than 20 group projects.' },
-			{ when: '2024-25', what: 'Held a research fellowship at the University of Mississippi Medical Center and did clinical rotations at Duke.' },
-			{ when: 'March 2026', what: 'Matched into Internal Medicine at Yale New Haven Hospital.' },
+		name: 'Laibah Arshad Khan',
+		origin: 'Graduate, King Edward MU',
+		outcome: ['Matched in Internal Medicine', 'Yale New Haven Hospital'],
+		events: [
+			{ at: '2022-10', kind: 'course', what: 'Took Level 1' },
+			{ at: '2023-06', kind: 'mentor', what: 'Became a mentor; led more than 20 project groups', approx: true },
+			{ at: '2024-06', kind: 'outcome', what: 'Research fellowship, University of Mississippi Medical Center, with rotations at Duke', approx: true },
+			{ at: '2026-03', kind: 'outcome', what: 'Matched in Internal Medicine at Yale New Haven Hospital' },
 		],
 	},
 	{
-		name: 'Dr. Asad Ali Ahmed Cheema',
-		portrait: 'people/asad-cheema.jpg',
-		steps: [
-			{ when: 'August 2024', what: 'Took Level 1 with no research experience.' },
-			{ when: 'April 2025', what: 'Presented a poster at Heart Rhythm 2025.' },
-			{ when: '2025', what: 'Worked on more than 55 projects, published 35 PubMed-indexed papers and became Head Mentor.' },
-			{ when: 'August 2026', what: 'Started a paid research fellowship at the University of Oklahoma Health Sciences Center.' },
+		name: 'Asad Cheema',
+		origin: 'Graduate, Intl. University of Kyrgyzstan',
+		outcome: ['Paid research fellowship', 'University of Oklahoma'],
+		events: [
+			{ at: '2024-08', kind: 'course', what: 'Took Level 1 with no research experience' },
+			{ at: '2024-12', kind: 'abstract', what: 'Four abstracts accepted, at ACP, Heart Rhythm, DDW and ASCO' },
+			{ at: '2025-01', kind: 'paper', what: 'First PubMed-indexed paper' },
+			{ at: '2025-02', kind: 'mentor', what: 'Became a mentor; later Head Mentor, guiding more than 150 students' },
+			{ at: '2026-08', kind: 'outcome', what: 'Paid research fellowship at the University of Oklahoma Health Sciences Center, with 35 papers' },
 		],
 	},
 	{
-		name: 'Dr. Adeena Jamil',
-		portrait: 'fellows/adeena-jamil.jpg',
-		steps: [
-			{ when: 'Second year', what: 'Took Level 1, then led the student ambassador programme.' },
-			{ when: 'By 2026', what: 'Published 24 PubMed-indexed papers, including in the European Heart Journal and JAMA Cardiology, and presented 14 abstracts at AHA, ACC, AAN and ASCO.' },
-			{ when: 'Alongside', what: 'Mentored more than 250 students.' },
-			{ when: 'Now', what: 'Postdoctoral researcher at Baylor Scott & White Research Institute.' },
+		name: 'Adeena Jamil',
+		origin: 'Year 2, Dow International MC',
+		outcome: ['Postdoctoral researcher', 'Baylor Scott & White'],
+		events: [
+			{ at: '2022-06', kind: 'course', what: 'Took Level 1 in second year', approx: true },
+			{ at: '2024-06', kind: 'paper', what: 'First PubMed-indexed paper', approx: true },
+			{ at: '2024-05', kind: 'mentor', what: 'After leading the ambassador program, began mentoring project groups; more than 100 students since' },
+			{ at: '2026-06', kind: 'outcome', what: 'Postdoctoral researcher at Baylor Scott & White Research Institute, with 24 papers', approx: true },
+		],
+	},
+	{
+		name: 'Ali Salman',
+		origin: 'Year 1, Dow Medical College',
+		outcome: ['Head Mentor', 'Papers in EJHF and Circulation'],
+		events: [
+			{ at: '2022-05', kind: 'course', what: 'Took Level 1' },
+			{ at: '2022-07', kind: 'course', what: 'Took the Meta-Analysis Masterclass' },
+			{ at: '2023-07', kind: 'mentor', what: 'Became a mentor' },
+			{ at: '2023-11', kind: 'abstract', what: 'Presented three abstracts at AHA Scientific Sessions' },
+			{ at: '2024-01', kind: 'paper', what: 'First paper, in the European Journal of Heart Failure' },
+			{ at: '2025-04', kind: 'outcome', what: 'Paper in Circulation, with FDA co-authors' },
+			{ at: '2025-08', kind: 'mentor', what: 'Appointed Head Mentor; founded the Research Analyst team in 2024' },
 		],
 	},
 ];
@@ -209,8 +234,3 @@ export const awards = [
 	{ title: 'Faculty at HFSA 2025', detail: 'Dr. Khan presented a study of intravenous ferric carboxymaltose at the Heart Failure Society of America meeting.' },
 ];
 
-export const yearInReview = [
-	{ value: '20', label: 'workshops' },
-	{ value: '150+', label: 'peer-reviewed papers' },
-	{ value: '100+', label: 'conference abstracts' },
-];

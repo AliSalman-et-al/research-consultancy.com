@@ -14,27 +14,27 @@ const { art, label = 'Figure 1', class: className } = Astro.props;
 
 const captions: Record<Art, { title: string; body: string }> = {
 	manuscript: {
-		title: 'The parts of a paper, and where most students start.',
-		body: 'Level 1 teaches each section of a manuscript and three kinds of paper a beginner can write.',
+		title: 'Structure of a research paper and the three kinds a beginner can write.',
+		body: 'Level 1 teaches each section of a manuscript. Most students start with a letter to the editor, a case report or a cross-sectional study.',
 	},
 	forest: {
-		title: 'A forest plot.',
-		body: 'Each square is one trial, sized by its weight in the analysis. Lines show 95% CIs, and the diamond is the pooled estimate. Illustrative data.',
+		title: 'Example forest plot from a meta-analysis of six trials.',
+		body: 'Each square is one trial, sized by its weight in the analysis; lines show 95% CIs, and the diamond is the pooled estimate. Illustrative data. CI indicates confidence interval; and HR, hazard ratio.',
 	},
 	network: {
 		title: 'A network of treatment comparisons.',
 		body: 'Circles are treatments and lines are head-to-head trials. Illustrative data.',
 	},
 	trend: {
-		title: 'Age-adjusted mortality by sex, 1999 to 2020.',
-		body: 'A joinpoint splits the trend where its direction changes. APC indicates annual percent change; AAMR, age-adjusted mortality rate. Illustrative data.',
+		title: 'Example trend in age-adjusted mortality by sex, 1999–2020.',
+		body: 'A joinpoint splits the trend where its direction changes. Illustrative data. AAMR indicates age-adjusted mortality rate; and APC, annual percent change.',
 	},
 	bars: {
-		title: 'In-hospital outcomes by insurance.',
-		body: 'Weighted national estimates of the kind you produce in STATA during the course. Illustrative data.',
+		title: 'Example comparison of in-hospital outcomes by insurance.',
+		body: 'Weighted national estimates of the kind students produce in STATA during the course. Illustrative data.',
 	},
 	loop: {
-		title: 'Cumulative readmission in the 30 days after discharge.',
+		title: 'Example cumulative readmission in the 30 days after discharge.',
 		body: 'The database links admissions across hospitals, so a return to a different hospital still counts. Illustrative data.',
 	},
 };
@@ -171,10 +171,10 @@ const curve = (k: number) => days.map((d) => `${d ? 'L' : 'M'}${60 + d * 14},${2
 				</ol>
 				<div class="bg-white p-4 ring-1 ring-hairline">
 					<p class="font-sans text-[14px] font-bold text-navy">Where most students start</p>
-					<ul class="mt-2 space-y-2 font-serif text-[14px] leading-snug text-ink-secondary">
+					<ul class="mt-2 space-y-2 text-[14px] leading-snug text-ink-secondary">
 						<li><b class="font-sans text-ink">Letter to the editor.</b> A short response to a recently published paper. Some mentees publish one as sole author.</li>
 						<li><b class="font-sans text-ink">Case report.</b> An unusual patient, written up with a short review of the literature.</li>
-						<li><b class="font-sans text-ink">Cross-sectional study.</b> A survey or audit that you design, collect and analyse in SPSS.</li>
+						<li><b class="font-sans text-ink">Cross-sectional study.</b> A survey or audit that you design, collect and analyze in SPSS.</li>
 					</ul>
 				</div>
 			</div>

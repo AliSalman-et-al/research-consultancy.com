@@ -1,21 +1,26 @@
 ---
-// One article section: heading in the left rail, text in the measure,
-// notes in the right margin.
+// One article section. The head runs across the page under a thin rule; text sits in the
+// measure on the left and its figure or box on the right. AHA articles open without an
+// "Introduction" head, so that section can hide its title from sight (not from screen readers).
+import PageBreak from './PageBreak.astro';
+
 interface Props {
 	title: string;
 	id?: string;
 	tint?: boolean;
+	hideTitle?: boolean;
+	/** Start a new page of the paper before this section. */
+	newPage?: boolean;
 }
 
-const { title, id, tint = false } = Astro.props;
+const { title, id, tint = false, hideTitle = false, newPage = false } = Astro.props;
 const headingId = id ? `${id}-title` : undefined;
 ---
 
-<section id={id} aria-labelledby={headingId} class:list={['scroll-mt-20', tint ? 'bg-canvas-soft' : 'bg-canvas']}>
-	<div class="pad j-grid py-12 md:py-16">
-		<div class="j-rail">
-			<h2 id={headingId} class="j-head lg:sticky lg:top-24">{title}</h2>
-		</div>
+{newPage && <PageBreak />}
+<section id={id} aria-labelledby={headingId} class:list={['scroll-mt-28', tint && 'bg-canvas-soft']}>
+	<div class:list={['pad j-grid pb-10 md:pb-12', hideTitle ? 'pt-8 md:pt-10' : 'pt-8 md:pt-10']}>
+		<h2 id={headingId} class:list={['j-rail', hideTitle ? 'sr-only' : 'j-head']}>{title}</h2>
 		<slot />
 	</div>
 </section>

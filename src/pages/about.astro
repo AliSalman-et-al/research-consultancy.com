@@ -1,156 +1,107 @@
 ---
-import { Image } from 'astro:assets';
-import ModelFigure from '../components/figures/ModelFigure.astro';
 import Timeline from '../components/figures/Timeline.astro';
+import Waffle from '../components/figures/Waffle.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
-import Caption from '../components/journal/Caption.astro';
 import Cite from '../components/journal/Cite.astro';
 import JSection from '../components/journal/JSection.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import Figure from '../components/site/Figure.astro';
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
-import { leaders } from '../data/people';
-import { awards } from '../data/research';
 import { accArticle } from '../data/site';
-import { photo } from '../lib/photos';
-
-const numbers = [
-	{ measure: 'Workshops held', y2024: '16', y2025: '20' },
-	{ measure: 'Peer-reviewed papers by mentees', y2024: '150+', y2025: '150+' },
-	{ measure: 'Conference abstracts accepted', y2024: '100+', y2025: '100+' },
-	{ measure: 'Match Mentorship cohort that matched', y2024: '90%', y2025: '80%' },
-];
 
 const sections = [
 	{ id: 'introduction', label: 'Introduction' },
-	{ id: 'model', label: 'The model' },
 	{ id: 'history', label: 'Ten years' },
-	{ id: 'recognition', label: 'Recognition' },
-	{ id: 'leadership', label: 'Leadership' },
 	{ id: 'mission', label: 'Mission' },
 ];
 
 const refs = [
 	{ text: 'Khan MS. Fostering the next generation of physician-scientists in developing countries. American College of Cardiology, Fellows in Training Section. January 22, 2024.', href: accArticle },
-	{ text: 'Research Consultancy. The year in review, 2024 and 2025.', href: 'https://www.facebook.com/researchconsultancyrc' },
-	{ text: 'Research Consultancy. Match Mentorship results, 2025 and 2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 ];
 ---
 
-<Layout title="About us" description="Why physician-scientists set up Research Consultancy in 2016, how its mentoring model works, and what ten years of it have produced.">
+<Layout accent="gold" runningHead="Khan et al." title="About us" description="Why Research Consultancy exists, who it has trained since 2016, and what it is for.">
 	<ArticleHead
 		type="Perspective"
-		title="Why we teach research to medical students"
-		dek="Physician-scientists set up Research Consultancy in 2016 to teach research methods to students who were not being taught them. This is how the model works and what ten years of it have produced."
+		page="e011"
+		title="Closing the Research Training Gap for Medical Students Outside the United States"
+		abstract={[{ label: 'Abstract', text: 'Residency programs expect research, but most medical schools outside the United States never teach it. We started Research Consultancy in 2016 to teach research methods to students in any country and to supervise their first projects. This Perspective explains why, and what ten years have produced: more than 3,500 students, seven in ten of them women and one in three from a rural area.' }]}
 		sections={sections}
 	>
-		<div slot="byline" class="mt-7 max-w-[40rem]">
+		<div slot="byline" class="mt-6 max-w-[40rem]">
 			<p class="j-byline">M. Shahzeb Khan, MD, MS<sup>1</sup>; Kaneez Fatima, MD<sup>1</sup>; M. Shariq Usman, MD<sup>2</sup>; Tariq Jamal Siddiqi, MD<sup>1</sup></p>
 			<p class="j-affil mt-1"><sup>1</sup>Baylor Scott &amp; White, Dallas, Texas. <sup>2</sup>UT Southwestern Medical Center, Dallas, Texas.</p>
 		</div>
-		<Figure slot="aside" src="events/leadership-group.jpg" alt="RC faculty standing together at a scientific meeting" label="Figure 1" caption="RC faculty at a scientific meeting." imgClass="aspect-[4/3]" loading="eager" sizes="(min-width: 1024px) 20rem, 100vw" />
+		<Figure slot="aside" src="events/leadership-group.jpg" alt="RC faculty standing together at a scientific meeting" label="Figure 1" caption="RC faculty at a scientific meeting." imgClass="aspect-[4/3]" loading="eager" sizes="(min-width: 1024px) 24rem, 100vw" />
 	</ArticleHead>
 
-	<JSection title="Introduction" id="introduction">
+	<JSection title="Introduction" id="introduction" hideTitle>
 		<div class="j-main j-prose">
 			<p class="drop-cap">
-				Each year, many international medical graduates apply for U.S. residency with strong scores and little research.
-				The cause is usually training, not ability. Most medical schools outside the United States treat research as an
-				extra, and students who want to learn it rarely find a mentor.<Cite n={1} />
+				Most medical schools outside the United States treat research as an extra. Students who want to learn it rarely find
+				anyone to teach them, and fewer find someone to check their work.<Cite n={1} />
 			</p>
 			<p>
-				RC's founders trained at U.S. institutions and built research careers there. In 2016 they began teaching what
-				they had learned, in practical workshops for beginners followed by long-term mentorship. When the pandemic moved
-				classes onto Zoom in 2020, students from any country could join.<Cite n={1} />
+				Our founders are physician-scientists who built research careers in the United States. In 2016 they started
+				teaching what they had learned: a short course for beginners, then months of supervised work on real projects. In
+				2020 the classes moved to Zoom, and students from any country could join.<Cite n={1} />
 			</p>
 		</div>
-		<aside class="j-margin">
-			<div class="border border-navy bg-[#f5f8fb]">
-				<p class="bg-navy px-3 py-1.5 text-[12.5px] font-semibold text-white">Research in context</p>
-				<dl class="space-y-3 p-3 text-[13px] leading-relaxed">
-					<div><dt class="font-semibold text-navy">Evidence before RC</dt><dd class="mt-0.5 font-serif text-[14px] text-ink-secondary">Research training for medical students outside the United States was scarce and rarely mentored.</dd></div>
-					<div><dt class="font-semibold text-navy">Added value</dt><dd class="mt-0.5 font-serif text-[14px] text-ink-secondary">Courses end in real projects, supervised by physician-scientists who publish in the same field.</dd></div>
-					<div><dt class="font-semibold text-navy">Implications</dt><dd class="mt-0.5 font-serif text-[14px] text-ink-secondary">A student with no research experience can publish within a year. One mentee published 35 papers in just over a year after Level 1.</dd></div>
-				</dl>
-			</div>
+		<aside class="j-margin border border-navy bg-[#f5f8fb] self-start">
+			<p class="bg-navy px-4 py-2 text-[13px] font-semibold text-white">Research in context</p>
+			<dl class="space-y-3 p-4">
+				<div><dt class="text-[13px] font-semibold text-navy">Evidence before RC</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Research training for medical students outside the United States was scarce and rarely supervised.</dd></div>
+				<div><dt class="text-[13px] font-semibold text-navy">Added value</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Each method course ends in a project, supervised by physician-scientists who publish in the same field.</dd></div>
+				<div><dt class="text-[13px] font-semibold text-navy">Implications</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Research can be taught at a distance and at scale, if supervision follows the teaching.</dd></div>
+			</dl>
 		</aside>
 	</JSection>
 
-	<JSection title="The model" id="model">
+	<JSection title="Ten Years" id="history" newPage>
 		<div class="j-main j-prose">
 			<p>
-				RC runs on near-peer mentorship (Figure 2). Faculty mentor near-peers, and near-peers mentor students. Because
-				mentors come from the student tier, the model grows: many of today's mentors were RC students, and more than 20
-				have moved on to U.S. postdoctoral posts.<Cite n={1} />
+				By 2024, RC had trained more than 3,500 students. Seven in ten were women, and one in three came from a rural area
+				(Figure 2).<Cite n={1} />
 			</p>
-		</div>
-		<ModelFigure class="j-main mt-4" label="Figure 2" />
-	</JSection>
-
-	<JSection title="Ten years" id="history">
-		<div class="j-main j-prose">
 			<p>
-				Figure 3 shows the main milestones. By 2024, RC had mentored more than 3,500 students, 70% of them women and a
-				third from rural areas, and mentees had published more than 600 papers.<Cite n={1} /> Table 1 shows the two most
-				recent years.<Cite n={2} />
+				Figure 3 marks the milestones. The first years were about teaching methods. By 2023 our students were presenting at
+				the big U.S. cardiology meetings, and by 2026 they were matching at programs such as Yale.
 			</p>
 		</div>
-		<Timeline class="j-span mt-6" label="Figure 3" />
-		<figure class="j-main mt-10">
-			<Caption label="Table 1" title="RC in numbers, 2024 and 2025." class="j-caption-top" />
-			<table class="j-table">
-				<thead><tr><th scope="col">Measure</th><th scope="col" class="text-right">2024</th><th scope="col" class="text-right">2025</th></tr></thead>
-				<tbody>
-					{numbers.map((n) => (
-						<tr><th scope="row" class="font-normal">{n.measure}</th><td class="text-right tabular-nums">{n.y2024}</td><td class="text-right tabular-nums">{n.y2025}</td></tr>
-					))}
-				</tbody>
-			</table>
-			<p class="j-tablenote">Match figures are for the 2024-25 and 2025-26 cohorts.<Cite n={3} /></p>
-		</figure>
-	</JSection>
-
-	<JSection title="Recognition" id="recognition">
-		<dl class="j-main divide-y divide-hairline border-y border-hairline">
-			{awards.map((a) => (
-				<div class="grid gap-1 py-3.5 sm:grid-cols-[13rem_1fr] sm:gap-6">
-					<dt class="font-semibold">{a.title}</dt>
-					<dd class="font-serif text-[15.5px] leading-relaxed text-ink-secondary">{a.detail}</dd>
-				</div>
-			))}
-		</dl>
-	</JSection>
-
-	<JSection title="Leadership" id="leadership">
-		<ul class="j-span grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
-			{leaders.map((p) => (
-				<li>
-					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} widths={[300, 600]} sizes="(min-width: 1024px) 20vw, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
-					<p class="mt-3 text-[13px] font-semibold text-label">{p.role}</p>
-					<p class="font-semibold">{p.name}</p>
-					<p class="mt-0.5 text-[13.5px] leading-snug text-ink-muted">{p.title}, {p.place}</p>
-				</li>
-			))}
-		</ul>
-		<p class="j-span text-[14.5px]"><a href={withBase('/mentors')} class="link">Read the faculty biographies</a></p>
+		<Waffle
+			class="j-margin"
+			label="Figure 2"
+			title="Sex and rural origin of RC students, 2016–2024."
+			panels={[
+				{ pct: 70, name: 'Women', rest: 'Men', color: '#f67737' },
+				{ pct: 33, name: 'From rural areas', rest: 'Urban', color: '#1b8a8f' },
+			]}
+		>
+			Each square is 1% of more than 3,500 students.<Cite n={1} />
+		</Waffle>
+		<Timeline class="j-span mt-2" label="Figure 3" />
 	</JSection>
 
 	<JSection title="Mission" id="mission">
 		<dl class="j-main grid gap-6 sm:grid-cols-2">
 			<div class="border-t-[3px] border-navy pt-3">
 				<dt class="j-subhead">Vision</dt>
-				<dd class="mt-2 font-serif text-[1.1875rem] leading-snug">Physician-scientists from every country, with fair access to research training.</dd>
+				<dd class="mt-2 text-[1.1875rem] leading-snug">Physician-scientists from every country, with fair access to research training.</dd>
 			</div>
 			<div class="border-t-[3px] border-orange pt-3">
 				<dt class="j-subhead">Mission</dt>
-				<dd class="mt-2 font-serif text-[1.1875rem] leading-snug">To train and mentor medical students and doctors from their first study to their first match.</dd>
+				<dd class="mt-2 text-[1.1875rem] leading-snug">To train and mentor medical students and doctors from their first study to their first match.</dd>
 			</div>
 		</dl>
+		<p class="j-margin self-end text-[15px] text-ink-secondary">
+			The four faculty in the byline lead RC and teach its courses.{' '}
+			<a href={withBase('/mentors')} class="link">Meet them and the mentors</a>
+		</p>
 	</JSection>
 
 	<NextSteps />
 
-	<ArticleEnd refs={refs} citeTitle="Why we teach research to medical students" contributions="All four authors founded or lead Research Consultancy and teach its courses. Near-peer mentors and research analysts run the project groups." />
+	<ArticleEnd page="e011" refs={refs} />
 </Layout>

@@ -1,4 +1,4 @@
-// Site-wide facts. Sources: research-consultancy.org, RC's Instagram and its programmes' records,
+// Site-wide facts. Sources: research-consultancy.org, RC's Instagram and its programs' records,
 // and M. S. Khan, "Fostering the next generation of physician-scientists in developing
 // countries", ACC Fellows in Training Section, January 2024.
 
@@ -14,7 +14,7 @@ export const social = {
 	linkedin: 'https://www.linkedin.com/company/research-consultancy-rc/',
 };
 
-// Enrolment still runs through the current site's checkout pages.
+// Enrollment still runs through the current site's checkout pages.
 export const enrol = {
 	level1: 'https://research-consultancy.org/classes/level-1/',
 	metaAnalysis: 'https://buy.stripe.com/14AfZhfOk1Rjckw1O8f7i0c',
@@ -24,22 +24,24 @@ export const enrol = {
 export const accArticle =
 	'https://www.acc.org/membership/sections-and-councils/fellows-in-training-section/section-updates/2024/01/22/19/04/fostering-the-next-generation-of-physician-scientists-in-developing-countries';
 
+export const nrmp = 'https://www.nrmp.org/wp-content/uploads/2026/07/Non-US-IMG_Charting-Outcomes_FINAL.pdf';
+
 export const nav = [
 	{ label: 'Courses', href: '/courses' },
 	{ label: 'Match Mentorship', href: '/match-mentorship' },
-	{ label: 'Mentors', href: '/mentors' },
 	{ label: 'Results', href: '/results' },
+	{ label: 'Mentors', href: '/mentors' },
 	{ label: 'About', href: '/about' },
+	{ label: 'Contact', href: '/contact' },
 ];
 
 export const stats = [
 	{ value: '3,500+', label: 'students mentored since 2016' },
 	{ value: '600+', label: 'papers published by mentees' },
 	{ value: '20+', label: 'mentees in U.S. postdoctoral posts' },
-	{ value: '90%', label: 'of the 2024-25 Match cohort matched' },
+	{ value: '90%', label: 'of the 2024-25 Match Mentorship cohort matched' },
 ];
 
-export const journals = ['JACC', 'JAMA', 'JAMA Cardiology', 'Circulation', 'European Heart Journal', 'The Lancet'];
 
 // Quoted word for word from RC's course pages and posts.
 export const testimonials = [
@@ -74,18 +76,10 @@ export const testimonials = [
 export const faqs = [
 	{
 		q: 'Do I need research or statistics experience?',
-		a: 'No. Level 1 starts from the beginning and assumes nothing. The method courses assume only what Level 1 teaches.',
+		a: 'No. Level 1 starts from zero. The other courses assume only what Level 1 teaches.',
 	},
 	{
 		q: 'Will I get a publication?',
-		a: 'We cannot promise one, and you should be wary of anyone who does. You join real projects, and authorship follows ICMJE criteria, so it depends on your contribution. Responsibility for each study lies with its authors.',
-	},
-	{
-		q: 'How are the courses taught?',
-		a: 'Live on Zoom over two or three mornings, U.S. Central time. Mentors help you run the software on your own laptop. Method courses continue as mentored project groups after the last class.',
-	},
-	{
-		q: 'How do I register?',
-		a: 'Pay online from the course page, or email your full name and medical school. We confirm your seat and send the Zoom link before the first class.',
+		a: 'No one can promise you one, and you should be wary of anyone who does. You join real projects, and whether your name goes on the paper depends on what you contribute.',
 	},
 ];

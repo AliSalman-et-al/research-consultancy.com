@@ -1,0 +1,53 @@
+---
+// Figure: what each kind of first study asks of a student outside the United States, and why
+// RC teaches the two designs that ask for none of it.
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const needs = [
+	{ design: 'Clinical trial', patients: 'yes', ethics: 'yes', site: 'yes' },
+	{ design: 'Chart review', patients: 'yes', ethics: 'yes', site: 'yes' },
+	{ design: 'Meta-analysis', patients: 'no', ethics: 'no', site: 'no', rc: true },
+	{ design: 'U.S. database study', patients: 'no', ethics: 'exempt', site: 'no', rc: true },
+] as const;
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<table class="w-full text-[13px]">
+			<thead>
+				<tr class="text-left text-[12px] text-ink-muted">
+					<th scope="col" class="pb-2 font-semibold">First study</th>
+					<th scope="col" class="pb-2 text-center font-semibold">Patients</th>
+					<th scope="col" class="pb-2 text-center font-semibold">Ethics review</th>
+					<th scope="col" class="pb-2 text-center font-semibold">Hospital access</th>
+				</tr>
+			</thead>
+			<tbody>
+				{needs.map((n) => (
+					<tr class:list={['border-t border-[#e4e1db]', 'rc' in n && 'bg-white']}>
+						<th scope="row" class:list={['py-2.5 pl-1 text-left', 'rc' in n ? 'font-semibold text-navy' : 'font-normal text-ink-secondary']}>{n.design}</th>
+						{[n.patients, n.ethics, n.site].map((v) => (
+							<td class="py-2.5 text-center">
+								{v === 'yes' && <svg viewBox="0 0 20 20" class="mx-auto size-5 text-[#b8b3ab]" role="img" aria-label="Needed"><circle cx="10" cy="10" r="7" fill="currentColor" /></svg>}
+								{v === 'no' && <svg viewBox="0 0 20 20" class="mx-auto size-5 text-teal" role="img" aria-label="Not needed"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2" /></svg>}
+								{v === 'exempt' && <span class="text-[11.5px] font-semibold text-teal">Usually exempt</span>}
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+		<p class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-ink-muted">
+			<span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-[#b8b3ab]"></span>Needed</span>
+			<span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full ring-2 ring-teal ring-inset"></span>Not needed</span>
+		</p>
+	</div>
+	<Caption label={label} title="Requirements of four designs for a first study by a medical student outside the United States.">RC teaches the two designs in the lower rows. Ethics requirements vary by country and institution.</Caption>
+</figure>

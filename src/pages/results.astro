@@ -1,6 +1,8 @@
 ---
-import { Image } from 'astro:assets';
+// The Results page is the homepage's Supplemental Material: the evidence behind its numbers,
+// labelled Table S1 and Figure S1 onward as AHA journals label an online supplement.
 import MatchMap from '../components/figures/MatchMap.astro';
+import Swimmer from '../components/figures/Swimmer.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import Caption from '../components/journal/Caption.astro';
@@ -9,9 +11,9 @@ import JSection from '../components/journal/JSection.astro';
 import MultiFigure from '../components/journal/MultiFigure.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import Layout from '../layouts/Layout.astro';
-import { awards, events, facultyPapers, menteePapers, stories } from '../data/research';
-import { accArticle, social, stats, testimonials } from '../data/site';
-import { photo } from '../lib/photos';
+import { withBase } from '../lib/paths';
+import { awards, events, facultyPapers, menteePapers, paths } from '../data/research';
+import { accArticle, social, stats } from '../data/site';
 
 // Publication types, each with a figure-palette colour used consistently on this page.
 const kindColor: Record<string, string> = {
@@ -22,95 +24,78 @@ const kindColor: Record<string, string> = {
 	NRD: '#d9546e',
 	'Meta-analysis': '#f67737',
 };
-const kindCounts = Object.entries(
-	menteePapers.reduce<Record<string, number>>((acc, p) => ((acc[p.kind] = (acc[p.kind] ?? 0) + 1), acc), {}),
-);
 
 const sections = [
 	{ id: 'careers', label: 'Careers' },
-	{ id: 'stories', label: 'Case reports' },
 	{ id: 'publications', label: 'Publications' },
 	{ id: 'presentations', label: 'Presentations' },
 	{ id: 'recognition', label: 'Recognition' },
-	{ id: 'voices', label: "Students' words" },
+];
+
+const abstract = [
+	{
+		label: 'Contents',
+		text: 'This supplement holds the evidence summarized on our home page: headline numbers (Table S1), where students went after RC (Figure S1), how four of them got there (Figure S2), twelve recent papers by students and four by faculty (Table S2), students presenting at meetings (Figure S3), and awards (Table S3). Every paper links to the journal.',
+	},
 ];
 
 const refs = [
 	{ text: 'Khan MS. Fostering the next generation of physician-scientists in developing countries. American College of Cardiology, Fellows in Training Section. January 22, 2024.', href: accArticle },
-	{ text: 'Research Consultancy. Mentee publications, awards and Match results, 2023-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
+	{ text: 'Research Consultancy. Student publications, awards and Match results, 2023-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 ];
 ---
 
-<Layout title="Results" description="Publications, presentations, research posts and Match results from Research Consultancy mentees.">
-	<ArticleHead
-		type="Research letter"
-		title="What RC mentees have published, presented and gone on to do"
-		dek="The papers, meetings, research posts and residency matches behind RC's numbers. Each paper links to its source."
-		sections={sections}
-	>
-		<dl slot="abstract" class="mt-8 grid grid-cols-2 gap-px overflow-hidden bg-hairline ring-1 ring-hairline sm:grid-cols-4">
-			{stats.map((g) => (
-				<div class="flex flex-col bg-white p-4">
-					<dt class="text-[13px] leading-snug text-ink-muted">{g.label}</dt>
-					<dd class="order-first text-[2rem] leading-none font-light tracking-[-0.03em] text-navy tabular-nums">{g.value}</dd>
-				</div>
-			))}
-		</dl>
+<Layout accent="purple" runningHead="Supplemental Material" title="Results" description="The evidence behind RC's numbers: where students went, twelve recent papers, students at scientific meetings, and awards.">
+	<ArticleHead type="Supplemental Material" page="e009" title="Publications, Careers and Awards of RC Students, 2016–2026" abstract={abstract} sections={sections}>
+		<p slot="byline" class="j-affil mt-4 text-[13.5px]">
+			Supplement to <a href={withBase('/')} class="link font-medium">Outcomes of Online Research Training and Mentorship for Medical Students, 2016–2026</a>.
+		</p>
+		<figure slot="aside">
+			<Caption label="Table S1" title="Summary of RC outcomes, 2016–2026." class="j-caption-top" />
+			<table class="j-table">
+				<tbody>
+					{stats.map((g) => (
+						<tr><th scope="row" class="font-normal">{g.label[0].toUpperCase() + g.label.slice(1)}</th><td class="text-right text-[15px] font-bold text-navy">{g.value}</td></tr>
+					))}
+					<tr><th scope="row" class="font-normal">Peer-reviewed papers by students in 2025</th><td class="text-right text-[15px] font-bold text-navy">150+</td></tr>
+					<tr><th scope="row" class="font-normal">Abstracts at ACC.25, all published in JACC</th><td class="text-right text-[15px] font-bold text-navy">40</td></tr>
+				</tbody>
+			</table>
+			<p class="j-tablenote">From RC's records and a 2024 American College of Cardiology article on RC.<Cite n="1,2" /></p>
+		</figure>
 	</ArticleHead>
 
 	<JSection title="Careers" id="careers">
 		<div class="j-main j-prose">
 			<p class="drop-cap">
-				Mentees have matched into Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and
-				Psychiatry, at programmes from Yale New Haven to Louisiana State University. Others went into paid research
-				fellowships at Emory, Baylor Scott &amp; White, Houston Methodist and the University of Mississippi Medical Center
-				(Figure 1).<Cite n={2} />
+				Our students have matched in Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and
+				Psychiatry. Others took paid research jobs at U.S. hospitals, including Emory, Baylor Scott &amp; White, Houston
+				Methodist and the University of Mississippi Medical Center (Figure S1).<Cite n={2} />
+			</p>
+			<p id="stories" class="scroll-mt-32">
+				Figure S2 follows four of them from their first course. Two started as graduates and went straight for the Match or
+				a research job. Two started in their first or second year of medical school and built up over four years. All four
+				took a course, worked on real projects within months, and went on to mentor other students.<Cite n={2} />
 			</p>
 		</div>
-		<MatchMap class="j-span mt-6" label="Figure 1" />
+		<MatchMap class="j-margin" label="Figure S1" />
+		<Swimmer class="j-span" label="Figure S2" paths={paths} />
 	</JSection>
 
-	<JSection title="Case reports" id="stories">
-		<div class="j-main j-prose">
-			<p>Three mentees who started with no research experience.</p>
-		</div>
-		<div class="j-span mt-4 grid gap-6 lg:grid-cols-3">
-			{stories.map((s, i) => (
-				<article class="flex flex-col border-t-[3px] bg-canvas-soft p-5" style={`border-color:${['#f67737', '#7b4fa0', '#1b8a8f'][i]}`}>
-					<div class="flex items-center gap-3">
-						<Image src={photo(s.portrait)} alt={`Portrait of ${s.name}`} width={56} height={56} class="size-14 rounded-full object-cover" />
-						<div>
-							<p class="text-[12.5px] font-semibold text-ink-muted">Case {i + 1}</p>
-							<h3 class="text-[1.125rem] leading-tight font-semibold">{s.name}</h3>
-						</div>
-					</div>
-					<ol class="mt-4 space-y-3 border-l border-navy/20 pl-4">
-						{s.steps.map((st) => (
-							<li class="relative">
-								<span class="absolute top-1.5 -left-[1.28rem] size-2 rounded-full bg-navy" aria-hidden="true"></span>
-								<p class="text-[12.5px] font-semibold text-navy tabular-nums">{st.when}</p>
-								<p class="font-serif text-[14.5px] leading-snug text-ink-secondary">{st.what}</p>
-							</li>
-						))}
-					</ol>
-				</article>
-			))}
-		</div>
-	</JSection>
-
-	<JSection title="Publications" id="publications">
+	<JSection title="Publications" id="publications" newPage>
 		<div class="j-main">
-			<p class="j-prose">
-				Twelve recent mentee papers, set in the reference style mentees learn to use. In 2025 alone, mentees published more
-				than 150. New papers appear on <a href={social.instagram} rel="noopener">Instagram</a> most weeks.
+			<Caption as="p" label="Table S2" title="Twelve recent publications by RC students." class="j-caption-top" />
+			<p class="text-[14.5px] leading-relaxed text-ink-secondary">
+				Cited the way you will learn to cite them. Each title opens the paper. We post new ones on{' '}
+				<a href={social.instagram} class="link font-normal" rel="noopener">Instagram</a> most weeks.
 			</p>
-			<ol class="mt-6 space-y-4">
+			<ol class="mt-5 space-y-4 border-t border-hairline pt-4">
 				{menteePapers.map((p, i) => (
 					<li class="grid grid-cols-[2rem_1fr] gap-1">
 						<span class="pt-0.5 text-[14px] text-ink-muted tabular-nums">{i + 1}.</span>
 						<div>
-							<p class="font-serif text-[16px] leading-snug text-ink-secondary">
-								{p.authors}. <a href={p.href} class="text-ink hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-2" rel="noopener">{p.title}.</a> <i>{p.journal}</i>. {p.year}.
+							<p class="text-[15px] leading-snug text-ink-secondary">
+								{p.authors.replace(/\.$/, '')}. <a href={p.href} class="text-ink underline decoration-orange/40 underline-offset-2 hover:decoration-orange" rel="noopener">{p.title}.</a> <i>{p.journal}</i>. {p.year}.
 							</p>
 							<p class="mt-1 flex flex-wrap items-center gap-2 text-[12.5px]">
 								<span class="inline-flex items-center gap-1.5 font-semibold" style={`color:color-mix(in srgb, ${kindColor[p.kind] ?? '#02264d'} 75%, black)`}><span class="size-2" style={`background:${kindColor[p.kind] ?? '#02264d'}`}></span>{p.kind}</span>
@@ -120,53 +105,51 @@ const refs = [
 					</li>
 				))}
 			</ol>
-
-			<h3 class="j-subhead mt-12">From the faculty</h3>
-			<p class="mt-2 text-[15px] text-ink-muted">Faculty papers often include mentees as co-authors.</p>
-			<ol class="mt-4 space-y-4">
-				{facultyPapers.map((p, i) => (
-					<li class="grid grid-cols-[2rem_1fr] gap-1">
-						<span class="pt-0.5 text-[14px] text-ink-muted tabular-nums">{i + 1}.</span>
-						<p class="font-serif text-[16px] leading-snug text-ink-secondary">
-							{p.authors}. <a href={p.href} class="text-ink hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-2" rel="noopener">{p.title}.</a> <i>{p.journal}</i>. {p.year}.
-						</p>
-					</li>
-				))}
-			</ol>
 		</div>
-		<aside class="j-margin">
-			<p class="note"><b>Papers listed, by type</b></p>
-			<ul class="mt-2 space-y-1.5">
-				{kindCounts.map(([k, n]) => (
-					<li class="note flex items-center gap-2"><span class="size-2" style={`background:${kindColor[k]}`}></span>{k}<span class="ml-auto tabular-nums">{n}</span></li>
-				))}
-			</ul>
-			<p class="note mt-5"><b>Also by mentees.</b> Correspondence in <i>The Lancet</i> and <i>The Lancet Psychiatry</i>, letters in <i>JACC</i> and <i>JAMA Cardiology</i>, and reviews in the <i>European Heart Journal</i>.</p>
+		<aside class="j-margin space-y-6 self-start">
+			<div>
+				<h3 class="j-box-title text-[14px]">From the faculty</h3>
+				<p class="note mt-1">Students often join faculty papers as co-authors.</p>
+				<ol class="mt-3 space-y-3 border-t border-hairline pt-3">
+					{facultyPapers.map((p, i) => (
+						<li class="grid grid-cols-[1.25rem_1fr] gap-1 text-[13px] text-ink-muted">
+							<span class="tabular-nums">{i + 1}.</span>
+							<p class="text-[14px] leading-snug text-ink-secondary">
+								{p.authors.replace(/\.$/, '')}. <a href={p.href} class="text-ink underline decoration-orange/40 underline-offset-2 hover:decoration-orange" rel="noopener">{p.title}.</a> <i>{p.journal}</i>. {p.year}.
+							</p>
+						</li>
+					))}
+				</ol>
+			</div>
+			<p class="note border-t border-hairline pt-3"><b>Also by students.</b> Correspondence in <i>The Lancet</i> and <i>The Lancet Psychiatry</i>, letters in <i>JACC</i> and <i>JAMA Cardiology</i>, and reviews in the <i>European Heart Journal</i>.</p>
 		</aside>
 	</JSection>
 
-	<JSection title="Presentations" id="presentations">
+	<JSection title="Presentations" id="presentations" newPage>
 		<div class="j-main j-prose">
-			<p>RC helps mentees present at international meetings and then turn each abstract into a full paper. At ACC.25, mentees presented 40 abstracts (Figure 2).</p>
+			<p>
+				Most projects reach a conference as an abstract before they reach a journal as a paper. Figure S3 shows more of our
+				students and faculty at scientific meetings. Table S3 lists the awards those abstracts have won.
+			</p>
 		</div>
 		<MultiFigure
-			class="j-span mt-4"
+			class="j-span"
 			layout="grid"
-			label="Figure 2"
-			title="RC mentees and faculty at scientific meetings."
-			panels={events.map((e) => ({ src: e.photo, alt: e.caption, caption: e.caption }))}
+			label="Figure S3"
+			title="RC students and faculty presenting at scientific meetings."
+			panels={events.slice(3).map((e) => ({ src: e.photo, alt: e.caption, caption: e.caption }))}
 		/>
 	</JSection>
 
 	<JSection title="Recognition" id="recognition">
 		<figure class="j-span">
-			<Caption label="Table 1" title="Selected awards and recognition." class="j-caption-top" />
+			<Caption label="Table S3" title="Awards and recognition received by RC students and faculty." class="j-caption-top" />
 			<div class="overflow-x-auto">
 				<table class="j-table min-w-[34rem]">
 					<thead><tr><th scope="col">Recognition</th><th scope="col">Detail</th></tr></thead>
 					<tbody>
 						{awards.map((a) => (
-							<tr class="align-top"><th scope="row" class="font-semibold">{a.title}</th><td class="font-serif text-[15px]">{a.detail}</td></tr>
+							<tr class="align-top"><th scope="row" class="font-semibold">{a.title}</th><td class="text-[14.5px]">{a.detail}</td></tr>
 						))}
 					</tbody>
 				</table>
@@ -174,18 +157,7 @@ const refs = [
 		</figure>
 	</JSection>
 
-	<JSection title="In students' words" id="voices">
-		<ul class="j-span grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{testimonials.map((t) => (
-				<li class="flex flex-col border-l-[3px] border-navy pl-5">
-					<blockquote class="font-serif text-[1.0625rem] leading-relaxed italic">"{t.quote}"</blockquote>
-					<p class="mt-auto pt-4 text-[13.5px]"><span class="font-semibold">{t.name}</span><span class="text-ink-muted">, {t.role}</span></p>
-				</li>
-			))}
-		</ul>
-	</JSection>
-
 	<NextSteps />
 
-	<ArticleEnd refs={refs} citeTitle="What RC mentees have published, presented and gone on to do" contributions="Mentees did the work reported here. RC faculty and near-peer mentors supervised it." />
+	<ArticleEnd page="e009" refs={refs} />
 </Layout>

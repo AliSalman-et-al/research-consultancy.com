@@ -12,16 +12,16 @@ const { label, class: className } = Astro.props;
 const tiers = [
 	{
 		name: 'Faculty',
-		who: 'Physician-scientists at U.S. academic centres',
-		does: 'Choose the questions, check the methods and connect mentees with collaborators.',
+		who: 'Physician-scientists at U.S. hospitals',
+		does: 'Pick the research questions, check the methods and bring in collaborators.',
 		width: 'sm:w-[58%]',
 		style: 'bg-navy text-white',
 		sub: 'text-white/70',
 	},
 	{
 		name: 'Near-peer mentors',
-		who: 'Former RC students, each with at least 10 full papers',
-		does: 'Teach the workshops, run project groups each week and review every draft.',
+		who: 'Former RC students, most with 10 or more papers',
+		does: 'Help teach the courses, meet each project group weekly and read every draft.',
 		width: 'sm:w-[79%]',
 		style: 'bg-[#dfe7f1] text-navy',
 		sub: 'text-navy/70',
@@ -29,7 +29,7 @@ const tiers = [
 	{
 		name: 'Students',
 		who: 'Medical students and graduates, 3,500+ since 2016',
-		does: 'Design the study, analyse the data and write the paper.',
+		does: 'Run the analysis and write the paper.',
 		width: 'sm:w-full',
 		style: 'bg-[#fde4d5] text-[#6e2e0b]',
 		sub: 'text-[#6e2e0b]/70',
@@ -45,7 +45,7 @@ const tiers = [
 					<div class:list={['px-5 py-4', t.style]}>
 						<p class="font-sans text-[15px] font-bold">{t.name}</p>
 						<p class:list={['font-sans text-[13px]', t.sub]}>{t.who}</p>
-						<p class="mt-1.5 font-serif text-[15px] leading-snug">{t.does}</p>
+						<p class="mt-1.5 text-[15px] leading-snug">{t.does}</p>
 					</div>
 					{i < tiers.length - 1 && (
 						<p class="flex items-center justify-center gap-2 py-1.5 font-sans text-[12px] font-semibold text-ink-muted" aria-hidden="true">
@@ -58,6 +58,6 @@ const tiers = [
 		</ol>
 	</div>
 	<Caption label={label} title="The three-tier mentoring model.">
-		Each tier mentors the one below it. Because mentors come from the student tier, the model grows as students progress.
+		Faculty supervise near-peer mentors, who supervise the student project groups. Because mentors are drawn from the student tier, the model grows with each cohort. Adapted from Khan, 2024.
 	</Caption>
 </figure>

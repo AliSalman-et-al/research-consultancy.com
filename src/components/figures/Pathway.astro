@@ -1,5 +1,5 @@
 ---
-// Central Illustration: the RC pathway. Five stages, each with its own colour
+// Central Illustration: the RC pathway. Five stages, each with its own color
 // and icon; the two teaching stages link to their courses. Replaces a separate
 // graphical abstract and course ladder, which told the same story twice.
 import { withBase } from '../../lib/paths';
@@ -18,14 +18,13 @@ const stages: {
 	color: string;
 	tint: string;
 	links?: { label: string; href: string }[];
-	stat?: string;
 }[] = [
-	{ key: 'you', title: 'You', body: 'A medical student or graduate, anywhere in the world. No research experience needed.', color: '#4c9be8', tint: '#e8f2fc', stat: 'Any year, any school' },
-	{ key: 'learn', title: 'Learn', body: 'Two mornings of study design, writing and statistics.', color: '#1b8a8f', tint: '#e3f3f3', links: [{ label: 'Level 1', href: '/courses/level-1' }] },
+	{ key: 'you', title: 'You', body: 'A medical student or graduate in any country. No research experience needed.', color: '#4c9be8', tint: '#e8f2fc' },
+	{ key: 'learn', title: 'Learn', body: 'Two days on study design, writing and statistics.', color: '#1b8a8f', tint: '#e3f3f3', links: [{ label: 'Level 1', href: '/courses/level-1' }] },
 	{
 		key: 'do',
 		title: 'Do',
-		body: 'Pick a method course, then join a mentored project group.',
+		body: 'Take a method course, then join a project group with a mentor.',
 		color: '#7b4fa0',
 		tint: '#f0e9f6',
 		links: [
@@ -35,15 +34,15 @@ const stages: {
 			{ label: 'NRD', href: '/courses/nrd' },
 		],
 	},
-	{ key: 'publish', title: 'Publish', body: 'Submit to PubMed-indexed journals and present at AHA, ACC and other meetings.', color: '#c98a12', tint: '#fbf3e1', stat: '150+ papers in 2025' },
-	{ key: 'match', title: 'Match', body: 'Apply with papers, U.S. mentors and letters.', color: '#f67737', tint: '#fdeee5', links: [{ label: 'Match Mentorship', href: '/match-mentorship' }], stat: '90% matched, 2024-25' },
+	{ key: 'publish', title: 'Publish', body: 'Submit to PubMed-indexed journals and present at meetings such as AHA and ACC.', color: '#c98a12', tint: '#fbf3e1' },
+	{ key: 'match', title: 'Match', body: 'Apply with papers, U.S. mentors and letters from people who know your work.', color: '#f67737', tint: '#fdeee5', links: [{ label: 'Match Mentorship', href: '/match-mentorship' }] },
 ];
 ---
 
 <figure class:list={['pathway bg-white text-ink', className]}>
 	<p class="flex flex-wrap items-baseline justify-between gap-x-4 bg-[#0b1f3a] px-4 py-2 font-sans text-[12.5px] text-white">
-		<span><b>Central Illustration.</b> The RC pathway</span>
-		<span class="text-white/60">Select a course to read more</span>
+		<span><b>Central Illustration.</b> How RC works, in five steps</span>
+		<span class="text-white/60">Tap a course for details</span>
 	</p>
 	<ol class="relative grid sm:grid-cols-5">
 		<span class="pw-rule absolute top-[3.4rem] right-[10%] left-[10%] hidden h-[2px] sm:block" aria-hidden="true"></span>
@@ -60,15 +59,14 @@ const stages: {
 				</span>
 				<div class="sm:flex sm:flex-col sm:items-center">
 					<p class="font-sans text-[15px] font-bold" style="color:color-mix(in srgb, var(--c) 80%, black)"><span class="mr-1.5 font-semibold text-ink-faint tabular-nums">{i + 1}</span>{s.title}</p>
-					<p class="mt-1 max-w-[15rem] font-serif text-[14px] leading-snug text-ink-secondary">{s.body}</p>
+					<p class="mt-1 max-w-[15rem] text-[14px] leading-snug text-ink-secondary">{s.body}</p>
 					{s.links && (
 						<ul class="mt-2.5 flex flex-wrap gap-1.5 sm:justify-center">
 							{s.links.map((l) => (
-								<li><a href={withBase(l.href)} class="pw-chip inline-block rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}</a></li>
+								<li><a href={withBase(l.href)} class="pw-chip inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold ring-1 ring-transparent transition hover:ring-current" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}<svg viewBox="0 0 12 12" class="size-2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m4.5 2.5 3.5 3.5-3.5 3.5" /></svg></a></li>
 							))}
 						</ul>
 					)}
-					{s.stat && !s.links && <p class="mt-2.5 font-sans text-[12.5px] font-semibold" style="color:color-mix(in srgb, var(--c) 72%, black)">{s.stat}</p>}
 				</div>
 			</li>
 		))}

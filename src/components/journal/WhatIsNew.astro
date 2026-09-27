@@ -1,0 +1,25 @@
+---
+// After AHA's "What Is New? / What Are the Clinical Implications?" box: a tinted panel with
+// centred capital heads and short bulleted statements.
+interface Props {
+	blocks: { title: string; items: string[] }[];
+	/** Two columns side by side, or stacked for a narrow column. */
+	columns?: 1 | 2;
+	class?: string;
+}
+
+const { blocks, columns = 2, class: className } = Astro.props;
+---
+
+<aside class:list={['grid gap-x-10 gap-y-6 bg-[#e8eef6] px-5 py-6', columns === 2 && 'sm:px-8 md:grid-cols-2', className]}>
+	{blocks.map((b) => (
+		<div>
+			<h2 class="text-center font-sans text-[15px] font-bold tracking-[0.03em] text-navy uppercase">{b.title}</h2>
+			<ul class="mt-3 space-y-2 text-[15px] leading-snug text-ink-secondary">
+				{b.items.map((it) => (
+					<li class="flex gap-2.5"><span class="mt-[0.5em] size-1.5 shrink-0 rounded-full bg-navy" aria-hidden="true"></span><span>{it}</span></li>
+				))}
+			</ul>
+		</div>
+	))}
+</aside>

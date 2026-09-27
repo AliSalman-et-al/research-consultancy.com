@@ -18,12 +18,12 @@ const rows: { name: string; span: [number, number]; color: string }[] = [
 	{ name: 'Conference abstract', span: [2, 7], color: '#4c9be8' },
 	{ name: 'CV and personal statement editing', span: [3, 5], color: '#c98a12' },
 	{ name: 'Mock interviews', span: [6, 9], color: '#f67737' },
-	{ name: 'Programme choice and rank order list', span: [8, 10], color: '#d9546e' },
+	{ name: 'Program choice and rank order list', span: [8, 10], color: '#d9546e' },
 	{ name: 'Mentor group on WhatsApp', span: [0, 11], color: '#02264d' },
 ];
 const marks = [
 	{ at: 2, label: 'ERAS opens' },
-	{ at: 5.7, label: 'Programmes receive applications' },
+	{ at: 5.7, label: 'Programs receive applications' },
 	{ at: 11.5, label: 'Match Day' },
 ];
 const pct = (m: number) => `${(m / 12) * 100}%`;
@@ -55,9 +55,9 @@ const pct = (m: number) => `${(m / 12) * 100}%`;
 			</div>
 		</div>
 	</div>
-	<Caption label={label} title="A mentorship year against the U.S. Match calendar.">
-		Research and workshops fill the months before applications open. Editing, interviews and the rank order list follow the
-		Match timeline. Timing is indicative; ERAS and the NRMP publish exact dates each cycle.
+	<Caption label={label} title="Timeline of the mentorship year against the U.S. Match calendar.">
+		Research and courses fill the months before applications open. Editing, interviews and the rank list follow the Match
+		timeline. The dates are approximate. ERAS and the NRMP publish exact dates each year. ERAS indicates Electronic Residency Application Service; and NRMP, National Resident Matching Program.
 	</Caption>
 </figure>
 

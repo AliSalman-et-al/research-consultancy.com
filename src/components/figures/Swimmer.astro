@@ -1,0 +1,100 @@
+---
+// Swimmer plot, as oncology papers draw each patient's time on treatment: one lane per
+// mentee from their first RC course, with a marker for each milestone. Shape carries the
+// milestone type, so colour never has to.
+import type { Milestone, MenteePath } from '../../data/research';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	paths: MenteePath[];
+	class?: string;
+}
+
+const { label, paths, class: className } = Astro.props;
+
+const start = { y: 2022, m: 1 };
+const months = (at: string) => {
+	const [y, m] = at.split('-').map(Number);
+	return (y - start.y) * 12 + (m - start.m);
+};
+const now = '2026-09';
+const span = months(now);
+const X0 = 250;
+const X1 = 745;
+const x = (at: string) => X0 + (months(at) / span) * (X1 - X0);
+const ROW = 66;
+const TOP = 34;
+const height = TOP + paths.length * ROW + 20;
+const years = [2022, 2023, 2024, 2025, 2026];
+
+const style: Record<Milestone, { color: string; name: string }> = {
+	course: { color: '#1b8a8f', name: 'RC course' },
+	abstract: { color: '#4c9be8', name: 'First abstracts' },
+	paper: { color: '#02264d', name: 'First paper' },
+	mentor: { color: '#7b4fa0', name: 'Mentor role' },
+	outcome: { color: '#f67737', name: 'Fellowship, match or major paper' },
+};
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate reveal overflow-x-auto">
+		<svg viewBox={`0 0 1000 ${height}`} class="h-auto w-full min-w-[46rem]" role="img" aria-labelledby="swim-title swim-desc">
+			<title id="swim-title">Four mentees' paths from their first RC course</title>
+			<desc id="swim-desc">{paths.map((p) => `${p.name}: ${p.events.map((e) => `${e.at} ${e.what}`).join('; ')}`).join('. ')}</desc>
+			<g font-family="Inter Variable, sans-serif">
+				{years.map((y) => (
+					<g>
+						<line x1={x(`${y}-01`)} x2={x(`${y}-01`)} y1={TOP - 8} y2={height - 18} stroke="#e4e1db" />
+						<text x={x(`${y}-01`) + 4} y={TOP - 14} font-size="11.5" fill="#615d59">{y}</text>
+					</g>
+				))}
+				{paths.map((p, i) => {
+					const cy = TOP + i * ROW + ROW / 2;
+					const first = p.events[0].at;
+					return (
+						<g>
+							<text x="0" y={cy - 4} font-size="13.5" font-weight="600" fill="#1d1c1a">{p.name}</text>
+							<text x="0" y={cy + 12} font-size="11" fill="#615d59">{p.origin}</text>
+							<rect class="grow-x" style={`--i:${i}`} x={x(first)} y={cy - 5} width={x(now) - x(first)} height="10" rx="2" fill="#02264d" fill-opacity="0.12" />
+							{p.events.map((e) => {
+								const cx = x(e.at);
+								const c = style[e.kind].color;
+								return (
+									<g transform={`translate(${cx},${cy})`}>
+										<title>{`${e.approx ? e.at.slice(0, 4) : e.at}: ${e.what}`}</title>
+										{e.kind === 'course' && <circle r="6" fill="#fbfaf7" stroke={c} stroke-width="2.5" />}
+										{e.kind === 'abstract' && <rect x="-5.5" y="-5.5" width="11" height="11" transform="rotate(45)" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'paper' && <circle r="6.5" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'mentor' && <path d="M0,-8 L7,5 L-7,5 Z" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'outcome' && <path d="M0,-8.5 L2.4,-2.6 L8.6,-2.6 L3.6,1.2 L5.4,7.4 L0,3.7 L-5.4,7.4 L-3.6,1.2 L-8.6,-2.6 L-2.4,-2.6 Z" fill={c} stroke="#fff" stroke-width="1" />}
+									</g>
+								);
+							})}
+							<text x={X1 + 20} y={cy - 4} font-size="12" font-weight="600" fill="#1d1c1a">{p.outcome[0]}</text>
+							<text x={X1 + 20} y={cy + 12} font-size="11" fill="#615d59">{p.outcome[1]}</text>
+						</g>
+					);
+				})}
+			</g>
+		</svg>
+		<ul class="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[12px] text-ink-secondary">
+			{(Object.keys(style) as Milestone[]).map((k) => (
+				<li class="flex items-center gap-1.5">
+					<svg viewBox="-9 -9 18 18" class="size-3.5" aria-hidden="true">
+						{k === 'course' && <circle r="6" fill="#fff" stroke={style[k].color} stroke-width="2.5" />}
+						{k === 'abstract' && <rect x="-5.5" y="-5.5" width="11" height="11" transform="rotate(45)" fill={style[k].color} />}
+						{k === 'paper' && <circle r="6.5" fill={style[k].color} />}
+						{k === 'mentor' && <path d="M0,-8 L7,5 L-7,5 Z" fill={style[k].color} />}
+						{k === 'outcome' && <path d="M0,-8.5 L2.4,-2.6 L8.6,-2.6 L3.6,1.2 L5.4,7.4 L0,3.7 L-5.4,7.4 L-3.6,1.2 L-8.6,-2.6 L-2.4,-2.6 Z" fill={style[k].color} />}
+					</svg>
+					{style[k].name}
+				</li>
+			))}
+		</ul>
+	</div>
+	<Caption label={label} title="Training and career milestones of four RC students, from the first course to September 2026.">
+		Each lane runs from the mentee's first RC course to September 2026. Hover over a marker for the event. Dates known
+		only to the year are drawn at mid-year. From mentees' own accounts on RC's channels.
+	</Caption>
+</figure>

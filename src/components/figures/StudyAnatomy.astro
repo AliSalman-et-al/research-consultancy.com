@@ -1,0 +1,41 @@
+---
+// Figure: what a clinical study is, traced through one real student paper from the question
+// to the journal. Each stage names the actual thing, so research stops being abstract.
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const stages = [
+	{ stage: 'Question', what: 'After clot removal for a stroke, which patients are back in hospital within 30 days, and why?', color: '#4c9be8' },
+	{ stage: 'Data', what: 'Nearly 30,000 admissions in the Nationwide Readmissions Database, a U.S. record of hospital stays.', color: '#1b8a8f' },
+	{ stage: 'Analysis', what: 'Readmission rates, then a regression model to find which patient factors predict a return.', color: '#7b4fa0' },
+	{ stage: 'Abstract', what: 'A one-page summary, presented at the American Academy of Neurology meeting in 2026.', color: '#c98a12' },
+	{ stage: 'Paper', what: 'Reviewed by other doctors, then published in Neurology in 2026.', color: '#f67737', href: 'https://doi.org/10.1212/WNL.0000000000217891' },
+];
+---
+
+<figure class:list={[className]}>
+	<ol class="j-plate reveal relative space-y-3.5">
+		<span class="absolute top-7 bottom-7 left-[1.62rem] w-[2px] bg-[#e4e1db] sm:left-[2.12rem]" aria-hidden="true"></span>
+		{stages.map((s, i) => (
+			<li class="relative grid grid-cols-[1.25rem_1fr] items-start gap-3">
+				<span class="pop relative z-10 mt-1 size-5 rounded-full ring-4 ring-[#fbfaf7]" style={`background:${s.color};--i:${i * 6}`} aria-hidden="true"></span>
+				<div>
+					<p class="font-sans text-[12px] font-bold tracking-[0.04em] uppercase" style={`color:color-mix(in srgb, ${s.color} 70%, black)`}>{s.stage}</p>
+					<p class="text-[14.5px] leading-snug text-ink">
+						{s.href ? <a href={s.href} class="underline decoration-orange/60 underline-offset-2 hover:decoration-orange" rel="noopener">{s.what}</a> : s.what}
+					</p>
+				</div>
+			</li>
+		))}
+	</ol>
+	<Caption label={label} title="Stages of a clinical study, shown through a readmission study led by an RC student.">
+		The first author, Adeena Jamil, took Level 1 in the second year of medical school. A meta-analysis passes through the
+		same stages but draws its data from published trials. Select the last stage to read the paper.
+	</Caption>
+</figure>

@@ -1,37 +1,40 @@
 ---
-// The same three doors close every page, so the reader always knows where to go.
+import PageBreak from './PageBreak.astro';
+// Every page ends on the same three-way choice, so a reader always knows what to do next.
 import { contact, enrol } from '../../data/site';
 import { withBase } from '../../lib/paths';
 
 interface Props {
-	title?: string;
-	/** Highlight the door that fits this page. */
+	/** Make this row's button the primary one. */
 	focus?: 'start' | 'publish' | 'match';
 }
 
-const { title = 'Next steps', focus } = Astro.props;
+const { focus = 'start' } = Astro.props;
 
-const doors = [
+const rows = [
 	{
 		key: 'start',
-		who: 'New to research',
-		what: 'Start with Level 1. Two mornings on Zoom, $35.',
-		action: 'Enrol in Level 1',
+		who: "You've never done research",
+		start: 'Level 1',
+		takes: 'Two days on Zoom. $35.',
+		action: 'Enroll in Level 1',
 		href: enrol.level1,
 		color: '#1b8a8f',
 	},
 	{
 		key: 'publish',
-		who: 'Ready to publish',
-		what: 'Choose a method course and join a mentored project group.',
-		action: 'Compare courses',
+		who: 'You know the basics and want to publish',
+		start: 'A method course',
+		takes: 'Two or three days of teaching, then a place in a mentored project group.',
+		action: 'Choose a course',
 		href: '/courses',
 		color: '#7b4fa0',
 	},
 	{
 		key: 'match',
-		who: 'Applying for residency',
-		what: 'Twelve months of research and application support. 20 seats.',
+		who: "You're applying for residency in the next two years",
+		start: 'Match Mentorship',
+		takes: 'Twelve months of research, application help and interview practice. 20 places.',
 		action: 'See Match Mentorship',
 		href: '/match-mentorship',
 		color: '#f67737',
@@ -39,24 +42,27 @@ const doors = [
 ] as const;
 ---
 
-<section aria-labelledby="next-steps" class="no-print bg-canvas-soft">
-	<div class="pad j-grid py-12 md:py-16">
-		<div class="j-rail"><h2 id="next-steps" class="j-head lg:sticky lg:top-24">{title}</h2></div>
-		<div class="j-span">
-			<ul class="grid gap-4 md:grid-cols-3">
-				{doors.map((d) => (
-					<li class:list={['flex flex-col border-t-[3px] bg-white p-5', focus === d.key && 'ring-1 ring-navy/20']} style={`border-color:${d.color}`}>
-						<p class="font-sans text-[13px] font-semibold" style={`color:color-mix(in srgb, ${d.color} 75%, black)`}>{d.who}</p>
-						<p class="mt-1.5 font-serif text-[16px] leading-snug text-ink">{d.what}</p>
-						<div class="mt-auto pt-5">
-							<a href={d.href.startsWith('/') ? withBase(d.href) : d.href} class={focus === d.key ? 'btn-primary' : 'link text-[15px]'} rel={d.href.startsWith('http') ? 'noopener' : undefined}>{d.action}</a>
-						</div>
-					</li>
-				))}
-			</ul>
-			<p class="mt-5 text-[14.5px] text-ink-muted">
-				Not sure which fits? <a href={contact.whatsapp.href} class="link" rel="noopener">Message us on WhatsApp</a> with your year and your plans, and a mentor will suggest a route.
-			</p>
-		</div>
+<PageBreak />
+<section id="next-steps" aria-labelledby="next-steps-title" class="no-print scroll-mt-28 bg-canvas-soft">
+	<div class="pad pt-8 pb-10 md:pt-10 md:pb-12">
+		<h2 id="next-steps-title" class="j-head">Next steps</h2>
+		<p class="mt-3 text-[1.0625rem] text-ink-secondary">Find the row that describes you.</p>
+		<ul class="mt-4 divide-y divide-[#d7d5d1] border-y border-[#d7d5d1] bg-white">
+			{rows.map((r) => (
+				<li class="grid items-center gap-x-6 gap-y-2 px-4 py-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_auto] md:px-5">
+					<p class="flex items-start gap-2.5 font-semibold">
+						<span class="mt-[0.4em] size-2.5 shrink-0" style={`background:${r.color}`} aria-hidden="true"></span>
+						{r.who}
+					</p>
+					<p class="pl-5 text-[15.5px] leading-snug text-ink-secondary md:pl-0">
+						<span class="font-sans font-semibold text-navy">{r.start}.</span> {r.takes}
+					</p>
+					<a href={r.href.startsWith('/') ? withBase(r.href) : r.href} class:list={['btn-sm ml-5 justify-self-start md:ml-0 md:justify-self-end', focus === r.key ? 'btn-primary' : 'btn-secondary']} rel={r.href.startsWith('http') ? 'noopener' : undefined}>{r.action}</a>
+				</li>
+			))}
+		</ul>
+		<p class="mt-4 text-[14.5px] text-ink-muted">
+			Not sure which fits? <a href={contact.whatsapp.href} class="link" rel="noopener">Message us on WhatsApp</a> with your year and your plans, and a mentor will suggest one.
+		</p>
 	</div>
 </section>

@@ -17,7 +17,7 @@ const years = [
 	{ year: '2023', items: ['Mentees present at AHA Scientific Sessions', 'Former students, Laibah Khan among them, become project mentors'] },
 	{ year: '2024', items: ['The American College of Cardiology publishes an article on the RC model', 'NIS and STATA course starts', 'More than 50 abstracts accepted at AHA'] },
 	{ year: '2025', items: ['40 abstracts at ACC.25, all published in JACC', 'NRD course starts', '90% of the 2024-25 Match cohort matches'] },
-	{ year: '2026', items: ['16 mentees match, 2 of them at Yale programmes', 'NRD studies published in Neurology and Blood'] },
+	{ year: '2026', items: ['16 mentees match, 2 of them at Yale programs', 'NRD studies published in Neurology and Blood'] },
 ];
 ---
 
@@ -28,12 +28,12 @@ const years = [
 			{years.map((y, i) => (
 				<li class="relative flex gap-4 sm:flex-col sm:gap-3">
 					<span class:list={['relative z-10 grid h-9 shrink-0 place-items-center self-start rounded-full px-3 font-sans text-[13px] font-bold tabular-nums ring-4 ring-[#fbfaf7]', i === years.length - 1 ? 'bg-orange text-navy' : 'bg-navy text-white']}>{y.year}</span>
-					<ul class="space-y-1.5 font-serif text-[14px] leading-snug text-ink-secondary">
+					<ul class="space-y-1.5 text-[14px] leading-snug text-ink-secondary">
 						{y.items.map((it) => <li class="border-l-2 border-navy/15 pl-2.5">{it}</li>)}
 					</ul>
 				</li>
 			))}
 		</ol>
 	</div>
-	<Caption label={label} title="Ten years of Research Consultancy.">Selected milestones, 2016 to 2026.</Caption>
+	<Caption label={label} title="Milestones of Research Consultancy, 2016–2026.">Selected events from RC's records and posts.</Caption>
 </figure>

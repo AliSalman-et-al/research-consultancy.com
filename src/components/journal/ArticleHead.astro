@@ -1,54 +1,79 @@
 ---
-// First page of an article, set after Circulation and EJHF: journal name,
-// article type with a rule to the margin, light title, byline, standfirst,
-// optional key words, a heavy rule, then a contents line for the page.
+// First page of the article. The order follows Circulation (journal name, article type with a
+// rule, Title Case title, byline); the dateline and the abstract panel follow EJHF (a tinted
+// panel with labels in their own column and dotted rules between parts). On the web the
+// abstract is the summary a skimmer reads, the key words are links, and the right-hand panel
+// carries the page's action.
 import { withBase } from '../../lib/paths';
+import Contents from './Contents.astro';
 
 interface Props {
 	type: string;
 	title: string;
-	dek?: string;
-	keywords?: string[];
+	/** This page's number in the volume, as in "Res Consult. 2026;10:e001". */
+	page: string;
+	/** Structured abstract ({label, text} per part) or one unlabelled paragraph. */
+	abstract?: { label?: string; text: string }[];
+	keywords?: { label: string; href?: string }[];
 	sections?: { id: string; label: string }[];
-	dates?: string;
+	dateline?: string;
 }
 
-const { type, title, dek, keywords, sections, dates = 'Established 2016. Updated September 2026.' } = Astro.props;
+const { type, title, page, abstract, keywords, sections, dateline = 'First published 2016; revised September 2026.' } = Astro.props;
 const hasAside = Astro.slots.has('aside');
+const labelled = abstract?.some((a) => a.label);
+const link = (href: string) => (href.startsWith('/') ? withBase(href) : href);
 ---
 
-<header class="relative bg-canvas">
+<header class="relative">
 	<span class="j-tab hidden xl:block" aria-hidden="true">{type}</span>
-	<div class="pad pt-6 md:pt-8">
-		<div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-			<a href={withBase('/')} class="j-journal">Research Consultancy</a>
-			<p class="text-[12.5px] text-ink-muted italic">{dates}</p>
+	<div class="pad pt-6 pb-8 md:pt-8">
+		<div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+			<a href={withBase('/')} class="flex items-center gap-2.5" aria-label="Research Consultancy home">
+				<img src={withBase('/RC-Logo-NoText.png')} alt="" width="30" height="30" class="size-7.5 rounded-[4px]" />
+				<span class="j-journal">Research Consultancy</span>
+			</a>
+			<p class="text-right text-[12px] leading-snug text-ink-muted">
+				<i>Res Consult</i> (2026) · Volume 10<br class="hidden sm:inline" /><span class="sm:hidden"> · </span>{page}
+			</p>
 		</div>
 
-		<div class:list={['grid grid-cols-[minmax(0,1fr)] gap-10 pt-10 md:pt-14 [&>*]:min-w-0', hasAside && 'lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12']}>
+		<div class:list={['grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 md:pt-10 [&>*]:min-w-0', hasAside && 'lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14']}>
 			<div>
 				<p class="j-kind">{type}</p>
-				<h1 class="j-title mt-4 max-w-[20ch]"><slot name="title">{title}</slot></h1>
+				<h1 class="j-title mt-4 max-w-[24ch]">{title}</h1>
 				<slot name="byline" />
-				{dek && <p class="j-dek mt-6 max-w-[38rem]">{dek}</p>}
-				<slot name="abstract" />
+				<p class="mt-3 text-[12.5px] text-ink-muted italic">{dateline}</p>
 				<slot name="actions" />
 			</div>
 			{hasAside && <div class="lg:pt-12"><slot name="aside" /></div>}
 		</div>
 
+		{abstract && (
+			<div class="j-abstract mt-8 bg-[#f2f0eb] px-5 py-1 sm:px-6">
+				{abstract.map((part) => (
+					<div class:list={['border-b border-dotted border-[#b9b3a9] py-3.5 last:border-0', labelled && 'sm:grid sm:grid-cols-[8.5rem_1fr] sm:gap-5']}>
+						{part.label && <p class="j-abstract-label mb-1 sm:mb-0">{part.label}</p>}
+						<p>{part.text}</p>
+					</div>
+				))}
+			</div>
+		)}
+
 		{keywords && (
-			<p class="j-keywords mt-10 text-center">
-				<span class="font-semibold text-navy">Key words</span>{' '}
-				{keywords.map((k, i) => (<span>{i > 0 && <span class="sq" aria-hidden="true"></span>}{k}</span>))}
+			<p class="j-keywords mt-5">
+				<span class="font-semibold text-navy">Key Words:</span>{' '}
+				{keywords.map((k, i) => (
+					<span>
+						{i > 0 && <span class="sq" aria-hidden="true"></span>}
+						{k.href ? <a href={link(k.href)} class="underline decoration-orange/50 underline-offset-[3px] hover:text-navy hover:decoration-orange">{k.label}</a> : k.label}
+					</span>
+				))}
 			</p>
 		)}
-		<div class:list={['h-[5px] bg-[#c9c7c3]', keywords ? 'mt-4' : 'mt-12']}></div>
-		{sections && (
-			<nav aria-label="On this page" class="j-contents flex flex-wrap items-baseline gap-x-5 gap-y-1.5 py-3 text-[13.5px]">
-				<span class="font-semibold text-navy">On this page</span>
-				{sections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
-			</nav>
-		)}
+
+		{Astro.slots.has('illustration') && <div class="mt-8"><slot name="illustration" /></div>}
 	</div>
+	<div class="pad"><div class="h-px bg-[#bdb9b3]"></div></div>
 </header>
+{sections && <Contents sections={sections} />}

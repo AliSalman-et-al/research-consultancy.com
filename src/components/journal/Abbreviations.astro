@@ -1,0 +1,22 @@
+---
+// "Nonstandard Abbreviations and Acronyms", boxed as AHA journals set it. On this site it earns
+// its place: most visitors meet IMG, NRMP or NIS for the first time here.
+interface Props {
+	items: [string, string][];
+	class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<aside class:list={['border-[1.5px] border-navy bg-white', className]}>
+	<h2 class="bg-navy px-4 py-2 text-[14.5px] font-semibold text-white">Nonstandard Abbreviations and Acronyms</h2>
+	<dl class="grid grid-cols-[max-content_1fr] gap-x-5 gap-y-1.5 px-4 py-3 text-[13.5px] leading-snug">
+		{items.map(([a, b]) => (
+			<>
+				<dt class="font-bold text-ink">{a}</dt>
+				<dd class="text-ink-secondary">{b}</dd>
+			</>
+		))}
+	</dl>
+</aside>

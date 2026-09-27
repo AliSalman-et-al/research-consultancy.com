@@ -1,78 +1,65 @@
 ---
-// Back matter, set the way a journal closes an article: article information,
-// how to cite the page, references with links back to the text, running foot.
+// Back matter, as AHA journals close an article: Article Information (dates, correspondence,
+// disclosures, supplemental material), then references with links back to the text, then the
+// running foot with the page's citation.
 import { contact } from '../../data/site';
+import { withBase } from '../../lib/paths';
 
 interface Props {
+	/** Page number in the volume, as in "Res Consult. 2026;10:e001". */
+	page: string;
 	refs?: { text: string; href?: string }[];
-	contributions?: string;
-	/** Title used in the suggested citation. Defaults to the page's <title>. */
-	citeTitle?: string;
+	/** Point readers to the Supplemental Material (the Results page). */
+	supplement?: boolean;
 }
 
-const {
-	refs = [],
-	contributions = 'You design the study, analyse the data and write the paper. Mentors check the methods, review each draft and help you choose a journal.',
-	citeTitle,
-} = Astro.props;
-const url = Astro.url.href.replace(/\/$/, '');
+const { page, refs = [], supplement = false } = Astro.props;
+const citation = `Res Consult. 2026;10:${page}`;
 ---
 
-<section aria-label="Article information" class="bg-canvas">
-	<div class="pad j-grid py-12 md:py-16">
-		<div class="j-rail">
-			<h2 class="j-head">Article information</h2>
-		</div>
+<section aria-label="Article information and references">
+	<div class="pad j-grid pt-8 pb-8 md:pt-10">
 		<div class="j-main">
-			<dl class="grid gap-3.5 text-[14.5px] leading-relaxed text-ink-secondary">
+			<h2 class="j-head">Article Information</h2>
+			<dl class="mt-4 space-y-2.5 text-[14px] leading-relaxed text-ink-secondary">
 				<div>
-					<dt class="inline font-semibold text-ink">Corresponding author. </dt>
+					<dt class="inline font-semibold text-ink">Correspondence </dt>
 					<dd class="inline">
-						Research Consultancy. WhatsApp <a href={contact.whatsapp.href} class="text-navy underline decoration-orange/70 underline-offset-2" rel="noopener">{contact.whatsapp.label}</a>, email <a href={`mailto:${contact.email}`} class="[overflow-wrap:anywhere] text-navy underline decoration-orange/70 underline-offset-2">{contact.email}</a>.
+						Research Consultancy. WhatsApp <a href={contact.whatsapp.href} class="link font-normal" rel="noopener">{contact.whatsapp.label}</a>; email{' '}
+						<a href={`mailto:${contact.email}`} class="link font-normal [overflow-wrap:anywhere]">{contact.email}</a>.
 					</dd>
 				</div>
-				<div>
-					<dt class="inline font-semibold text-ink">Author contributions. </dt>
-					<dd class="inline">{contributions}</dd>
-				</div>
-				<div>
-					<dt class="inline font-semibold text-ink">Conflict of interest disclosures. </dt>
-					<dd class="inline">
-						Research Consultancy offers training and mentorship. It does not conduct or guarantee publications. Authorship follows ICMJE
-						criteria, and responsibility for each study lies with its authors.
-					</dd>
-				</div>
-				{citeTitle && (
-					<div>
-						<dt class="inline font-semibold text-ink">How to cite this page. </dt>
-						<dd class="inline font-serif text-[15px]">Research Consultancy. {citeTitle}. Updated September 2026. <span class="[overflow-wrap:anywhere]">{url}</span></dd>
-					</div>
+				{supplement && (
+					<div><dt class="inline font-semibold text-ink">Supplemental Material </dt><dd class="inline">The papers, careers, meeting photographs and awards behind these numbers are in the <a href={withBase('/results')} class="link font-normal">Supplemental Material</a>.</dd></div>
 				)}
-			</dl>
-
-			{refs.length > 0 && (
-				<div class="mt-10">
-					<h3 class="j-subhead">References</h3>
-					<ol class="mt-3 space-y-2.5">
-						{refs.map((r, i) => (
-							<li id={`ref-${i + 1}`} class="grid scroll-mt-24 grid-cols-[1.75rem_1fr] target:bg-orange/10">
-								<span class="text-[14px] text-ink-muted tabular-nums">{i + 1}.</span>
-								<span class="font-serif text-[15px] leading-snug text-ink-secondary">
-									{r.text}{' '}
-									{r.href && <a href={r.href} class="[overflow-wrap:anywhere] text-navy underline decoration-orange/60 underline-offset-2" rel="noopener">{new URL(r.href).hostname.replace(/^www\./, '')}</a>}
-									<a href={`#cite-${i + 1}`} class="ref-back ml-1.5 font-sans text-[12px] text-ink-faint no-underline hover:text-navy" aria-label={`Back to reference ${i + 1} in the text`}>Back to text</a>
-								</span>
-							</li>
-						))}
-					</ol>
+				<div>
+					<dt class="inline font-semibold text-ink">Disclosures </dt>
+					<dd class="inline">RC teaches and mentors. It does not conduct studies for students or guarantee publication or a match. Authorship follows ICMJE criteria and depends on each student's contribution.</dd>
 				</div>
-			)}
+			</dl>
 		</div>
+		{refs.length > 0 && (
+			<div class="j-margin">
+				<h2 class="j-head">References</h2>
+				<ol class="mt-4 space-y-2.5">
+					{refs.map((r, i) => (
+						<li id={`ref-${i + 1}`} class="grid scroll-mt-32 grid-cols-[1.5rem_1fr] target:bg-orange/10">
+							<span class="text-[13px] text-ink-muted tabular-nums">{i + 1}.</span>
+							<span class="text-[13.5px] leading-snug text-ink-secondary">
+								{r.text}{' '}
+								{r.href && <a href={r.href} class="[overflow-wrap:anywhere] text-navy underline decoration-orange/60 underline-offset-2" rel="noopener">{new URL(r.href).hostname.replace(/^www\./, '')}</a>}
+								<a href={`#cite-${i + 1}`} class="ml-1 text-[11.5px] text-ink-faint no-underline hover:text-navy" aria-label={`Back to reference ${i + 1} in the text`}>Back to text</a>
+							</span>
+						</li>
+					))}
+				</ol>
+			</div>
+		)}
 	</div>
 	<div class="pad">
-		<div class="masthead border-t border-ink/70 py-3 text-ink-muted">
-			<span>research-consultancy.org</span>
-			<span class="italic">Publish earlier. Match stronger. Lead in medicine.</span>
+		<div class="masthead border-t border-ink/60 py-3 text-ink-muted">
+			<span><i>{citation}</i> · research-consultancy.org</span>
+			<span>September 2026 · {page}</span>
 		</div>
 	</div>
 </section>
