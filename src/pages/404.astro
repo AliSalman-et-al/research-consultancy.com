@@ -2,6 +2,7 @@
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import JSection from '../components/journal/JSection.astro';
 import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
 import { nav } from '../data/site';
 ---
 
@@ -13,9 +14,9 @@ import { nav } from '../data/site';
 	/>
 	<JSection title="Contents" id="contents">
 		<ul class="j-main space-y-2.5 text-[16px]">
-			<li><a href="/" class="link">Home</a></li>
-			{nav.map((n) => <li><a href={n.href} class="link">{n.label}</a></li>)}
-			<li><a href="/contact" class="link">Contact</a></li>
+			<li><a href={withBase('/')} class="link">Home</a></li>
+			{nav.map((n) => <li><a href={withBase(n.href)} class="link">{n.label}</a></li>)}
+			<li><a href={withBase('/contact')} class="link">Contact</a></li>
 		</ul>
 	</JSection>
 </Layout>

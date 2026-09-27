@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { withBase } from '../lib/paths';
 import SiteFooter from '../components/site/SiteFooter.astro';
 import SiteHeader from '../components/site/SiteHeader.astro';
 
@@ -13,6 +14,7 @@ const {
 	description = 'Research training and mentorship for medical students and doctors, from a first study to a PubMed-indexed paper and the U.S. Match.',
 } = Astro.props;
 const fullTitle = title === 'Research Consultancy' ? title : `${title} | Research Consultancy`;
+const ogImage = Astro.site ? new URL(withBase('/RC-Logo.png'), Astro.site).href : withBase('/RC-Logo.png');
 ---
 
 <!doctype html>
@@ -20,14 +22,14 @@ const fullTitle = title === 'Research Consultancy' ? title : `${title} | Researc
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/png" href="/RC-Logo-NoText.png" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href={withBase('/RC-Logo-NoText.png')} />
+		<link rel="icon" href={withBase('/favicon.ico')} />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#02264d" />
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
-		<meta property="og:image" content="/RC-Logo.png" />
+		<meta property="og:image" content={ogImage} />
 		<title>{fullTitle}</title>
 	</head>
 	<body>

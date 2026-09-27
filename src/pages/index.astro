@@ -12,6 +12,7 @@ import MultiFigure from '../components/journal/MultiFigure.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import CourseArt from '../components/site/CourseArt.astro';
 import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
 import { courses } from '../data/courses';
 import { leaders, match2026 } from '../data/people';
 import { menteePapers, stories, yearInReview } from '../data/research';
@@ -54,7 +55,7 @@ const refs = [
 		<div class="pad relative pt-6 pb-10 md:pt-8 md:pb-14">
 			<div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/20 pb-3">
 				<p class="flex items-center gap-3">
-					<img src="/RC-Logo-NoText.png" alt="" width="32" height="32" class="size-8 rounded-[4px] ring-1 ring-white/25" />
+					<img src={withBase('/RC-Logo-NoText.png')} alt="" width="32" height="32" class="size-8 rounded-[4px] ring-1 ring-white/25" />
 					<span class="text-[1.25rem] font-light tracking-[-0.01em]">Research Consultancy</span>
 				</p>
 				<p class="text-[12.5px] text-white/60 italic">Established 2016. Updated September 2026.</p>
@@ -78,8 +79,8 @@ const refs = [
 						Mentors at U.S. academic centres supervise the work and stay with you through the residency Match.
 					</p>
 					<div class="mt-8 flex flex-wrap gap-3">
-						<a href="/courses/level-1" class="btn-primary">Start with Level 1</a>
-						<a href="/match-mentorship" class="btn-secondary">See Match Mentorship</a>
+						<a href={withBase('/courses/level-1')} class="btn-primary">Start with Level 1</a>
+						<a href={withBase('/match-mentorship')} class="btn-secondary">See Match Mentorship</a>
 					</div>
 				</div>
 				<aside aria-labelledby="key-points" class="self-start bg-white/[0.07] p-5 ring-1 ring-white/15 sm:p-6">
@@ -159,7 +160,7 @@ const refs = [
 						{courses.map((c) => (
 							<tr class="align-top">
 								<th scope="row" class="font-semibold">
-									<a href={`/courses/${c.slug}`} class="flex items-center gap-2.5 hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-4">
+									<a href={withBase(`/courses/${c.slug}`)} class="flex items-center gap-2.5 hover:underline hover:decoration-orange hover:decoration-2 hover:underline-offset-4">
 										<span class:list={['block h-7 w-10 shrink-0 p-0.5', c.tint, c.ink]}><CourseArt art={c.art} /></span>
 										{c.name}
 									</a>
@@ -172,7 +173,7 @@ const refs = [
 					</tbody>
 				</table>
 			</div>
-			<p class="j-tablenote">All courses are taught live on Zoom. <a href="/courses" class="text-navy underline decoration-orange/60 underline-offset-2">Compare the courses in detail</a>.</p>
+			<p class="j-tablenote">All courses are taught live on Zoom. <a href={withBase('/courses')} class="text-navy underline decoration-orange/60 underline-offset-2">Compare the courses in detail</a>.</p>
 		</figure>
 
 		<div class="j-main j-prose mt-10">
@@ -226,7 +227,7 @@ const refs = [
 			</p>
 		</div>
 		<div class="j-span mt-6"><MatchTable label="Table 2" limit={8} /></div>
-		<p class="j-span -mt-2 text-[14.5px]"><a href="/match-mentorship#results" class="link">All {match2026.length} results, with schools and mentees' comments</a></p>
+		<p class="j-span -mt-2 text-[14.5px]"><a href={withBase('/match-mentorship#results')} class="link">All {match2026.length} results, with schools and mentees' comments</a></p>
 		<MatchMap class="j-span mt-8" label="Figure 3" />
 
 		<div class="j-main mt-12">
@@ -245,7 +246,7 @@ const refs = [
 					))}
 				</ol>
 			</article>
-			<p class="mt-4 text-[14.5px]"><a href="/results#stories" class="link">Read two more case reports</a></p>
+			<p class="mt-4 text-[14.5px]"><a href={withBase('/results#stories')} class="link">Read two more case reports</a></p>
 		</div>
 		<aside class="j-margin lg:mt-12">
 			<h3 class="note"><b>Selected mentee papers</b></h3>
@@ -257,7 +258,7 @@ const refs = [
 					</li>
 				))}
 			</ul>
-			<a href="/results#publications" class="note mt-3 inline-block text-navy underline decoration-orange/60 underline-offset-2">More papers</a>
+			<a href={withBase('/results#publications')} class="note mt-3 inline-block text-navy underline decoration-orange/60 underline-offset-2">More papers</a>
 		</aside>
 	</JSection>
 
@@ -278,7 +279,7 @@ const refs = [
 				</li>
 			))}
 		</ul>
-		<p class="j-span text-[14.5px]"><a href="/mentors" class="link">Meet the mentors and analysts</a></p>
+		<p class="j-span text-[14.5px]"><a href={withBase('/mentors')} class="link">Meet the mentors and analysts</a></p>
 
 		<div class="j-main mt-10">
 			<h3 class="j-subhead">In mentees' words</h3>

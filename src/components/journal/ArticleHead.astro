@@ -2,6 +2,8 @@
 // First page of an article, set after Circulation and EJHF: journal name,
 // article type with a rule to the margin, light title, byline, standfirst,
 // optional key words, a heavy rule, then a contents line for the page.
+import { withBase } from '../../lib/paths';
+
 interface Props {
 	type: string;
 	title: string;
@@ -19,7 +21,7 @@ const hasAside = Astro.slots.has('aside');
 	<span class="j-tab hidden xl:block" aria-hidden="true">{type}</span>
 	<div class="pad pt-6 md:pt-8">
 		<div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-			<a href="/" class="j-journal">Research Consultancy</a>
+			<a href={withBase('/')} class="j-journal">Research Consultancy</a>
 			<p class="text-[12.5px] text-ink-muted italic">{dates}</p>
 		</div>
 

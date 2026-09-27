@@ -8,6 +8,7 @@ import NextSteps from '../../components/journal/NextSteps.astro';
 import CourseArt from '../../components/site/CourseArt.astro';
 import Figure from '../../components/site/Figure.astro';
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../lib/paths';
 import { courses, method } from '../../data/courses';
 import { enrol } from '../../data/site';
 
@@ -92,7 +93,7 @@ const refs = [
 					))}
 				</ul>
 				<p class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-					<a href={`/courses/${c.slug}`} class="btn-secondary border border-hairline">Read about {short[c.slug]}</a>
+					<a href={withBase(`/courses/${c.slug}`)} class="btn-secondary border border-hairline">Read about {short[c.slug]}</a>
 					{c.enrolHref && <a href={c.enrolHref} class="link text-[15px]" rel="noopener">{c.enrolLabel}</a>}
 				</p>
 			</div>

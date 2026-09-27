@@ -10,6 +10,7 @@ import JSection from '../components/journal/JSection.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import Figure from '../components/site/Figure.astro';
 import Layout from '../layouts/Layout.astro';
+import { withBase } from '../lib/paths';
 import { leaders } from '../data/people';
 import { awards } from '../data/research';
 import { accArticle } from '../data/site';
@@ -133,7 +134,7 @@ const refs = [
 				</li>
 			))}
 		</ul>
-		<p class="j-span text-[14.5px]"><a href="/mentors" class="link">Read the faculty biographies</a></p>
+		<p class="j-span text-[14.5px]"><a href={withBase('/mentors')} class="link">Read the faculty biographies</a></p>
 	</JSection>
 
 	<JSection title="Mission" id="mission">

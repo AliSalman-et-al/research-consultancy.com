@@ -1,46 +1,46 @@
-# Astro Starter Kit: Basics
+# Research Consultancy
+
+The public Research Consultancy website, built as a static Astro site with React components and Tailwind CSS. It presents the research training courses, Match Mentorship program, mentors, publication results, and contact information.
+
+## Develop locally
+
+Requirements: Node.js 22.12 or later and npm.
 
 ```sh
-npm create astro@latest -- --template basics
+npm ci
+npm run dev -- --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The local site is available at `http://localhost:4321/`. Manage the background server with:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+npm run astro -- dev status
+npm run astro -- dev logs
+npm run astro -- dev stop
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+To build and preview the static site locally:
 
-## 🧞 Commands
+```sh
+npm run build
+npm run preview
+```
 
-All commands are run from the root of the project, from a terminal:
+Run the linter with `npm run lint`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Site structure
 
-## 👀 Want to learn more?
+- `src/pages/` contains the home, course, Match Mentorship, mentors, results, about, contact, and 404 pages.
+- `src/components/` contains shared site, journal-style content, and figure components.
+- `src/data/` holds course, people, research, and site-wide content.
+- `src/assets/photos/` contains source photography processed by Astro during the build.
+- `public/` contains static logos and favicons.
+- `docs/rc-research.md` records source notes for the site’s research content.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Deploy
+
+GitHub Actions builds and deploys the site to GitHub Pages when code is pushed to `main`. The workflow can also be started manually from the Actions tab. The published site is:
+
+<https://alisalman-et-al.github.io/research-consultancy.com/>
+
+The deployment build applies the repository path required by GitHub Pages. Local builds and previews use the root path.

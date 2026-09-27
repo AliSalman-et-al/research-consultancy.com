@@ -2,6 +2,8 @@
 // Central Illustration: the RC pathway. Five stages, each with its own colour
 // and icon; the two teaching stages link to their courses. Replaces a separate
 // graphical abstract and course ladder, which told the same story twice.
+import { withBase } from '../../lib/paths';
+
 interface Props {
 	class?: string;
 }
@@ -62,7 +64,7 @@ const stages: {
 					{s.links && (
 						<ul class="mt-2.5 flex flex-wrap gap-1.5 sm:justify-center">
 							{s.links.map((l) => (
-								<li><a href={l.href} class="pw-chip inline-block rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}</a></li>
+								<li><a href={withBase(l.href)} class="pw-chip inline-block rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}</a></li>
 							))}
 						</ul>
 					)}

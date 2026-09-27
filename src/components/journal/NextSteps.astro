@@ -1,6 +1,7 @@
 ---
 // The same three doors close every page, so the reader always knows where to go.
 import { contact, enrol } from '../../data/site';
+import { withBase } from '../../lib/paths';
 
 interface Props {
 	title?: string;
@@ -48,7 +49,7 @@ const doors = [
 						<p class="font-sans text-[13px] font-semibold" style={`color:color-mix(in srgb, ${d.color} 75%, black)`}>{d.who}</p>
 						<p class="mt-1.5 font-serif text-[16px] leading-snug text-ink">{d.what}</p>
 						<div class="mt-auto pt-5">
-							<a href={d.href} class={focus === d.key ? 'btn-primary' : 'link text-[15px]'} rel={d.href.startsWith('http') ? 'noopener' : undefined}>{d.action}</a>
+							<a href={d.href.startsWith('/') ? withBase(d.href) : d.href} class={focus === d.key ? 'btn-primary' : 'link text-[15px]'} rel={d.href.startsWith('http') ? 'noopener' : undefined}>{d.action}</a>
 						</div>
 					</li>
 				))}
