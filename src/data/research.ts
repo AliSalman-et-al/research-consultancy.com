@@ -221,7 +221,7 @@ export const events = [
 	{ photo: 'events/leadership-aha-2023.jpg', caption: 'RC faculty and mentees at the American Heart Association Scientific Sessions, 2023.' },
 	{ photo: 'events/sheraz-acg-2025.jpg', caption: 'Sheraz Hakeem with a first-author poster at the American College of Gastroenterology meeting, 2025.' },
 	{ photo: 'events/ali-aha-2023.jpg', caption: 'Ali Salman presenting one of three abstracts at AHA Scientific Sessions, 2023.' },
-	{ photo: 'events/izza-presentation.jpg', caption: 'Izza Shahid presenting research at a scientific meeting.' },
+	{ photo: 'events/izza-presentation.jpg', caption: 'Izza Shahid presenting research at a scientific meeting.', position: '88% 40%' },
 	{ photo: 'events/shahzeb-cvct.jpg', caption: 'Dr. Shahzeb Khan on a panel at the CVCT Forum.' },
 ];
 

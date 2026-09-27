@@ -36,10 +36,10 @@ export const nav = [
 ];
 
 export const stats = [
-	{ value: '3,500+', label: 'students mentored since 2016' },
-	{ value: '600+', label: 'papers published by mentees' },
-	{ value: '20+', label: 'mentees in U.S. postdoctoral posts' },
-	{ value: '90%', label: 'of the 2024-25 Match Mentorship cohort matched' },
+	{ value: '3,500+', label: 'students trained, 2016 to 2024' },
+	{ value: '600+', label: 'papers published by students, 2016 to 2024' },
+	{ value: '20+', label: 'students in U.S. research posts' },
+	{ value: '90%', label: 'Match Mentorship students who matched, 2025' },
 ];
 
 

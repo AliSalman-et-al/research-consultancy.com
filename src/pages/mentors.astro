@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
+import ActionPanel from '../components/journal/ActionPanel.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import BarFigure from '../components/figures/BarFigure.astro';
 import Caption from '../components/journal/Caption.astro';
@@ -8,6 +9,7 @@ import JSection from '../components/journal/JSection.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import Layout from '../layouts/Layout.astro';
 import { fellows, leaders, mentors } from '../data/people';
+import { withBase } from '../lib/paths';
 import { contact } from '../data/site';
 import { photo } from '../lib/photos';
 
@@ -29,6 +31,17 @@ const abstract = [
 <Layout accent="blue" runningHead="Editorial Board" title="Mentors" description="The physician-scientists who lead RC, the mentors who run its project groups, and the students now in U.S. research jobs.">
 	<ArticleHead type="Editorial Board" page="e010" title="Faculty, Mentors and Research Analysts" abstract={abstract} sections={sections}>
 		<p slot="byline" class="j-affil mt-4 text-[13.5px]">The people who will teach you, check your work and write your letters.</p>
+		<ActionPanel
+			slot="aside"
+			title="Learn with them"
+			lead={{ label: 'Level 1, the first course', value: '$35' }}
+			facts={[
+				{ label: 'Taught by', value: 'RC faculty' },
+				{ label: 'Length', value: '2 days, 6 hours each' },
+			]}
+			primary={{ label: 'See Level 1 and enroll', href: withBase('/courses/level-1') }}
+			secondary={{ label: 'Ask us on WhatsApp', href: contact.whatsapp.href }}
+		/>
 	</ArticleHead>
 
 	<JSection title="Faculty" id="faculty">

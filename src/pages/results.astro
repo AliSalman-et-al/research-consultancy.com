@@ -57,8 +57,8 @@ const refs = [
 					{stats.map((g) => (
 						<tr><th scope="row" class="font-normal">{g.label[0].toUpperCase() + g.label.slice(1)}</th><td class="text-right text-[15px] font-bold text-navy">{g.value}</td></tr>
 					))}
-					<tr><th scope="row" class="font-normal">Peer-reviewed papers by students in 2025</th><td class="text-right text-[15px] font-bold text-navy">150+</td></tr>
-					<tr><th scope="row" class="font-normal">Abstracts at ACC.25, all published in JACC</th><td class="text-right text-[15px] font-bold text-navy">40</td></tr>
+					<tr><th scope="row" class="font-normal">Match Mentorship students who matched, 2026</th><td class="text-right text-[15px] font-bold text-navy">80%</td></tr>
+					<tr><th scope="row" class="font-normal">Papers published by students, 2025</th><td class="text-right text-[15px] font-bold text-navy">150+</td></tr>
 				</tbody>
 			</table>
 			<p class="j-tablenote">From RC's records and a 2024 American College of Cardiology article on RC.<Cite n="1,2" /></p>
@@ -137,7 +137,7 @@ const refs = [
 			layout="grid"
 			label="Figure S3"
 			title="RC students and faculty presenting at scientific meetings."
-			panels={events.slice(3).map((e) => ({ src: e.photo, alt: e.caption, caption: e.caption }))}
+			panels={events.slice(3).map((e) => ({ src: e.photo, alt: e.caption, caption: e.caption, position: e.position }))}
 		/>
 	</JSection>
 
