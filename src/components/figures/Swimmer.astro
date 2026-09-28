@@ -27,6 +27,9 @@ const ROW = 66;
 const TOP = 34;
 const height = TOP + paths.length * ROW + 20;
 const years = [2022, 2023, 2024, 2025, 2026];
+// Phone lanes: one per student, full width, drawn at about one unit per pixel so markers keep their size.
+const W = 340;
+const px = (at: string) => 8 + (months(at) / span) * (W - 16);
 
 const style: Record<Milestone, { color: string; name: string }> = {
 	course: { color: '#1b8a8f', name: 'RC course' },
@@ -38,8 +41,37 @@ const style: Record<Milestone, { color: string; name: string }> = {
 ---
 
 <figure class:list={[className]}>
-	<div class="j-plate reveal overflow-x-auto">
-		<svg viewBox={`0 0 1000 ${height}`} class="h-auto w-full min-w-[46rem]" role="img" aria-labelledby="swim-title swim-desc">
+	<div class="j-plate reveal">
+		<div class="md:hidden" aria-hidden="true">
+			<svg viewBox={`0 0 ${W} 14`} class="h-auto w-full">
+				{years.map((y) => <text x={px(`${y}-01`)} y="11" font-size="10.5" fill="#615d59" font-family="Inter Variable, sans-serif">{y}</text>)}
+			</svg>
+			<ol class="mt-1 space-y-4">
+				{paths.map((p, i) => (
+					<li>
+						<p class="text-[13.5px] leading-tight font-semibold">{p.name} <span class="font-normal text-ink-muted">· {p.origin}</span></p>
+						<svg viewBox={`0 0 ${W} 22`} class="mt-1 h-auto w-full">
+							{years.map((y) => <line x1={px(`${y}-01`)} x2={px(`${y}-01`)} y1="0" y2="22" stroke="#e4e1db" />)}
+							<rect class="grow-x" style={`--i:${i}`} x={px(p.events[0].at)} y="6" width={px(now) - px(p.events[0].at)} height="10" rx="2" fill="#02264d" fill-opacity="0.12" />
+							{p.events.map((e) => {
+								const c = style[e.kind].color;
+								return (
+									<g transform={`translate(${px(e.at)},11)`}>
+										{e.kind === 'course' && <circle r="6" fill="#fbfaf7" stroke={c} stroke-width="2.5" />}
+										{e.kind === 'abstract' && <rect x="-5.5" y="-5.5" width="11" height="11" transform="rotate(45)" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'paper' && <circle r="6.5" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'mentor' && <path d="M0,-8 L7,5 L-7,5 Z" fill={c} stroke="#fff" stroke-width="1.5" />}
+										{e.kind === 'outcome' && <path d="M0,-8.5 L2.4,-2.6 L8.6,-2.6 L3.6,1.2 L5.4,7.4 L0,3.7 L-5.4,7.4 L-3.6,1.2 L-8.6,-2.6 L-2.4,-2.6 Z" fill={c} stroke="#fff" stroke-width="1" />}
+									</g>
+								);
+							})}
+						</svg>
+						<p class="mt-1 text-[12.5px] leading-snug"><span class="font-semibold">{p.outcome[0]}</span> <span class="text-ink-muted">· {p.outcome[1]}</span></p>
+					</li>
+				))}
+			</ol>
+		</div>
+		<svg viewBox={`0 0 1000 ${height}`} class="hidden h-auto w-full md:block" role="img" aria-labelledby="swim-title swim-desc">
 			<title id="swim-title">Four students' paths from their first RC course</title>
 			<desc id="swim-desc">{paths.map((p) => `${p.name}: ${p.events.map((e) => `${e.at} ${e.what}`).join('; ')}`).join('. ')}</desc>
 			<g font-family="Inter Variable, sans-serif">
@@ -94,7 +126,7 @@ const style: Record<Milestone, { color: string; name: string }> = {
 		</ul>
 	</div>
 	<Caption label={label} title="Training and career milestones of four RC students, from the first course to September 2026.">
-		Each lane runs from the student's first RC course to September 2026. Hover over a marker for the event. Dates known
+		Each lane runs from the student's first RC course to September 2026. On a larger screen, hover over a marker for the event. Dates known
 		only to the year are drawn at mid-year. From students' own accounts on RC's channels.
 	</Caption>
 </figure>

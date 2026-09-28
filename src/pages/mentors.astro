@@ -121,18 +121,21 @@ const summary = [
 		<figure class="j-span j-rows">
 			<Caption label="Table 1" title="RC students and faculty who have held U.S. research fellowships." class="j-caption-top" />
 			<div class="overflow-x-auto">
-				<table class="j-table min-w-[36rem]">
-					<thead><tr><th scope="col">Fellow</th><th scope="col">Medical school</th><th scope="col">U.S. institution</th></tr></thead>
+				<table class="j-table sm:min-w-[36rem]">
+					<thead><tr><th scope="col">Fellow</th><th scope="col" class="hidden sm:table-cell">Medical school</th><th scope="col">U.S. institution</th></tr></thead>
 					<tbody>
 						{fellows.map((f, i) => (
 							<tr class:list={[i >= 5 && 'more']}>
 								<th scope="row" class="font-medium">
 									<span class="flex items-center gap-3">
 										<Image src={photo(f.photo)} alt="" width={30} height={30} class="size-7.5 shrink-0 rounded-full object-cover" />
-										{f.name}
+										<span>
+											{f.name}
+											<span class="block text-[12px] font-normal text-ink-muted sm:hidden">{f.school}</span>
+										</span>
 									</span>
 								</th>
-								<td>{f.school}</td>
+								<td class="hidden sm:table-cell">{f.school}</td>
 								<td>{f.place}</td>
 							</tr>
 						))}

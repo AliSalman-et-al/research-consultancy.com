@@ -54,7 +54,21 @@ const voices = [testimonials[0], testimonials[2], testimonials[3]];
 	<JSection title="Which Course Fits Your Question" label="Review" id="choosing">
 		<figure class="j-span">
 			<Caption label="Table 1" title="The five RC courses, by the question each one answers." class="j-caption-top" />
-			<div class="overflow-x-auto">
+			<!-- On a phone, each course is one entry rather than a table that scrolls sideways. -->
+			<ul class="divide-y divide-[#d7d5d1] border-y border-[#d7d5d1] md:hidden">
+				{courses.map((c) => (
+					<li class="py-3.5">
+						<a href={withBase(`/courses/${c.slug}`)} class="group flex items-center gap-2.5">
+							<span class:list={['block h-7 w-10 shrink-0 p-0.5', c.tint, c.ink]}><CourseArt art={c.art} /></span>
+							<span class="font-semibold text-navy underline decoration-orange/50 decoration-2 underline-offset-4 group-hover:decoration-orange">{c.name}</span>
+						</a>
+						<p class="mt-2 text-[15px] leading-snug">{c.question}</p>
+						<p class="mt-1 text-[13.5px] text-ink-muted">{fact(c, 'Length')} · Before you join: {c.prerequisite}</p>
+						<Registration slug={c.slug} variant="status" class="mt-2" />
+					</li>
+				))}
+			</ul>
+			<div class="hidden overflow-x-auto md:block">
 				<table class="j-table min-w-[58rem]">
 					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Length</th><th scope="col">Before you join</th><th scope="col">Registration</th></tr></thead>
 					<tbody>

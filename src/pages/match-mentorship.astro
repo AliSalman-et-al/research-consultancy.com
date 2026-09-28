@@ -126,14 +126,14 @@ const refs = [
 		<figure class="j-span">
 			<Caption label="Table 1" title="Components of Match Mentorship, 2026-27." class="j-caption-top" />
 			<div class="overflow-x-auto">
-				<table class="j-table min-w-[36rem]">
-					<thead><tr><th scope="col">Component</th><th scope="col">What you get</th><th scope="col">Target</th></tr></thead>
+				<table class="j-table sm:min-w-[36rem]">
+					<thead><tr><th scope="col">Component</th><th scope="col">What you get</th><th scope="col" class="hidden sm:table-cell">Target</th></tr></thead>
 					<tbody>
 						{included.map((item) => (
 							<tr class="align-top">
-								<th scope="row" class="font-semibold">{item.title}</th>
+								<th scope="row" class="font-semibold">{item.title}{item.target && <span class="mt-1 block text-[12.5px] font-normal text-ink-muted sm:hidden">{item.target}</span>}</th>
 								<td class="text-[14.5px]">{item.body}</td>
-								<td class="whitespace-nowrap">{item.target}</td>
+								<td class="hidden whitespace-nowrap sm:table-cell">{item.target}</td>
 							</tr>
 						))}
 					</tbody>
