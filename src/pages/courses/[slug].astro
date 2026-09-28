@@ -14,7 +14,7 @@ import CourseArt from '../../components/site/CourseArt.astro';
 import Layout from '../../layouts/Layout.astro';
 import { withBase } from '../../lib/paths';
 import { courses, type Course } from '../../data/courses';
-import { contact } from '../../data/site';
+import { contact, testimonials } from '../../data/site';
 
 export function getStaticPaths() {
 	return courses.map((course, i) => ({ params: { slug: course.slug }, props: { course, page: `e00${i + 3}` } }));
@@ -33,6 +33,12 @@ const isStart = course.stage === 'Start';
 const openToAll = isStart || course.prerequisite.startsWith('None');
 const software = (fact('Software') ?? '').replace(/, ([^,]+)$/, ' and $1');
 const topics = course.curriculum.reduce((n, b) => n + b.items.length, 0);
+// Up to two students of this course, in their own words, the shortest first.
+const tag: Record<string, string> = { 'level-1': 'Level 1', 'meta-analysis': 'Meta-Analysis' };
+const voices = testimonials
+	.filter((t) => tag[course.slug] && t.role.includes(tag[course.slug]))
+	.sort((a, b) => a.quote.length - b.quote.length)
+	.slice(0, 2);
 
 const summary = [
 	{ q: 'What is it?', a: course.summary },
@@ -116,7 +122,21 @@ const sections = [
 	<JSection title="After the Class" label="Follow-up" id="follow-up">
 		<div class="j-main j-prose">
 			{course.example && <p>{course.example.text}<sup><a class="cite" href="#ref-1" data-ref="1">1</a></sup></p>}
-			<p>Mentors guide the project groups, and research analysts check the statistics. <a href={withBase('/mentors')}>Meet them</a>.</p>
+			{isStart ? (
+				<p>Level 1 has no project group of its own. When you are ready for one, take a method course: each ends with a place in a group led by a mentor. <a href={withBase('/courses')}>Compare the courses</a>.</p>
+			) : (
+				<p>Mentors guide the project groups, and research analysts check the statistics. <a href={withBase('/mentors')}>Meet them</a>.</p>
+			)}
+			{voices.length > 0 && (
+				<ul class="not-prose grid gap-x-8 gap-y-6 pt-2 sm:grid-cols-2">
+					{voices.map((t) => (
+						<li class="flex flex-col">
+							<blockquote class="j-quote">"{t.quote}"</blockquote>
+							<p class="mt-auto pt-3 text-[13px]"><span class="font-semibold">{t.name}</span><span class="text-ink-muted">, {t.role}</span></p>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 		<aside class="j-margin">
 			<h3 class="j-box-title text-[14px]">Other courses</h3>
