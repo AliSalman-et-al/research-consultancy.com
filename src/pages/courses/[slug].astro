@@ -59,7 +59,20 @@ const sections = [
 ];
 ---
 
-<Layout accent={course.accent} runningHead={course.name} title={course.name} description={course.summary} register={course.slug}>
+<Layout
+	accent={course.accent}
+	runningHead={course.name}
+	title={course.name}
+	description={course.summary}
+	register={course.slug}
+	jsonLd={{
+		'@type': 'Course',
+		name: course.name,
+		description: course.summary,
+		url: Astro.site ? new URL(`/courses/${course.slug}/`, Astro.site).href : undefined,
+		provider: { '@type': 'EducationalOrganization', name: 'Research Consultancy', sameAs: Astro.site?.href },
+	}}
+>
 	<ArticleHead type="Design and Rationale" page={page} title={course.paperTitle} summary={summary} sections={sections}>
 		<p slot="byline" class="j-affil mt-4 flex items-center gap-2.5 text-[13.5px]">
 			<span class:list={['block h-7 w-10 shrink-0 p-0.5', course.tint, course.ink]}><CourseArt art={course.art} /></span>

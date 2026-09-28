@@ -18,6 +18,8 @@ interface Props {
 	runningHead?: string;
 	/** The colour of the page's article type. */
 	accent?: Accent;
+	/** Structured data (schema.org) describing the page, for search engines. */
+	jsonLd?: Record<string, unknown>;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
 	description = 'Research training and mentorship for medical students and doctors, from a first study to a PubMed-indexed paper and the U.S. Match.',
 	cta = { label: 'Start with Level 1', href: withBase('/courses/level-1') },
 	register,
+	jsonLd,
 	accent = 'navy',
 	runningHead = 'Research Consultancy',
 } = Astro.props;
@@ -48,6 +51,7 @@ const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : 
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImage} />
 		<title>{fullTitle}</title>
+		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...jsonLd })} />}
 	</head>
 	<body class="pb-16 lg:pb-0">
 		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-canvas focus:px-3 focus:py-2">Skip to content</a>

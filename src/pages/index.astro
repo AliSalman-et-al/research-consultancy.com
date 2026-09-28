@@ -12,7 +12,7 @@ import NextSteps from '../components/journal/NextSteps.astro';
 import Registration from '../components/journal/Registration.astro';
 import Layout from '../layouts/Layout.astro';
 import { withBase } from '../lib/paths';
-import { accArticle, contact, nrmp } from '../data/site';
+import { accArticle, contact, nrmp, social } from '../data/site';
 
 const sections = [
 	{ id: 'introduction', label: 'Why Research Matters' },
@@ -68,7 +68,19 @@ const refs = [
 ];
 ---
 
-<Layout accent="rust" runningHead="Your Name et al." description="Research Consultancy teaches medical students in any country to do clinical research, then supervises their first studies until they are submitted. Start with Level 1: two days, live on Zoom.">
+<Layout
+	accent="rust"
+	runningHead="Your Name et al."
+	jsonLd={{
+		'@type': 'EducationalOrganization',
+		name: 'Research Consultancy',
+		url: Astro.site?.href,
+		logo: Astro.site ? new URL('/rc-mark.png', Astro.site).href : undefined,
+		email: contact.email,
+		foundingDate: '2016',
+		sameAs: [social.instagram, social.facebook, social.linkedin],
+	}}
+	description="Research Consultancy teaches medical students in any country to do clinical research, then supervises their first studies until they are submitted. Start with Level 1: two days, live on Zoom.">
 	<ArticleHead
 		type="Original Article"
 		page="e001"
