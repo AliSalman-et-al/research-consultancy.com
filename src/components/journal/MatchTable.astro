@@ -24,7 +24,29 @@ const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('
 
 <figure class:list={[shown && 'j-rows']}>
 	<Caption label={label} title={title} class="j-caption-top" />
-	<div class="overflow-x-auto">
+	<!-- On a phone, each student is one entry: a four-column table would scroll sideways. -->
+	<div class="border-t border-[#d7d5d1] md:hidden">
+		{groups.map((g, gi) => (
+			<ul class:list={[shown && offsets[gi] >= shown && 'more']} aria-label={g.name}>
+				<li class="bg-[#f3f2f0] px-3 py-2 text-[13px] font-semibold">{g.name} <span class="font-normal text-ink-muted">({g.rows.length})</span></li>
+				{g.rows.map((m, ri) => (
+					<li class:list={['flex gap-3 border-b border-[#d7d5d1] px-1 py-3', shown && offsets[gi] + ri >= shown && 'more']}>
+						{m.photo ? (
+							<Image src={photo(m.photo)} alt="" width={40} height={40} class="size-10 shrink-0 rounded-full object-cover" />
+						) : (
+							<span class="grid size-10 shrink-0 place-items-center rounded-full bg-navy/10 text-[11px] font-semibold text-navy" aria-hidden="true">{initials(m.name)}</span>
+						)}
+						<div class="min-w-0 text-[14px] leading-snug">
+							<p class="font-semibold">{m.name}</p>
+							<p class="text-ink-secondary">{m.specialty}, {m.program}</p>
+							{m.quote && <p class="mt-1.5 text-[14px] text-ink-secondary italic">"{m.quote}"</p>}
+						</div>
+					</li>
+				))}
+			</ul>
+		))}
+	</div>
+	<div class="hidden overflow-x-auto md:block">
 		<table class="j-table min-w-[56rem]">
 			<thead>
 				<tr>

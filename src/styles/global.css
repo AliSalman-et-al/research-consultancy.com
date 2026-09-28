@@ -810,8 +810,9 @@
     box-shadow: inset 0 0 0 1px var(--rc-navy);
   }
   /* Tables show their first rows; the rest wait behind "Show all" */
-  .j-rows:has(> .j-expand:not([open])) :is(tr, tbody).more {
-    display: none;
+  .j-rows:has(> .j-expand:not([open])) :is(tr, tbody, ul, li).more {
+    /* Wins over a row's own display utility (a flex list item) */
+    display: none !important;
   }
 }
 

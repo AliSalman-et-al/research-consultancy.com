@@ -203,7 +203,7 @@ export const paths: MenteePath[] = [
 	{
 		name: 'Ali Salman',
 		origin: 'Year 1, Dow Medical College',
-		outcome: ['Head Mentor', 'Papers in EJHF and Circulation'],
+		outcome: ['Head Research Analyst', 'Papers in EJHF and Circulation'],
 		events: [
 			{ at: '2022-05', kind: 'course', what: 'Took Level 1' },
 			{ at: '2022-07', kind: 'course', what: 'Took the Meta-Analysis Masterclass' },
