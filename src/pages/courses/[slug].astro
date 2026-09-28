@@ -31,6 +31,7 @@ const refs = course.example ? [{ text: course.example.text, href: course.example
 const fact = (label: string) => course.facts.find((f) => f.label === label)?.value;
 const isStart = course.stage === 'Start';
 const openToAll = isStart || course.prerequisite.startsWith('None');
+const software = (fact('Software') ?? '').replace(/, ([^,]+)$/, ' and $1');
 const topics = course.curriculum.reduce((n, b) => n + b.items.length, 0);
 
 const summary = [
@@ -40,8 +41,8 @@ const summary = [
 		a: isStart
 			? 'Anyone: medical students in any year, graduates and doctors. You need a laptop and two free days, and no research experience.'
 			: openToAll
-				? `Anyone. Level 1 helps, because it covers the statistics this course builds on. You need a laptop that can run ${fact('Software')}.`
-				: `Students who have taken Level 1${course.prerequisite.includes('NIS') ? ', ideally the National Inpatient Sample course too' : ''}. You need a laptop that can run ${fact('Software')}.`,
+				? `Anyone. Level 1 helps, because it covers the statistics this course builds on. You need a laptop that can run ${software}.`
+				: `Students who have taken Level 1${course.prerequisite.includes('NIS') ? ', ideally the National Inpatient Sample course too' : ''}. You need a laptop that can run ${software}.`,
 	},
 	{ q: 'What happens after?', a: course.afterClass },
 ];

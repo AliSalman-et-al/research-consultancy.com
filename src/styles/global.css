@@ -483,6 +483,10 @@
   .j-head > span {
     display: block;
   }
+  header + section .j-head {
+    border-top: 0;
+    padding-top: 0;
+  }
   .j-imrad,
   .j-paperhead {
     font-family: var(--font-sans);
@@ -806,7 +810,7 @@
     box-shadow: inset 0 0 0 1px var(--rc-navy);
   }
   /* Tables show their first rows; the rest wait behind "Show all" */
-  .j-rows:has(> .j-expand:not([open])) tr.more {
+  .j-rows:has(> .j-expand:not([open])) :is(tr, tbody).more {
     display: none;
   }
 }

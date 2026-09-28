@@ -88,7 +88,7 @@ function words(s: Subject, state: State, k?: Klass) {
 			full: '',
 			closed: program ? '' : 'No class announced yet',
 		}[state],
-		when: k && !program ? `Next class ${span(k)}, live on Zoom` : k && program ? `Program starts ${span(k)}` : '',
+		when: k && !program ? `Next class ${span(k)}, live on Zoom` : k && program ? `Program starts ${span({ starts: k.starts } as Klass)}` : '',
 		// The same button in every state, so a closed class reads as an inactive button, not a missing one.
 		action: program ? `Apply for ${s.name}` : `Register for ${s.name}`,
 	};

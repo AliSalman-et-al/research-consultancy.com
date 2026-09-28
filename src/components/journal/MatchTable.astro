@@ -5,19 +5,24 @@ import { Image } from 'astro:assets';
 import type { Matched } from '../../data/people';
 import { photo } from '../../lib/photos';
 import Caption from './Caption.astro';
+import Expand from './Expand.astro';
 
 interface Props {
 	label: string;
 	title: string;
 	groups: { name: string; rows: Matched[] }[];
 	footnote: string;
+	/** Show this many rows, then "Show all". */
+	shown?: number;
 }
 
-const { label, title, groups, footnote } = Astro.props;
+const { label, title, groups, footnote, shown } = Astro.props;
+const total = groups.reduce((n, g) => n + g.rows.length, 0);
+const offsets = groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.rows.length, 0));
 const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('');
 ---
 
-<figure>
+<figure class:list={[shown && 'j-rows']}>
 	<Caption label={label} title={title} class="j-caption-top" />
 	<div class="overflow-x-auto">
 		<table class="j-table min-w-[56rem]">
@@ -29,11 +34,11 @@ const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('
 					<th scope="col">In their words</th>
 				</tr>
 			</thead>
-			{groups.map((g) => (
-				<tbody>
+			{groups.map((g, gi) => (
+				<tbody class:list={[shown && offsets[gi] >= shown && 'more']}>
 					<tr class="group"><th scope="colgroup" colspan="4">{g.name} <span class="font-normal text-ink-muted">({g.rows.length})</span></th></tr>
-					{g.rows.map((m) => (
-						<tr class="align-top">
+					{g.rows.map((m, ri) => (
+						<tr class:list={['align-top', shown && offsets[gi] + ri >= shown && 'more']}>
 							<th scope="row" class="font-medium">
 								<span class="flex items-center gap-3">
 									{m.photo ? (
@@ -57,4 +62,5 @@ const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('
 		</table>
 	</div>
 	<p class="j-tablenote">{footnote}</p>
+	{shown && total > shown && <Expand label={`Show all ${total} students`} class="mt-3" />}
 </figure>

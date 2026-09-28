@@ -47,7 +47,7 @@ const sections = [
 		page="e012"
 		title="Contact Us: The Fastest Ways to Reach the RC Team"
 		summary={[
-			{ q: 'Fastest reply?', a: 'WhatsApp, on the number beside this summary. Email works too.' },
+			{ q: 'Fastest reply?', a: `WhatsApp, on ${contact.whatsapp.label}. Email works too.` },
 			{ q: 'Not sure what to ask?', a: 'Fill in the letter below. It writes the message for you, and you send it from your own WhatsApp or email.' },
 			{ q: 'Applying for residency?', a: `Message the Match Mentorship team on ${contact.matchWhatsapp.label}.` },
 		]}
@@ -62,7 +62,7 @@ const sections = [
 		/>
 	</ArticleHead>
 
-	<JSection title="Write Your Letter" label="Correspondence" id="letter">
+	<JSection title="Write Your Letter" label="Letter to the Editors" id="letter">
 		<form class="j-main grid gap-4 sm:grid-cols-2" id="composer" aria-describedby="composer-note">
 			<label class="grid gap-1.5 text-[14px] font-semibold">
 				Your name
