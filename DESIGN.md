@@ -400,7 +400,7 @@ Buttons keep a 44px minimum height. Links in body text are underlined in orange,
 - The article grid collapses to one column: section head, then text, then its figure.
 - The "On this page" contents line sticks under the site header and scrolls sideways on phones.
 - The navigation condenses to a menu below 1024px.
-- Wide tables scroll horizontally inside their own container, never the page.
+- A table never makes a phone scroll sideways. Wide tables become stacked entries on phones (the course comparison, the Match table), and a secondary column folds under the row's name (the Match Mentorship components' targets, the fellows' medical schools). Every page is checked at 320px and 375px.
 - The graphical abstract stacks its stages vertically.
 - The timeline goes from 7 columns to 4 to 2.
 
@@ -526,11 +526,11 @@ Figures are the richest element on every page and must carry real information:
 - **Central Illustration** (`Pathway`). The RC pathway in five stages, with each course chip carrying its registration padlock.
 - **Map.** Match 2026 programs (orange circles), selected Match 2025 programs (sky circles) and postdoctoral research posts (purple diamonds). The three colours pass a colour-vision check; shape carries the posts as well. Rendered at build time from `us-atlas` with `d3-geo`; no client JavaScript.
 - **Timeline.** Milestones from 2016 to 2026, one colour per year band.
-- **Bar figures** (`BarFigure`). One measure, navy bars, orange for RC's own rows, the value printed at the end of every bar, recessive gridlines and an optional dashed threshold line. Bars grow in once when scrolled into view.
+- **Bar figures** (`BarFigure`). One measure, navy bars, orange for RC's own rows, the value printed at the end of every bar, recessive gridlines and an optional dashed threshold line. Bars grow in once when scrolled into view. When rows carry portraits (the homepage's four students), each name and face sits above its bar, so long labels never squeeze the bars.
 - **Study anatomy** (`StudyAnatomy`). Panel A traces one real student paper through its five stages (question, data, analysis, abstract, paper), each named with the real detail and the paper linked. Panel B shows what four kinds of first study need (patients, ethics review, hospital access), and why RC teaches the two that need none. It answers "what is research, concretely?" for a first-time visitor.
 - **Dumbbell chart** (`Dumbbell`). Two values per row joined by a line, filled orange for the group that did better and hollow grey for the other, with the pair printed at the end. The homepage uses it for median publications of matched and unmatched non-U.S. IMGs in the ten specialties they apply to most (NRMP 2026).
-- **Swimmer plot** (`Swimmer`). After oncology papers: one lane per student from the first RC course to today, with a shape per milestone (open circle course, diamond first abstracts, filled circle first paper, triangle mentor role, star fellowship, match or major paper). Year-only dates sit at mid-year and the caption says so.
-- **Match table** (`MatchTable`). On Student Results: one table for every Match year, grouped by year, with each student's own words in their row.
+- **Swimmer plot** (`Swimmer`). On phones each student gets a full-width lane with the name above and the outcome below, drawn at about one unit per pixel so the markers keep their size. After oncology papers: one lane per student from the first RC course to today, with a shape per milestone (open circle course, diamond first abstracts, filled circle first paper, triangle mentor role, star fellowship, match or major paper). Year-only dates sit at mid-year and the caption says so.
+- **Match table** (`MatchTable`). On Student Results: one table for every Match year, grouped by year, with each student's own words in their row. It shows six students, then "Show all"; on phones each student is a stacked entry rather than a four-column table.
 - **Waffle figures** (`Waffle`). 100 squares per panel for shares of RC's students (70% women, 33% rural).
 - **Comparison tables with external data.** The homepage and Match Mentorship open with NRMP Charting Outcomes 2026 (non-U.S. IMGs): matched and unmatched applicants reported the same median number of publications, which is why RC argues for mentorship, letters and interviews as well as papers. External numbers are cited; RC's numbers are never presented as a controlled comparison.
 - **Method figures, one per course.** Level 1: the anatomy of a paper. Meta-analysis: a forest plot. CDC WONDER: a joinpoint trend line. NIS: grouped bars. NRD: a cumulative readmission curve. Every caption says **Illustrative data**.
