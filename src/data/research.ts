@@ -28,7 +28,7 @@ export const menteePapers: Paper[] = [
 		year: 2025,
 		href: 'https://doi.org/10.1161/circulationaha.124.072158',
 		kind: 'Review',
-		note: 'Co-authored by an RC mentee in the fourth year of medical school.',
+		note: 'Co-authored by an RC student in the fourth year of medical school.',
 	},
 	{
 		title: 'Predictors and outcomes of 30-day readmissions in patients hospitalized for acute ischemic stroke undergoing mechanical thrombectomy',
@@ -218,7 +218,7 @@ export const paths: MenteePath[] = [
 
 export const events = [
 	{ photo: 'events/cheema-hrs-2025.jpg', caption: 'Asad Cheema with a poster at Heart Rhythm 2025, eight months after taking Level 1.' },
-	{ photo: 'events/leadership-aha-2023.jpg', caption: 'RC faculty and mentees at the American Heart Association Scientific Sessions, 2023.' },
+	{ photo: 'events/leadership-aha-2023.jpg', caption: 'RC faculty and students at the American Heart Association Scientific Sessions, 2023.' },
 	{ photo: 'events/sheraz-acg-2025.jpg', caption: 'Sheraz Hakeem with a first-author poster at the American College of Gastroenterology meeting, 2025.' },
 	{ photo: 'events/ali-aha-2023.jpg', caption: 'Ali Salman presenting one of three abstracts at AHA Scientific Sessions, 2023.' },
 	{ photo: 'events/izza-presentation.jpg', caption: 'Izza Shahid presenting research at a scientific meeting.', position: '88% 40%' },
@@ -226,9 +226,9 @@ export const events = [
 ];
 
 export const awards = [
-	{ title: 'Paul Dudley White International Scholar Award, 2024', detail: "The American Heart Association gives this award to the highest-ranked abstract from each country. Mentees won it for a CDC WONDER analysis of mortality from pericardial disease." },
-	{ title: '40 abstracts at ACC.25', detail: 'All 40 were published in JACC. In 2024, more than 50 mentee abstracts were accepted at AHA Scientific Sessions.' },
-	{ title: 'Correspondence in The Lancet, 2025', detail: "Mentees wrote on Sudan's measles epidemic and children who have had no vaccine doses. Other mentees have published in The Lancet Psychiatry." },
+	{ title: 'Paul Dudley White International Scholar Award, 2024', detail: "The American Heart Association gives this award to the highest-ranked abstract from each country. Students won it for a CDC WONDER analysis of mortality from pericardial disease." },
+	{ title: '40 abstracts at ACC.25', detail: 'All 40 were published in JACC. In 2024, more than 50 student abstracts were accepted at AHA Scientific Sessions.' },
+	{ title: 'Correspondence in The Lancet, 2025', detail: "Students wrote on Sudan's measles epidemic and children who have had no vaccine doses. Other students have published in The Lancet Psychiatry." },
 	{ title: 'First place for best abstract poster', detail: 'Mohammad Saad Javaid, APPNA Young Physicians Committee, chosen from 90 submissions.' },
 	{ title: "One of JAMA's top 10 papers of 2022", detail: "Dr. Shahzeb Khan's CDC WONDER analysis in JAMA Cardiology." },
 	{ title: 'Faculty at HFSA 2025', detail: 'Dr. Khan presented a study of intravenous ferric carboxymaltose at the Heart Failure Society of America meeting.' },

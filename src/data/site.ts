@@ -1,3 +1,5 @@
+import type { Klass } from '../lib/registration';
+
 // Site-wide facts. Sources: research-consultancy.org, RC's Instagram and its programs' records,
 // and M. S. Khan, "Fostering the next generation of physician-scientists in developing
 // countries", ACC Fellows in Training Section, January 2024.
@@ -14,12 +16,9 @@ export const social = {
 	linkedin: 'https://www.linkedin.com/company/research-consultancy-rc/',
 };
 
-// Enrollment still runs through the current site's checkout pages.
-export const enrol = {
-	level1: 'https://research-consultancy.org/classes/level-1/',
-	metaAnalysis: 'https://buy.stripe.com/14AfZhfOk1Rjckw1O8f7i0c',
-	match: 'https://research-consultancy.org/static-pages/rc-match-mentorship/',
-};
+// Match Mentorship intakes, each with its application window and link. Empty means applications are
+// closed. Course classes live with their courses, in courses.ts.
+export const matchApplications: Klass[] = [];
 
 export const accArticle =
 	'https://www.acc.org/membership/sections-and-councils/fellows-in-training-section/section-updates/2024/01/22/19/04/fostering-the-next-generation-of-physician-scientists-in-developing-countries';
@@ -29,7 +28,7 @@ export const nrmp = 'https://www.nrmp.org/wp-content/uploads/2026/07/Non-US-IMG_
 export const nav = [
 	{ label: 'Courses', href: '/courses' },
 	{ label: 'Match Mentorship', href: '/match-mentorship' },
-	{ label: 'Results', href: '/results' },
+	{ label: 'Student Results', href: '/results' },
 	{ label: 'Mentors', href: '/mentors' },
 	{ label: 'About', href: '/about' },
 	{ label: 'Contact', href: '/contact' },

@@ -1,68 +1,41 @@
 ---
-import PageBreak from './PageBreak.astro';
-// Every page ends on the same three-way choice, so a reader always knows what to do next.
-import { contact, enrol } from '../../data/site';
+// The article's last line: one action that fits this page, and a way to ask first. On a course
+// page, that action is the course's own registration.
+import { contact } from '../../data/site';
 import { withBase } from '../../lib/paths';
+import Registration from './Registration.astro';
 
 interface Props {
-	/** Make this row's button the primary one. */
+	/** Which next step this page leads to. */
 	focus?: 'start' | 'publish' | 'match';
+	/** A course's slug: end on its registration instead. */
+	register?: string;
 }
 
-const { focus = 'start' } = Astro.props;
+const { focus = 'start', register } = Astro.props;
 
-const rows = [
-	{
-		key: 'start',
-		who: "You've never done research",
-		start: 'Level 1',
-		takes: 'Two days on Zoom. $35.',
-		action: 'Enroll in Level 1',
-		href: enrol.level1,
-		color: '#1b8a8f',
-	},
-	{
-		key: 'publish',
-		who: 'You know the basics and want to publish',
-		start: 'A method course',
-		takes: 'Two or three days of teaching, then a place in a mentored project group.',
-		action: 'Choose a course',
-		href: '/courses',
-		color: '#7b4fa0',
-	},
-	{
-		key: 'match',
-		who: "You're applying for residency in the next two years",
-		start: 'Match Mentorship',
-		takes: 'Twelve months of research, application help and interview practice. 20 places.',
-		action: 'See Match Mentorship',
-		href: '/match-mentorship',
-		color: '#f67737',
-	},
-] as const;
+const steps = {
+	start: { lead: 'Start with Level 1.', detail: 'Two live days on Zoom. No research experience needed.', action: 'See Level 1', href: '/courses/level-1' },
+	publish: { lead: 'Ready for a first study?', detail: 'Pick a method course; a mentored project group follows it.', action: 'Choose a course', href: '/courses' },
+	match: { lead: 'Applying for residency in the next two years?', detail: 'Match Mentorship takes 20 students a year.', action: 'See how to apply', href: '/match-mentorship#apply' },
+} as const;
+const s = steps[focus];
 ---
 
-<PageBreak />
-<section id="next-steps" aria-labelledby="next-steps-title" class="no-print scroll-mt-28 bg-canvas-soft">
-	<div class="pad pt-8 pb-10 md:pt-10 md:pb-12">
-		<h2 id="next-steps-title" class="j-head">Next steps</h2>
-		<p class="mt-3 text-[1.0625rem] text-ink-secondary">Find the row that describes you.</p>
-		<ul class="mt-4 divide-y divide-[#d7d5d1] border-y border-[#d7d5d1] bg-white">
-			{rows.map((r) => (
-				<li class="grid items-center gap-x-6 gap-y-2 px-4 py-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_auto] md:px-5">
-					<p class="flex items-start gap-2.5 font-semibold">
-						<span class="mt-[0.4em] size-2.5 shrink-0" style={`background:${r.color}`} aria-hidden="true"></span>
-						{r.who}
-					</p>
-					<p class="pl-5 text-[15.5px] leading-snug text-ink-secondary md:pl-0">
-						<span class="font-sans font-semibold text-navy">{r.start}.</span> {r.takes}
-					</p>
-					<a href={r.href.startsWith('/') ? withBase(r.href) : r.href} class:list={['btn-sm ml-5 justify-self-start md:ml-0 md:justify-self-end', focus === r.key ? 'btn-primary' : 'btn-secondary']} rel={r.href.startsWith('http') ? 'noopener' : undefined}>{r.action}</a>
-				</li>
-			))}
-		</ul>
-		<p class="mt-4 text-[14.5px] text-ink-muted">
-			Not sure which fits? <a href={contact.whatsapp.href} class="link" rel="noopener">Message us on WhatsApp</a> with your year and your plans, and a mentor will suggest one.
-		</p>
+<section id="next-steps" aria-label="Next step" class="no-print scroll-mt-28">
+	<div class="pad pb-10 md:pb-12">
+		<div class="flex flex-col gap-4 border-y-[1.5px] border-navy py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+			{register ? (
+				<Registration slug={register} variant="row" class="reg-strip min-w-0 flex-1" />
+			) : (
+				<p class="text-[1.0625rem] leading-snug text-ink-secondary">
+					<span class="font-semibold text-navy">{s.lead}</span> {s.detail}
+				</p>
+			)}
+			<div class="flex shrink-0 flex-wrap gap-2">
+				{!register && <a href={withBase(s.href)} class="btn-primary">{s.action}</a>}
+				<a href={contact.whatsapp.href} class="btn-secondary" rel="noopener">Ask on WhatsApp</a>
+			</div>
+		</div>
 	</div>
 </section>

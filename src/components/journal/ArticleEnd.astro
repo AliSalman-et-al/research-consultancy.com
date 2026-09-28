@@ -6,7 +6,7 @@ import { contact } from '../../data/site';
 import { withBase } from '../../lib/paths';
 
 interface Props {
-	/** Page number in the volume, as in "Res Consult. 2026;10:e001". */
+	/** Page number in the volume, as in "Ann Res Consult. 2026;10:e001". */
 	page: string;
 	refs?: { text: string; href?: string }[];
 	/** Point readers to the Supplemental Material (the Results page). */
@@ -14,13 +14,13 @@ interface Props {
 }
 
 const { page, refs = [], supplement = false } = Astro.props;
-const citation = `Res Consult. 2026;10:${page}`;
+const citation = `Ann Res Consult. 2026;10:${page}`;
 ---
 
 <section aria-label="Article information and references">
 	<div class="pad j-grid pt-8 pb-8 md:pt-10">
 		<div class="j-main">
-			<h2 class="j-head">Article Information</h2>
+			<h2 class="j-paperhead">Article Information</h2>
 			<dl class="mt-4 space-y-2.5 text-[14px] leading-relaxed text-ink-secondary">
 				<div>
 					<dt class="inline font-semibold text-ink">Correspondence </dt>
@@ -40,7 +40,7 @@ const citation = `Res Consult. 2026;10:${page}`;
 		</div>
 		{refs.length > 0 && (
 			<div class="j-margin">
-				<h2 class="j-head">References</h2>
+				<h2 class="j-paperhead">References</h2>
 				<ol class="mt-4 space-y-2.5">
 					{refs.map((r, i) => (
 						<li id={`ref-${i + 1}`} class="grid scroll-mt-32 grid-cols-[1.5rem_1fr] target:bg-orange/10">

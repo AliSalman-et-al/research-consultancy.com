@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { withBase } from '../lib/paths';
 import SiteFooter from '../components/site/SiteFooter.astro';
 import SiteHeader from '../components/site/SiteHeader.astro';
+import Registration from '../components/journal/Registration.astro';
 import { contact } from '../data/site';
 import { accents, type Accent } from '../data/accents';
 
@@ -10,7 +11,9 @@ interface Props {
 	title?: string;
 	description?: string;
 	/** The page's one primary action, shown in the header and in the phone action bar. */
-	cta?: { label: string; href: string; note?: string };
+	cta?: { label: string; href: string };
+	/** On a course page, the header and phone bar register for this course (or show it closed). */
+	register?: string;
 	/** Short running head printed at the top of each page after the first. */
 	runningHead?: string;
 	/** The colour of the page's article type. */
@@ -20,7 +23,8 @@ interface Props {
 const {
 	title = 'Research Consultancy',
 	description = 'Research training and mentorship for medical students and doctors, from a first study to a PubMed-indexed paper and the U.S. Match.',
-	cta = { label: 'Start with Level 1', href: withBase('/courses/level-1'), note: 'Two days on Zoom · $35' },
+	cta = { label: 'Start with Level 1', href: withBase('/courses/level-1') },
+	register,
 	accent = 'navy',
 	runningHead = 'Research Consultancy',
 } = Astro.props;
@@ -47,23 +51,69 @@ const ogImage = Astro.site ? new URL(withBase('/RC-Logo.png'), Astro.site).href 
 	</head>
 	<body class="pb-16 lg:pb-0">
 		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-canvas focus:px-3 focus:py-2">Skip to content</a>
-		<SiteHeader cta={cta} />
-		<main id="main" class="lg:px-6 lg:py-10">
+		<SiteHeader cta={cta} register={register} />
+		<main id="main" class="px-2.5 py-2.5 lg:px-6 lg:py-10">
 			<div class="frame sheet relative" style={`--rh:${JSON.stringify(runningHead)}`}>
 				<slot />
 			</div>
 		</main>
 		<SiteFooter />
-		<div class="no-print fixed inset-x-0 bottom-0 z-50 flex items-center gap-3 border-t border-hairline bg-canvas/95 px-4 py-2.5 backdrop-blur-md lg:hidden">
-			<div class="min-w-0 flex-1">
-				<a href={cta.href} class="btn-primary btn-sm w-full" rel={cta.href.startsWith('http') || cta.href.startsWith('mailto') ? 'noopener' : undefined}>{cta.label}</a>
+		<div class="action-bar no-print fixed inset-x-0 bottom-0 z-50 flex items-center gap-3 border-t border-hairline bg-canvas/95 px-4 py-2.5 backdrop-blur-md lg:hidden">
+			<div class="min-w-0 flex-1 [&_a]:w-full [&_span]:w-full">
+				{register
+					? <Registration slug={register} variant="button" />
+					: <a href={cta.href} class="btn-primary btn-sm w-full" rel={cta.href.startsWith('http') || cta.href.startsWith('mailto') ? 'noopener' : undefined}>{cta.label}</a>}
 			</div>
 			<a href={contact.whatsapp.href} class="btn-secondary btn-sm shrink-0" rel="noopener" aria-label="Message us on WhatsApp">
 				<svg viewBox="0 0 24 24" class="size-4 text-green" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
 				WhatsApp
 			</a>
 		</div>
+		<div class="page-counter no-print" aria-hidden="true"></div>
 		<script>
+			import { renderReg, subjectFor, type Variant } from '../lib/registration';
+
+			// Registration blocks: redraw with today's date, so a class opens and closes on time. On the dev
+			// server, ?preview (or ?preview=open, soon, full or closed) swaps in placeholder classes.
+			const params = new URLSearchParams(location.search);
+			const preview = import.meta.env.DEV && params.has('preview') ? params.get('preview') || 'mix' : null;
+			document.querySelectorAll<HTMLElement>('[data-reg]').forEach((el) => {
+				el.innerHTML = renderReg(subjectFor(el.dataset.reg!, preview), el.dataset.variant as Variant);
+			});
+
+			// Page counter: "2 / 5" while scrolling, as a PDF viewer shows it. A page starts at each
+			// page break's running head.
+			const counter = document.querySelector<HTMLElement>('.page-counter');
+			const heads = [...document.querySelectorAll<HTMLElement>('.pb-head')];
+			let hide = 0;
+			let ticking = false;
+			if (counter && heads.length) {
+				addEventListener('scroll', () => {
+					if (ticking) return;
+					ticking = true;
+					requestAnimationFrame(() => {
+						ticking = false;
+						const mid = innerHeight * 0.45;
+						const page = 1 + heads.filter((h) => h.getBoundingClientRect().top < mid).length;
+						counter.textContent = `${page} / ${heads.length + 1}`;
+						counter.classList.add('on');
+						clearTimeout(hide);
+						hide = window.setTimeout(() => counter.classList.remove('on'), 1100);
+					});
+				}, { passive: true });
+			}
+
+			// The phone action bar stays out of the way while the page's own action panel is on screen
+			// or still below it.
+			const bar = document.querySelector<HTMLElement>('.action-bar');
+			const panel = document.querySelector('[data-action-panel]');
+			if (bar && panel) {
+				bar.classList.add('away');
+				new IntersectionObserver(([e]) => {
+					bar.classList.toggle('away', e.isIntersecting || e.boundingClientRect.top > 0);
+				}).observe(panel);
+			}
+
 			// Citations: tooltip with the reference, and an anchor for "Back to text".
 			document.querySelectorAll<HTMLAnchorElement>('a.cite').forEach((a) => {
 				const n = a.dataset.ref;

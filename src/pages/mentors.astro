@@ -1,50 +1,43 @@
 ---
 import { Image } from 'astro:assets';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
-import ActionPanel from '../components/journal/ActionPanel.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import BarFigure from '../components/figures/BarFigure.astro';
 import Caption from '../components/journal/Caption.astro';
+import Expand from '../components/journal/Expand.astro';
 import JSection from '../components/journal/JSection.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
 import Layout from '../layouts/Layout.astro';
 import { fellows, leaders, mentors } from '../data/people';
-import { withBase } from '../lib/paths';
 import { contact } from '../data/site';
 import { photo } from '../lib/photos';
 
+const analysts = mentors.filter((m) => m.role.includes('Analyst'));
+const groupMentors = mentors.filter((m) => !m.role.includes('Analyst'));
+const bars = (people: typeof mentors) =>
+	[...people].sort((a, b) => parseInt(b.publications) - parseInt(a.publications)).map((m) => ({ label: m.name, value: parseInt(m.publications), text: m.publications }));
+
 const sections = [
 	{ id: 'faculty', label: 'Faculty' },
-	{ id: 'mentors', label: 'Mentors and analysts' },
-	{ id: 'fellows', label: 'Alumni' },
-	{ id: 'join', label: 'Call for mentors' },
+	{ id: 'analysts', label: 'Research Analysts' },
+	{ id: 'mentors', label: 'Mentors' },
+	{ id: 'fellows', label: 'Where Students Went' },
+	{ id: 'join', label: 'Join Us' },
 ];
 
-const abstract = [
-	{
-		label: 'Abstract',
-		text: 'Four physician-scientists at U.S. hospitals lead RC, teach its courses and supervise its projects, with more than 900 publications between them. Twelve mentors and research analysts, most of them former RC students, run the project groups week to week. More than 20 students have gone on to research jobs at U.S. hospitals, and two of them now sit on the faculty.',
-	},
+const summary = [
+	{ a: 'Four physician-scientists at U.S. hospitals lead RC, teach its courses and supervise its projects. Between them they have more than 900 publications.' },
+	{ a: 'Four research analysts, specialists in statistics, check the analysis. Eight mentors, most of them former RC students, guide each project group to publication.' },
+	{ a: 'More than 20 students have gone on to research jobs at U.S. hospitals. Two of them now teach on the faculty.' },
 ];
 ---
 
-<Layout accent="blue" runningHead="Editorial Board" title="Mentors" description="The physician-scientists who lead RC, the mentors who run its project groups, and the students now in U.S. research jobs.">
-	<ArticleHead type="Editorial Board" page="e010" title="Faculty, Mentors and Research Analysts" abstract={abstract} sections={sections}>
+<Layout accent="blue" runningHead="Editorial Board" title="Mentors" description="The physician-scientists who lead RC, the research analysts who guide the statistics, the mentors who guide each project group, and the students now in U.S. research jobs.">
+	<ArticleHead type="Editorial Board" page="e010" title="The Faculty, Analysts and Mentors Who Will Supervise Your Research" summary={summary} columns sections={sections}>
 		<p slot="byline" class="j-affil mt-4 text-[13.5px]">The people who will teach you, check your work and write your letters.</p>
-		<ActionPanel
-			slot="aside"
-			title="Learn with them"
-			lead={{ label: 'Level 1, the first course', value: '$35' }}
-			facts={[
-				{ label: 'Taught by', value: 'RC faculty' },
-				{ label: 'Length', value: '2 days, 6 hours each' },
-			]}
-			primary={{ label: 'See Level 1 and enroll', href: withBase('/courses/level-1') }}
-			secondary={{ label: 'Ask us on WhatsApp', href: contact.whatsapp.href }}
-		/>
 	</ArticleHead>
 
-	<JSection title="Faculty" id="faculty">
+	<JSection title="The Faculty" label="Senior Editors" id="faculty">
 		<ul class="j-span grid gap-x-10 gap-y-12 md:grid-cols-2">
 			{leaders.map((p) => (
 				<li class="grid gap-5 sm:grid-cols-[9rem_1fr]">
@@ -61,14 +54,44 @@ const abstract = [
 		</ul>
 	</JSection>
 
-	<JSection title="Mentors and Research Analysts" id="mentors" newPage>
+	<JSection title="Research Analysts" label="Statistical Editors" id="analysts" newPage>
 		<div class="j-main">
 			<p class="j-prose">
-				Mentors meet their project groups every week and read every draft. Research analysts help teach the database courses
-				and check each group's statistics. Most of them sat in the same courses a year or two earlier (Figure 1).
+				Research analysts are senior mentors who specialize in statistics. They help mentors and project groups analyze
+				their data correctly, in databases such as the National Inpatient Sample and the Nationwide Readmissions Database,
+				and give statistical guidance (Figure 1).
 			</p>
 			<ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4">
-				{mentors.map((m) => (
+				{analysts.map((m) => (
+					<li>
+						<Image src={photo(m.photo)} alt={`Portrait of ${m.name}`} widths={[200, 400]} sizes="(min-width: 640px) 9rem, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
+						<p class="mt-2 text-[14px] leading-snug font-semibold">{m.name}</p>
+						<p class="mt-0.5 text-[12px] leading-snug text-ink-muted">{m.role}, {m.place}</p>
+					</li>
+				))}
+			</ul>
+		</div>
+		<BarFigure
+			class="j-margin lg:self-start"
+			label="Figure 1"
+			title="Publications by RC research analysts."
+			rows={bars(analysts)}
+			max={60}
+			ticks={[0, 10, 20, 30, 40, 50, 60]}
+			axis="Papers"
+		>
+			Publication counts as listed by RC, September 2026.
+		</BarFigure>
+	</JSection>
+
+	<JSection title="Mentors" label="Associate Editors" id="mentors" newPage>
+		<div class="j-main">
+			<p class="j-prose">
+				Mentors are experienced researchers, most of them former RC students. Each guides a project group to publication,
+				reviewing its work from the first draft to submission (Figure 2).
+			</p>
+			<ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4">
+				{groupMentors.map((m) => (
 					<li>
 						<Image src={photo(m.photo)} alt={`Portrait of ${m.name}`} widths={[200, 400]} sizes="(min-width: 640px) 9rem, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
 						<p class="mt-2 text-[14px] leading-snug font-semibold">{m.name}</p>
@@ -79,9 +102,9 @@ const abstract = [
 		</div>
 		<BarFigure
 			class="j-margin lg:sticky lg:top-32 lg:self-start"
-			label="Figure 1"
-			title="Publications by RC mentors and research analysts."
-			rows={[...mentors].sort((a, b) => parseInt(b.publications) - parseInt(a.publications)).map((m) => ({ label: m.name, value: parseInt(m.publications), text: m.publications }))}
+			label="Figure 2"
+			title="Publications by RC mentors."
+			rows={bars(groupMentors)}
 			max={60}
 			ticks={[0, 10, 20, 30, 40, 50, 60]}
 			axis="Papers"
@@ -91,18 +114,18 @@ const abstract = [
 		</BarFigure>
 	</JSection>
 
-	<JSection title="Alumni in U.S. Research Posts" id="fellows" newPage>
+	<JSection title="Where Students Went Next" label="Alumni" id="fellows" newPage>
 		<div class="j-main j-prose">
 			<p>More than 20 of our students have gone on to research jobs at U.S. hospitals, a common step before applying for residency. Table 1 lists 12 of them, including two who now teach on our faculty.</p>
 		</div>
-		<figure class="j-span">
+		<figure class="j-span j-rows">
 			<Caption label="Table 1" title="RC students and faculty who have held U.S. research fellowships." class="j-caption-top" />
 			<div class="overflow-x-auto">
 				<table class="j-table min-w-[36rem]">
 					<thead><tr><th scope="col">Fellow</th><th scope="col">Medical school</th><th scope="col">U.S. institution</th></tr></thead>
 					<tbody>
-						{fellows.map((f) => (
-							<tr>
+						{fellows.map((f, i) => (
+							<tr class:list={[i >= 5 && 'more']}>
 								<th scope="row" class="font-medium">
 									<span class="flex items-center gap-3">
 										<Image src={photo(f.photo)} alt="" width={30} height={30} class="size-7.5 shrink-0 rounded-full object-cover" />
@@ -117,10 +140,11 @@ const abstract = [
 				</table>
 			</div>
 			<p class="j-tablenote">Selected from RC's fellowship announcements.</p>
+			<Expand label={`Show all ${fellows.length} fellows`} class="mt-3" />
 		</figure>
 	</JSection>
 
-	<JSection title="Call for Mentors and Ambassadors" id="join">
+	<JSection title="Join Us as a Mentor or Ambassador" label="Call for Papers" id="join">
 		<div class="j-main">
 			<h3 class="j-subhead">Ambassadors</h3>
 			<p class="j-prose mt-2">

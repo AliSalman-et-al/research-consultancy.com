@@ -1,132 +1,110 @@
 ---
 import { Image } from 'astro:assets';
 import MatchYear from '../components/figures/MatchYear.astro';
-import Abbreviations from '../components/journal/Abbreviations.astro';
 import ActionPanel from '../components/journal/ActionPanel.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import Caption from '../components/journal/Caption.astro';
 import Cite from '../components/journal/Cite.astro';
 import JSection from '../components/journal/JSection.astro';
-import MatchTable from '../components/journal/MatchTable.astro';
 import NextSteps from '../components/journal/NextSteps.astro';
+import Registration from '../components/journal/Registration.astro';
 import FaqList from '../components/site/FaqList.astro';
 import Layout from '../layouts/Layout.astro';
-import { pick } from '../data/abbreviations';
-import { leaders, match2025, match2026 } from '../data/people';
-import { contact, enrol, nrmp } from '../data/site';
+import { leaders } from '../data/people';
+import { withBase } from '../lib/paths';
+import { contact, nrmp } from '../data/site';
 import { photo } from '../lib/photos';
-
-const apply = `mailto:${contact.email}?subject=${encodeURIComponent('Match Mentorship application')}`;
 
 const included = [
 	{ title: 'Research papers', body: 'You join several projects in the specialty you are applying to. The aim is at least two papers submitted or published by September, when programs start reading applications.', target: '2 or more papers' },
 	{ title: 'A conference abstract', body: 'At least one abstract presented at an international meeting.', target: '1 or more' },
-	{ title: 'Every RC course', body: 'Level 1, Meta-Analysis, CDC WONDER, NIS and NRD, as often as you like.', target: 'Worth $450+' },
+	{ title: 'Every RC course', body: 'Level 1, Meta-Analysis, CDC WONDER, NIS and NRD, as often as you like.', target: 'All 5' },
 	{ title: 'CV and personal statement', body: 'Line-by-line edits from mentors who have been through the Match.', target: '' },
 	{ title: 'Mock interviews', body: 'One-to-one practice interviews with a senior mentor, with feedback on every answer.', target: '' },
-	{ title: 'Letters of recommendation', body: 'U.S. faculty write personalized letters for mentees whose work on a project earns one.', target: 'For select mentees' },
+	{ title: 'Letters of recommendation', body: 'U.S. faculty write personalized letters for students whose work on a project earns one.', target: 'When earned' },
 	{ title: 'A mentor group', body: 'A WhatsApp group with RC faculty and U.S. physicians, for questions about research, programs, signals and your rank list.', target: 'All year' },
 ];
 
 const steps = [
 	{ title: 'Send us your CV', body: `Email it to ${contact.email}, or send it on WhatsApp to ${contact.matchWhatsapp.label}.` },
 	{ title: 'Talk to a mentor', body: 'A short call about your specialty, your scores, your timeline and what your application is missing.' },
-	{ title: 'Pay for your place', body: 'Pay online, or ask us about another way to pay.' },
+	{ title: 'Take your place', body: 'If there is a place for you, we send the payment link.' },
 ];
 
 const faqs = [
-	{ q: 'Who is it for?', a: 'Final-year students and graduates applying to U.S. residency in the 2026-27 Match. Mentees have matched in Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and Psychiatry.' },
-	{ q: "I've never done research. Can I still join?", a: 'Yes. Many mentees learn during the year, starting with Level 1, which is included.' },
+	{ q: 'Which specialties have students matched in?', a: 'Internal Medicine, Neurology, Pediatrics, Family Medicine, Emergency Medicine and Psychiatry.' },
+	{ q: "I've never done research. Can I still join?", a: 'Yes. Many students learn during the year, starting with Level 1, which is included.' },
 	{ q: 'Can you promise a paper or a match?', a: 'No, and be wary of anyone who does. You join real projects, and authorship depends on what you contribute.' },
 ];
 
-const abstract = [
-	{
-		label: 'Background',
-		text: 'In the 2026 Match, 41.5% of non-U.S. international medical graduates matched in their preferred specialty. Research helps, but programs also read letters, the personal statement and the interview, and all of them must be ready by September.',
-	},
-	{
-		label: 'Methods',
-		text: 'Match Mentorship is a twelve-month program for applicants. Mentees join research projects in their specialty, present at least one abstract, take every RC course, have their CV and personal statement edited, practice interviews with faculty and keep a mentor group on call through the rank list.',
-	},
-	{
-		label: 'Results',
-		text: 'Of the 2025 group, 90% matched. Of the 2026 group, 80% matched, 16 mentees in all, two of them at Yale programs.',
-	},
-	{
-		label: 'Conclusions',
-		text: 'A research year works best when it is planned against the Match calendar. There are 20 places for the 2026-27 Match.',
-	},
+// Three quotes, chosen for being short and specific. Every student's words are on Student Results.
+const quotes = [
+	{ name: 'Osman Wafai', program: 'HCA Centerpoint, Kansas City', quote: 'What helped most by far was the mock interview, which provided invaluable insight and feedback.' },
+	{ name: 'Qais Bin Abdul Ghaffar', program: 'West Virginia University / Camden Clark Medical Center', quote: 'They allowed me to bring in the Program Director from the institution where I ultimately matched as a senior author.' },
+	{ name: 'Ezza Bashir', program: "St. Luke's Hospital, St. Louis", quote: 'This was my second match cycle. As someone who was extremely scared of research, I had 10 papers submitted by the time I submitted the ERAS application.' },
+];
+
+const summary = [
+	{ q: 'What is it?', a: "A 12-month program for students applying to U.S. residency, run by RC's 4 faculty. You join research projects in your specialty, and mentors edit your application and practice interviews with you." },
+	{ q: 'Who is it for?', a: 'Final-year students and graduates applying in the 2026-27 Match. No research experience needed; every RC course is included.' },
+	{ q: 'Does it work?', a: 'Of the 2025 group, 90% matched. Of the 2026 group, 80% matched, 16 students in all, two of them at Yale programs.' },
 ];
 
 const sections = [
-	{ id: 'introduction', label: 'Introduction' },
-	{ id: 'methods', label: 'Methods' },
-	{ id: 'results', label: 'Results' },
-	{ id: 'apply', label: 'How to apply' },
+	{ id: 'introduction', label: 'Why Papers Are Not Enough' },
+	{ id: 'methods', label: 'What You Get' },
+	{ id: 'results', label: 'Where Students Matched' },
+	{ id: 'apply', label: 'How to Apply' },
 	{ id: 'questions', label: 'Questions' },
 ];
 
 const refs = [
 	{ text: 'National Resident Matching Program. Charting Outcomes: characteristics of applicants who matched to their preferred specialty. Non-U.S. IMGs, 2026 Main Residency Match. July 2026.', href: nrmp },
-	{ text: 'Research Consultancy. RC Match Mentorship Program, 2026-2027.', href: enrol.match },
-	{ text: 'Research Consultancy. Match 2025 and Match 2026 results and mentee stories. 2025-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
+	{ text: 'Research Consultancy. Match 2025 and Match 2026 results and student stories. 2025-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 ];
 ---
 
-<Layout accent="red" runningHead="Match Mentorship" title="Match Mentorship" description="Twelve months of research, application editing and interview practice for the 2026-27 U.S. Match, run by RC's faculty. 20 places." cta={{ label: 'Apply with your CV', href: apply }}>
+<Layout accent="red" runningHead="Match Mentorship" title="Match Mentorship" description="Twelve months of research, application editing and interview practice for the 2026-27 U.S. Match, run by RC's faculty. 20 places." register="match-mentorship">
 	<ArticleHead
 		type="Special Report"
 		page="e008"
-		title="Rationale, Design and Outcomes of a 12-Month Mentorship Program for the U.S. Residency Match"
-		abstract={abstract}
-		keywords={[{ label: 'residency Match' }, { label: 'ERAS' }, { label: 'letters of recommendation' }, { label: 'mock interviews' }, { label: 'all RC courses', href: '/courses' }]}
+		title="Match Mentorship: Twelve Months of Research and Application Help Before the Match"
+		summary={summary}
 		sections={sections}
 	>
 		<p slot="byline" class="j-affil mt-4 text-[13.5px]">Run by M. Shahzeb Khan, MD, MS; Kaneez Fatima, MD; M. Shariq Usman, MD; and Tariq Jamal Siddiqi, MD.</p>
 		<ActionPanel
 			slot="aside"
-			title="Apply for 2026-27"
+			title="Applications for 2026-27"
 			lead={{ label: 'Places', value: '20' }}
 			facts={[
 				{ label: 'Length', value: '12 months' },
 				{ label: 'Includes', value: 'Every RC course' },
 				{ label: 'To apply', value: 'Send your CV' },
 			]}
-			primary={{ label: 'Apply with your CV', href: apply }}
 			secondary={{ label: 'Ask a mentor on WhatsApp', href: contact.matchWhatsapp.href }}
-			note={`Already spoken to us? <a href="${enrol.match}" class="link font-medium" rel="noopener">Pay for your place</a>`}
-		/>
+		>
+			<Registration slug="match-mentorship" />
+		</ActionPanel>
 	</ArticleHead>
 
-	<JSection title="Introduction" id="introduction" hideTitle>
+	<JSection title="Why Papers Are Not Enough" label="Introduction" id="introduction">
 		<div class="j-main j-prose">
 			<p class="drop-cap">
-				The Match is hard for international graduates. In 2026, 41.5% of non-U.S. IMGs matched in the specialty they ranked
-				first. In most specialties, the ones who matched had published more than the ones who did not.<Cite n={1} />
+				The Match is hard for international graduates. In 2026, 41.5% of graduates of schools outside the United States
+				matched in the specialty they ranked first. In most specialties, the ones who matched had published more than the ones who did not.<Cite n={1} />
 			</p>
 			<p>
 				Papers are only part of it. A program also reads your letters, your personal statement and how you interview, and
 				all of it has to be ready when applications open in September. Match Mentorship plans the year backward from that
-				date and gives each part to someone who has done it.<Cite n={2} /> Our four faculty run it themselves.
-			</p>
-			<p>
-				Here we describe the design of the program for the 2026-27 Match and report the outcomes of the 2025 and 2026
-				groups.
+				date and gives each part to someone who has done it. Our four faculty run it themselves.
 			</p>
 		</div>
-		<Abbreviations class="j-margin self-start" items={pick('IMG', 'NRMP', 'ERAS', 'Step 2 CK')} />
 	</JSection>
 
-	<JSection title="Methods" id="methods" newPage>
+	<JSection title="What You Get" label="Methods" id="methods" newPage>
 		<div class="j-main j-prose">
-			<h3 class="j-subhead">Participants</h3>
-			<p>
-				Final-year students and graduates applying in the 2026-27 Match. You do not need to have done research before;
-				Level 1 is included, and many mentees learn during the year.
-			</p>
-			<h3 class="j-subhead">What the Program Includes</h3>
 			<p>
 				Table 1 lists every part of the program. The research is organized so that papers are submitted before programs
 				read applications, and the letters come from faculty who have seen your work.
@@ -161,7 +139,7 @@ const refs = [
 					</tbody>
 				</table>
 			</div>
-			<p class="j-tablenote">Publication depends on each mentee's contribution under ICMJE authorship criteria. RC does not guarantee publications.</p>
+			<p class="j-tablenote">Authorship depends on each student's contribution. RC does not guarantee publications.</p>
 		</figure>
 
 		<div class="j-main j-prose">
@@ -174,31 +152,28 @@ const refs = [
 		<MatchYear class="j-span" label="Figure 1" />
 	</JSection>
 
-	<JSection title="Results" id="results" newPage>
+	<JSection title="Where Students Matched" label="Results" id="results" newPage>
 		<div class="j-main j-prose">
 			<p>
-				Of the 2025 group, 90% matched. Of the 2026 group, 80% matched: 16 mentees, two of them at Yale programs (Table 2).
-				One had gone unmatched the year before. One graduated in 2007.<Cite n={3} />
+				Of the 2025 group, 90% matched. Of the 2026 group, 80% matched: 16 students, two of them at Yale programs. One had
+				gone unmatched the year before. One graduated in 2007.<Cite n={2} />
 			</p>
 			<p>
-				These are the mentees who chose to join, and many had strong scores, so the rates are not a controlled comparison.
-				Their own words, in the last column, say more about what helped than the rates do.
+				These are the students who chose to join, and many had strong scores, so the rates are not a controlled comparison.
+				<a href={withBase('/results#words')}>See every student's program and comments</a>.
 			</p>
 		</div>
-		<div class="j-span">
-			<MatchTable
-				label="Table 2"
-				title="Residency programs matched by Match Mentorship students in 2025 and 2026, with their comments."
-				groups={[
-					{ name: 'Match 2026, 2025-26 group', rows: match2026 },
-					{ name: 'Match 2025, selected mentees from the 2024-25 group', rows: match2025 },
-				]}
-				footnote="Of the 2025-26 group, 80% matched; of the 2024-25 group, 90%. Schools and quotes as given by mentees."
-			/>
-		</div>
+		<ul class="j-span grid gap-x-10 gap-y-8 md:grid-cols-3">
+			{quotes.map((q) => (
+				<li class="flex flex-col">
+					<blockquote class="j-quote">"{q.quote}"</blockquote>
+					<p class="mt-auto pt-3 text-[13px]"><span class="font-semibold">{q.name}</span><span class="text-ink-muted">, matched at {q.program}</span></p>
+				</li>
+			))}
+		</ul>
 	</JSection>
 
-	<JSection title="How to Apply" id="apply" newPage>
+	<JSection title="How to Apply" label="Submission Guidelines" id="apply" newPage>
 		<ol class="j-main space-y-5">
 			{steps.map((s, i) => (
 				<li class="grid grid-cols-[2.25rem_1fr] gap-3">
@@ -211,15 +186,12 @@ const refs = [
 			))}
 		</ol>
 		<div class="j-margin self-start bg-canvas-soft p-5">
-			<p class="text-[15.5px] leading-snug">20 places for the 2026-27 Match. We fill them in the order applications arrive.</p>
-			<div class="mt-4 flex flex-wrap gap-3">
-				<a href={apply} class="btn-primary">Apply with your CV</a>
-				<a href={contact.matchWhatsapp.href} class="btn-secondary" rel="noopener">WhatsApp {contact.matchWhatsapp.label}</a>
-			</div>
+			<p class="mb-4 text-[15.5px] leading-snug">20 places for the 2026-27 Match, filled in the order applications arrive.</p>
+			<Registration slug="match-mentorship" />
 		</div>
 	</JSection>
 
-	<JSection title="Questions" id="questions">
+	<JSection title="Questions" label="Frequently Asked Questions" id="questions">
 		<div class="j-main"><FaqList items={faqs} /></div>
 		<aside class="j-margin">
 			<h3 class="j-box-title text-[14px]">Related programs</h3>
@@ -237,7 +209,7 @@ const refs = [
 		</aside>
 	</JSection>
 
-	<NextSteps focus="match" />
+	<NextSteps register="match-mentorship" />
 
 	<ArticleEnd page="e008" refs={refs} />
 </Layout>

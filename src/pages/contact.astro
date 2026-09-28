@@ -35,9 +35,9 @@ const stages = ['a medical student in years 1 or 2', 'a medical student in year 
 const timing = ['this cycle', 'next cycle', 'in two years or more', 'when I am ready; I am not sure yet'];
 
 const sections = [
-	{ id: 'letter', label: 'Write to us' },
-	{ id: 'channels', label: 'Corresponding authors' },
-	{ id: 'register', label: 'Registering by email' },
+	{ id: 'letter', label: 'Write Your Letter' },
+	{ id: 'channels', label: 'Who to Contact' },
+	{ id: 'register', label: 'Registering Without Paying Online' },
 ];
 ---
 
@@ -45,8 +45,12 @@ const sections = [
 	<ArticleHead
 		type="Correspondence"
 		page="e012"
-		title="Letter to the Editors"
-		abstract={[{ text: 'WhatsApp is the fastest way to reach us. Tell us where you are in training, the specialty you want and when you plan to apply, and a mentor will reply with where to start. The form below writes the message for you.' }]}
+		title="Contact Us: The Fastest Ways to Reach the RC Team"
+		summary={[
+			{ q: 'Fastest reply?', a: 'WhatsApp, on the number beside this summary. Email works too.' },
+			{ q: 'Not sure what to ask?', a: 'Fill in the letter below. It writes the message for you, and you send it from your own WhatsApp or email.' },
+			{ q: 'Applying for residency?', a: `Message the Match Mentorship team on ${contact.matchWhatsapp.label}.` },
+		]}
 		sections={sections}
 	>
 		<ActionPanel
@@ -55,11 +59,10 @@ const sections = [
 			lead={{ label: 'WhatsApp', value: contact.whatsapp.label }}
 			primary={{ label: 'Message us on WhatsApp', href: contact.whatsapp.href }}
 			secondary={{ label: 'Email us', href: `mailto:${contact.email}` }}
-			note={`Applying for residency? Message <a href="${contact.matchWhatsapp.href}" class="link font-medium" rel="noopener">${contact.matchWhatsapp.label}</a>`}
 		/>
 	</ArticleHead>
 
-	<JSection title="Write to Us" id="letter">
+	<JSection title="Write Your Letter" label="Correspondence" id="letter">
 		<form class="j-main grid gap-4 sm:grid-cols-2" id="composer" aria-describedby="composer-note">
 			<label class="grid gap-1.5 text-[14px] font-semibold">
 				Your name
@@ -97,7 +100,7 @@ const sections = [
 		</figure>
 	</JSection>
 
-	<JSection title="Corresponding Authors" id="channels" newPage>
+	<JSection title="Who to Contact" label="Corresponding Authors" id="channels" newPage>
 		<div class="j-main grid gap-4">
 			{channels.map((c) => (
 				<div class="border-t-[3px] bg-canvas-soft p-5" style={`border-color:${c.color}`}>
@@ -119,9 +122,9 @@ const sections = [
 		</aside>
 	</JSection>
 
-	<JSection title="Registering by Email" id="register">
+	<JSection title="Registering Without Paying Online" label="Methods" id="register">
 		<div class="j-main j-prose">
-			<p>You can pay for most courses online from the course page. To register by email instead, send us:</p>
+			<p>Each course page has a Register button while its class is open. If you cannot pay online, email us:</p>
 			<ol class="list-none space-y-2 pl-0">
 				{register.map((item, i) => (
 					<li class="flex gap-3"><span class="font-bold text-label tabular-nums">{i + 1}.</span>{item}</li>

@@ -1,11 +1,13 @@
 ---
-// One article section. The head runs across the page under a thin rule; text sits in the
-// measure on the left and its figure or box on the right. AHA articles open without an
-// "Introduction" head, so that section can hide its title from sight (not from screen readers).
+// One article section. The head runs across the page under a thin rule: the paper's section name
+// in bold capitals (METHODS), as a journal sets it, then the plain heading a reader scans for.
+// Text sits in the measure on the left and its figure or box on the right.
 import PageBreak from './PageBreak.astro';
 
 interface Props {
 	title: string;
+	/** The paper's name for this section (METHODS, CALL FOR PAPERS), set in capitals above the heading. */
+	label?: string;
 	id?: string;
 	tint?: boolean;
 	hideTitle?: boolean;
@@ -13,14 +15,17 @@ interface Props {
 	newPage?: boolean;
 }
 
-const { title, id, tint = false, hideTitle = false, newPage = false } = Astro.props;
+const { title, label, id, tint = false, hideTitle = false, newPage = false } = Astro.props;
 const headingId = id ? `${id}-title` : undefined;
 ---
 
 {newPage && <PageBreak />}
 <section id={id} aria-labelledby={headingId} class:list={['scroll-mt-28', tint && 'bg-canvas-soft']}>
-	<div class:list={['pad j-grid pb-10 md:pb-12', hideTitle ? 'pt-8 md:pt-10' : 'pt-8 md:pt-10']}>
-		<h2 id={headingId} class:list={['j-rail', hideTitle ? 'sr-only' : 'j-head']}>{title}</h2>
+	<div class="pad j-grid pt-8 pb-10 md:pt-10 md:pb-12">
+		<h2 id={headingId} class:list={['j-rail', hideTitle ? 'sr-only' : 'j-head']}>
+			{label && !hideTitle && <span class="j-imrad" aria-hidden="true">{label}</span>}
+			<span>{title}</span>
+		</h2>
 		<slot />
 	</div>
 </section>

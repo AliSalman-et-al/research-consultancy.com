@@ -1,0 +1,16 @@
+---
+// A course's registration, or Match Mentorship's applications, in one of four sizes. The first paint
+// uses the build date; the Layout script redraws every block with the reader's date.
+import { renderReg, subjectFor, type Variant } from '../../lib/registration';
+
+interface Props {
+	slug: string;
+	variant?: Variant;
+	class?: string;
+}
+
+const { slug, variant = 'panel', class: className } = Astro.props;
+const Tag = variant === 'badge' ? 'span' : 'div';
+---
+
+<Tag data-reg={slug} data-variant={variant} class={className} set:html={renderReg(subjectFor(slug), variant)} />

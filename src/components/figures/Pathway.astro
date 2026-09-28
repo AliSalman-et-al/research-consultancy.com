@@ -3,6 +3,7 @@
 // and icon; the two teaching stages link to their courses. Replaces a separate
 // graphical abstract and course ladder, which told the same story twice.
 import { withBase } from '../../lib/paths';
+import Registration from '../journal/Registration.astro';
 
 interface Props {
 	class?: string;
@@ -17,10 +18,10 @@ const stages: {
 	body: string;
 	color: string;
 	tint: string;
-	links?: { label: string; href: string }[];
+	links?: { label: string; href: string; slug: string }[];
 }[] = [
 	{ key: 'you', title: 'You', body: 'A medical student or graduate in any country. No research experience needed.', color: '#4c9be8', tint: '#e8f2fc' },
-	{ key: 'learn', title: 'Learn', body: 'Two days on study design, writing and statistics.', color: '#1b8a8f', tint: '#e3f3f3', links: [{ label: 'Level 1', href: '/courses/level-1' }] },
+	{ key: 'learn', title: 'Learn', body: 'Two days on study design, writing and statistics.', color: '#1b8a8f', tint: '#e3f3f3', links: [{ label: 'Level 1', href: '/courses/level-1', slug: 'level-1' }] },
 	{
 		key: 'do',
 		title: 'Do',
@@ -28,21 +29,21 @@ const stages: {
 		color: '#7b4fa0',
 		tint: '#f0e9f6',
 		links: [
-			{ label: 'Meta-analysis', href: '/courses/meta-analysis' },
-			{ label: 'CDC WONDER', href: '/courses/cdc-wonder' },
-			{ label: 'NIS', href: '/courses/nis' },
-			{ label: 'NRD', href: '/courses/nrd' },
+			{ label: 'Meta-analysis', href: '/courses/meta-analysis', slug: 'meta-analysis' },
+			{ label: 'CDC WONDER', href: '/courses/cdc-wonder', slug: 'cdc-wonder' },
+			{ label: 'NIS', href: '/courses/nis', slug: 'nis' },
+			{ label: 'NRD', href: '/courses/nrd', slug: 'nrd' },
 		],
 	},
 	{ key: 'publish', title: 'Publish', body: 'Submit to PubMed-indexed journals and present at meetings such as AHA and ACC.', color: '#c98a12', tint: '#fbf3e1' },
-	{ key: 'match', title: 'Match', body: 'Apply with papers, U.S. mentors and letters from people who know your work.', color: '#f67737', tint: '#fdeee5', links: [{ label: 'Match Mentorship', href: '/match-mentorship' }] },
+	{ key: 'match', title: 'Match', body: 'Apply with papers, U.S. mentors and letters from people who know your work.', color: '#f67737', tint: '#fdeee5', links: [{ label: 'Match Mentorship', href: '/match-mentorship', slug: 'match-mentorship' }] },
 ];
 ---
 
 <figure class:list={['pathway bg-white text-ink', className]}>
 	<p class="flex flex-wrap items-baseline justify-between gap-x-4 bg-[#0b1f3a] px-4 py-2 font-sans text-[12.5px] text-white">
 		<span><b>Central Illustration.</b> How RC works, in five steps</span>
-		<span class="text-white/60">Tap a course for details</span>
+		<span class="flex items-center gap-1.5 text-white/70"><svg viewBox="0 0 16 16" class="size-3 text-orange" aria-hidden="true"><rect x="2.75" y="7" width="10.5" height="7.5" rx="1.5" fill="currentColor"/><path d="M5 7V4.75a3 3 0 0 1 5.8-1.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>open for registration</span>
 	</p>
 	<ol class="relative grid sm:grid-cols-5">
 		<span class="pw-rule absolute top-[3.4rem] right-[10%] left-[10%] hidden h-[2px] sm:block" aria-hidden="true"></span>
@@ -63,7 +64,7 @@ const stages: {
 					{s.links && (
 						<ul class="mt-2.5 flex flex-wrap gap-1.5 sm:justify-center">
 							{s.links.map((l) => (
-								<li><a href={withBase(l.href)} class="pw-chip inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold ring-1 ring-transparent transition hover:ring-current" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)">{l.label}<svg viewBox="0 0 12 12" class="size-2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m4.5 2.5 3.5 3.5-3.5 3.5" /></svg></a></li>
+								<li><a href={withBase(l.href)} class="pw-chip inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-sans text-[12.5px] font-semibold ring-1 ring-transparent transition hover:ring-current" style="background:var(--t);color:color-mix(in srgb, var(--c) 72%, black)"><Registration slug={l.slug} variant="badge" />{l.label}<svg viewBox="0 0 12 12" class="size-2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m4.5 2.5 3.5 3.5-3.5 3.5" /></svg></a></li>
 							))}
 						</ul>
 					)}

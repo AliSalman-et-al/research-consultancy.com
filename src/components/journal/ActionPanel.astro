@@ -1,11 +1,12 @@
 ---
 // The page's action, set in the article head's right column. It reads as part of the paper (a
-// ruled box with a heading) but is plainly an interface: facts, one orange button, one quiet one.
+// ruled box with a heading) but is plainly an interface: facts, then one orange button and one quiet
+// one, or whatever the default slot holds (a course's registration block).
 interface Props {
 	title: string;
 	lead?: { label: string; value: string };
 	facts?: { label: string; value: string }[];
-	primary: { label: string; href: string };
+	primary?: { label: string; href: string };
 	secondary?: { label: string; href: string };
 	note?: string;
 }
@@ -14,7 +15,7 @@ const { title, lead, facts = [], primary, secondary, note } = Astro.props;
 const rel = (href: string) => (href.startsWith('http') ? 'noopener' : undefined);
 ---
 
-<aside aria-label={title} class="border-[1.5px] border-navy bg-white shadow-[0_10px_30px_-16px_rgb(2_38_77/0.35)]">
+<aside aria-label={title} data-action-panel class="border-[1.5px] border-navy bg-white shadow-[0_10px_30px_-16px_rgb(2_38_77/0.35)]">
 	<p class="bg-navy px-5 py-2.5 text-[12.5px] font-bold tracking-[0.05em] text-white uppercase">{title}</p>
 	{lead && (
 		<div class="px-5 pt-4">
@@ -33,7 +34,8 @@ const rel = (href: string) => (href.startsWith('http') ? 'noopener' : undefined)
 		</dl>
 	)}
 	<div class="flex flex-col gap-2 p-5">
-		<a href={primary.href} class="btn-primary w-full" rel={rel(primary.href)}>{primary.label}</a>
+		<slot />
+		{primary && <a href={primary.href} class="btn-primary w-full" rel={rel(primary.href)}>{primary.label}</a>}
 		{secondary && <a href={secondary.href} class="btn-secondary w-full" rel={rel(secondary.href)}>{secondary.label}</a>}
 		{note && <p class="mt-1 text-center text-[12.5px] leading-snug text-ink-muted" set:html={note} />}
 	</div>

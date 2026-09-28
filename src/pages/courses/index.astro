@@ -1,87 +1,62 @@
 ---
-import Abbreviations from '../../components/journal/Abbreviations.astro';
 import ActionPanel from '../../components/journal/ActionPanel.astro';
 import ArticleEnd from '../../components/journal/ArticleEnd.astro';
 import ArticleHead from '../../components/journal/ArticleHead.astro';
 import Caption from '../../components/journal/Caption.astro';
-import Cite from '../../components/journal/Cite.astro';
 import JSection from '../../components/journal/JSection.astro';
 import NextSteps from '../../components/journal/NextSteps.astro';
+import Registration from '../../components/journal/Registration.astro';
 import CourseArt from '../../components/site/CourseArt.astro';
 import Layout from '../../layouts/Layout.astro';
 import { withBase } from '../../lib/paths';
-import { pick } from '../../data/abbreviations';
 import { courses, method } from '../../data/courses';
-import { contact, enrol, testimonials } from '../../data/site';
+import { contact, testimonials } from '../../data/site';
 
 const fact = (c: (typeof courses)[number], label: string) => c.facts.find((f) => f.label === label)?.value;
 
 const sections = [
-	{ id: 'introduction', label: 'Introduction' },
-	{ id: 'choosing', label: 'Choosing a method' },
-	{ id: 'how', label: 'How a course runs' },
-	{ id: 'voices', label: "Students' words" },
+	{ id: 'choosing', label: 'Which Course Fits Your Question' },
+	{ id: 'how', label: 'How a Course Runs' },
+	{ id: 'voices', label: 'What Students Say' },
 ];
 
-const abstract = [
-	{
-		label: 'Abstract',
-		text: 'RC teaches five live courses. Level 1 comes first for anyone who has not done research. After it, the question you want to answer decides the method: pooled published trials call for a meta-analysis, U.S. death trends for CDC WONDER, hospital outcomes and costs for the National Inpatient Sample, and readmissions for the Nationwide Readmissions Database. Every method course ends with a place in a mentored project group. This review compares the five courses and explains how a method course runs.',
-	},
+const summary = [
+	{ q: 'Where do I start?', a: 'With Level 1, if you have never done research. It teaches study design, writing and statistics, and every other course assumes you know them.' },
+	{ q: 'What comes next?', a: 'The course whose question matches yours (Table 1). Each one ends with a place in a small project group, led by a mentor, working toward a paper.' },
+	{ q: 'Which are open now?', a: 'The padlock beside each course shows whether registration is open. Classes are announced about a month ahead.' },
 ];
 
-const refs = [{ text: 'Research Consultancy. RC Level 1, a two-day research workshop. 2026.', href: enrol.level1 }];
+// Three of the course testimonials, the shortest and most specific. The rest are on Student Results.
+const voices = [testimonials[0], testimonials[2], testimonials[3]];
 ---
 
-<Layout accent="teal" runningHead="Choosing a Research Course" title="Courses" description="Five live research courses on Zoom: Level 1, Meta-Analysis, CDC WONDER, the National Inpatient Sample and the Nationwide Readmissions Database. How to choose between them.">
+<Layout accent="teal" runningHead="Choosing a Research Course" title="Courses" description="Five live research courses on Zoom: Level 1, Meta-Analysis, CDC WONDER, the National Inpatient Sample and the Nationwide Readmissions Database. Which to take first, and which are open now.">
 	<ArticleHead
 		type="State of the Art"
 		page="e002"
-		title="Choosing a First Research Method: A Guide to Five Courses for Medical Students"
-		abstract={abstract}
-		keywords={courses.map((c) => ({ label: c.name, href: `/courses/${c.slug}` }))}
+		title="Choosing Your First Research Course: A Beginner's Guide to Five Courses"
+		summary={summary}
 		sections={sections}
 	>
 		<p slot="byline" class="j-affil mt-4 text-[13.5px]">M. Shahzeb Khan, MD, MS; Kaneez Fatima, MD; M. Shariq Usman, MD; Tariq Jamal Siddiqi, MD</p>
-		<ActionPanel
-			slot="aside"
-			title="Start here"
-			lead={{ label: 'Level 1, the first course', value: '$35' }}
-			facts={[
-				{ label: 'Length', value: '2 days, 6 hours each' },
-				{ label: 'Before you join', value: 'Nothing' },
-			]}
-			primary={{ label: 'See Level 1 and enroll', href: withBase('/courses/level-1') }}
-			secondary={{ label: 'Ask which course fits', href: contact.whatsapp.href }}
-		/>
+		<ActionPanel slot="aside" title="Registration" secondary={{ label: 'Ask which course fits', href: contact.whatsapp.href }} note="Classes are announced on WhatsApp and Instagram.">
+			<ul class="-mt-1 mb-2 divide-y divide-hairline">
+				{courses.map((c) => (
+					<li class="py-2.5">
+						<a href={withBase(`/courses/${c.slug}`)} class="text-[15px] font-semibold text-navy underline decoration-orange/40 underline-offset-4 hover:decoration-orange">{c.name}</a>
+						<Registration slug={c.slug} variant="status" class="mt-0.5" />
+					</li>
+				))}
+			</ul>
+		</ActionPanel>
 	</ArticleHead>
 
-	<JSection title="Introduction" id="introduction" hideTitle>
-		<div class="j-main j-prose">
-			<p class="drop-cap">
-				If you have never done research, take Level 1 first. It teaches study design, writing and statistics, and every
-				other course assumes you know them.<Cite n={1} />
-			</p>
-			<p>
-				After Level 1, let the question choose the course. To know whether a treatment works across all the trials already
-				published, you need a meta-analysis. To know how deaths from a disease have changed in the United States, you need
-				CDC WONDER. Questions about hospital stays, outcomes and costs need the National Inpatient Sample, and questions
-				about who comes back to hospital need the Nationwide Readmissions Database.
-			</p>
-			<p>
-				This review compares the five courses by the question each answers, their format and what each requires (Table 1),
-				and describes how a method course runs from the first class to a submitted paper (Figure 1).
-			</p>
-		</div>
-		<Abbreviations class="j-margin self-start" items={pick('CDC WONDER', 'NIS', 'NRD', 'PRISMA')} />
-	</JSection>
-
-	<JSection title="Choosing a Method" id="choosing" newPage>
+	<JSection title="Which Course Fits Your Question" label="Review" id="choosing">
 		<figure class="j-span">
-			<Caption label="Table 1" title="Characteristics of the five RC courses." class="j-caption-top" />
+			<Caption label="Table 1" title="The five RC courses, by the question each one answers." class="j-caption-top" />
 			<div class="overflow-x-auto">
 				<table class="j-table min-w-[58rem]">
-					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Length</th><th scope="col">Software</th><th scope="col">Before you join</th><th scope="col">Fee</th></tr></thead>
+					<thead><tr><th scope="col">Course</th><th scope="col">The question it answers</th><th scope="col">Length</th><th scope="col">Before you join</th><th scope="col">Registration</th></tr></thead>
 					<tbody>
 						{courses.map((c) => (
 							<tr class="align-top">
@@ -93,25 +68,23 @@ const refs = [{ text: 'Research Consultancy. RC Level 1, a two-day research work
 								</th>
 								<td class="text-[14.5px]">{c.question}</td>
 								<td>{fact(c, 'Length')}</td>
-								<td>{fact(c, 'Software')}</td>
 								<td>{c.prerequisite}</td>
-								<td class="font-semibold text-navy">{c.fee}</td>
+								<td><Registration slug={c.slug} variant="status" /></td>
 							</tr>
 						))}
 					</tbody>
 				</table>
 			</div>
-			<p class="j-tablenote">Select a course for its curriculum and enrollment. Class dates are announced on WhatsApp and Instagram. CDC WONDER indicates CDC Wide-ranging Online Data for Epidemiologic Research.</p>
+			<p class="j-tablenote">Select a course for what it teaches and how to register. CDC WONDER indicates the CDC's free database of U.S. death records.</p>
 		</figure>
 	</JSection>
 
-	<JSection title="How a Method Course Runs" id="how">
+	<JSection title="How a Course Runs" label="Methods" id="how" newPage>
 		<div class="j-main j-prose">
 			<p>
-				Each method course has two parts. The first is the class: two or three days, six hours a day, live on Zoom, with
-				the software running on your own laptop. The second begins when the class ends. You join a project group whose
-				mentor has published the same kind of paper. You run the analysis, write the draft and revise it until the group
-				submits the paper to a journal and the abstract to a conference (Figure 1).
+				Each method course has two parts. First, the class: two or three days, live on Zoom, with the software running on
+				your own laptop. Then, when the class ends, you join a project group whose mentor has published the same kind of
+				paper. You run the analysis and write the draft, and the group submits the paper to a journal (Figure 1).
 			</p>
 			<p>
 				Level 1 is different. It teaches enough to start a small study on your own, such as a letter to the editor or a
@@ -131,26 +104,23 @@ const refs = [{ text: 'Research Consultancy. RC Level 1, a two-day research work
 					</li>
 				))}
 			</ol>
-			<Caption label="Figure 1" title="Sequence of a method course, from the live class to submission.">Step 1 is the live class. Steps 2 to 4 take place in the project group after the class ends.</Caption>
+			<Caption label="Figure 1" title="How a method course runs, from the live class to a submitted paper.">Step 1 is the live class. Steps 2 to 4 happen in the project group after it.</Caption>
 		</figure>
 	</JSection>
 
-	<JSection title="What Students Say" id="voices" newPage>
-		<ul class="j-span grid gap-x-10 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
-			{testimonials.map((t) => (
+	<JSection title="What Students Say" label="Testimonials" id="voices">
+		<ul class="j-span grid gap-x-10 gap-y-8 md:grid-cols-3">
+			{voices.map((t) => (
 				<li class="flex flex-col">
 					<blockquote class="j-quote">"{t.quote}"</blockquote>
 					<p class="mt-auto pt-3 text-[13px]"><span class="font-semibold">{t.name}</span><span class="text-ink-muted">, {t.role}</span></p>
 				</li>
 			))}
 		</ul>
-		<div class="j-main j-prose">
-			<h3 class="j-subhead">Conclusions</h3>
-			<p>Start with Level 1. Then choose the course whose question matches yours, and plan to stay for the project that follows it.</p>
-		</div>
+		<p class="j-span text-[15px] text-ink-secondary"><a href={withBase('/results#words')} class="link">Read every student's words</a></p>
 	</JSection>
 
-	<NextSteps focus="publish" />
+	<NextSteps />
 
-	<ArticleEnd page="e002" refs={refs} />
+	<ArticleEnd page="e002" />
 </Layout>

@@ -1,5 +1,5 @@
 ---
-// Match results, one row per mentee, grouped by Match year. Each mentee's own words sit in
+// Match results, one row per student, grouped by Match year. Each student's own words sit in
 // their row, so a quote is always read against the program it led to.
 import { Image } from 'astro:assets';
 import type { Matched } from '../../data/people';
@@ -23,7 +23,7 @@ const initials = (n: string) => n.split(' ').map((w) => w[0]).slice(0, 2).join('
 		<table class="j-table min-w-[56rem]">
 			<thead>
 				<tr>
-					<th scope="col" class="w-[24%]">Mentee</th>
+					<th scope="col" class="w-[24%]">Student</th>
 					<th scope="col" class="w-[13%]">Specialty</th>
 					<th scope="col" class="w-[23%]">Program</th>
 					<th scope="col">In their words</th>

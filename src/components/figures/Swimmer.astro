@@ -40,7 +40,7 @@ const style: Record<Milestone, { color: string; name: string }> = {
 <figure class:list={[className]}>
 	<div class="j-plate reveal overflow-x-auto">
 		<svg viewBox={`0 0 1000 ${height}`} class="h-auto w-full min-w-[46rem]" role="img" aria-labelledby="swim-title swim-desc">
-			<title id="swim-title">Four mentees' paths from their first RC course</title>
+			<title id="swim-title">Four students' paths from their first RC course</title>
 			<desc id="swim-desc">{paths.map((p) => `${p.name}: ${p.events.map((e) => `${e.at} ${e.what}`).join('; ')}`).join('. ')}</desc>
 			<g font-family="Inter Variable, sans-serif">
 				{years.map((y) => (
@@ -94,7 +94,7 @@ const style: Record<Milestone, { color: string; name: string }> = {
 		</ul>
 	</div>
 	<Caption label={label} title="Training and career milestones of four RC students, from the first course to September 2026.">
-		Each lane runs from the mentee's first RC course to September 2026. Hover over a marker for the event. Dates known
-		only to the year are drawn at mid-year. From mentees' own accounts on RC's channels.
+		Each lane runs from the student's first RC course to September 2026. Hover over a marker for the event. Dates known
+		only to the year are drawn at mid-year. From students' own accounts on RC's channels.
 	</Caption>
 </figure>

@@ -244,6 +244,22 @@
   .btn-secondary:active {
     transform: scale(0.96);
   }
+  /* An action that is not available yet: present, readable, plainly not clickable */
+  .btn-disabled {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    border: 1.5px dashed #bdb9b3;
+    color: var(--rc-ink-muted);
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: not-allowed;
+    user-select: none;
+  }
   .btn-sm {
     min-height: 36px;
     padding: 0.375rem 1rem;
@@ -302,10 +318,14 @@
   .sheet {
     background: #fff;
     counter-reset: rcpage 1;
+    border: 1px solid #dcdad6;
+    box-shadow:
+      rgba(0, 0, 0, 0.05) 0 1px 1px,
+      rgba(0, 0, 0, 0.06) 0 4px 10px -3px,
+      rgba(0, 0, 0, 0.07) 0 14px 30px -10px;
   }
   @media (min-width: 1024px) {
     .sheet {
-      border: 1px solid #dcdad6;
       box-shadow:
         rgba(0, 0, 0, 0.06) 0 1px 1px,
         rgba(0, 0, 0, 0.07) 0 6px 14px -4px,
@@ -345,9 +365,10 @@
     font-style: italic;
   }
   .page-break .pb-gap {
-    --edge: 0px;
+    --edge: 0.625rem;
     position: relative;
-    height: 1.75rem;
+    height: 1.5rem;
+    margin-inline: calc(-0.625rem - 1px);
     background: var(--background);
   }
   /* The page above casts a long, soft shadow onto the desk; the page below lifts off it slightly.
@@ -379,7 +400,7 @@
     .page-break .pb-gap {
       --edge: 1.5rem;
       height: 2.5rem;
-      margin-inline: -1.5rem;
+      margin-inline: calc(-1.5rem - 1px);
     }
   }
   .pad {
@@ -405,11 +426,17 @@
   .j-title {
     font-family: var(--font-sans);
     font-weight: 300;
-    font-size: clamp(2.125rem, 1.35rem + 3vw, 3.5rem);
+    font-size: clamp(1.75rem, 0.6rem + 4.2vw, 3.5rem);
     line-height: 1.08;
     letter-spacing: -0.025em;
     color: var(--rc-ink);
     text-wrap: balance;
+  }
+  .j-title-lead {
+    font-weight: 400;
+  }
+  .j-title-rest {
+    color: #3d3b38;
   }
   .j-dek {
     font-family: var(--font-sans);
@@ -440,16 +467,39 @@
     color: var(--rc-ink-muted);
   }
 
-  /* Section head: a full-width rule, then the name in navy capitals */
+  /* Section head, as a paper sets it: under a thin rule, the section name in bold navy
+     capitals (INTRODUCTION, METHODS...), then the plain heading a beginner scans for */
   .j-head {
     border-top: 1.5px solid #bdb9b3;
-    padding-top: 0.7rem;
+    padding-top: 0.75rem;
     font-family: var(--font-sans);
-    font-size: 1.1875rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
+    font-size: clamp(1.375rem, 1.15rem + 0.65vw, 1.625rem);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+    color: var(--rc-ink);
+    text-wrap: balance;
+  }
+  .j-head > span {
+    display: block;
+  }
+  .j-imrad,
+  .j-paperhead {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--rc-navy);
+  }
+  .j-head > .j-imrad {
+    margin-bottom: 0.3rem;
+  }
+  /* A head that is only the section name, as in the back matter (REFERENCES) */
+  .j-paperhead {
+    border-top: 1.5px solid #bdb9b3;
+    padding-top: 0.75rem;
   }
   .j-subhead {
     font-family: var(--font-sans);
@@ -609,31 +659,27 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
   }
-  /* Abstract: one block across the page, bold capital labels in the journal colour */
-  .j-abstract {
-    font-family: var(--font-sans);
-    font-size: 0.96875rem;
-    line-height: 1.6;
-    color: #2b2a28;
-    text-wrap: pretty;
+  @media (max-width: 639px) {
+    .j-journal {
+      font-size: 1.0625rem;
+      text-underline-offset: 4px;
+    }
   }
-  .j-abstract-label {
+  .j-pls {
+    background: #f2f0eb;
+    font-family: var(--font-sans);
+  }
+  .j-pls-q {
+    font-size: 0.9375rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    line-height: 1.35;
     color: var(--rc-navy);
   }
-  .j-keywords {
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
-    color: var(--rc-ink-secondary);
-  }
-  .j-keywords .sq {
-    display: inline-block;
-    width: 0.5em;
-    height: 0.5em;
-    margin: 0 0.45em 0.08em;
-    background: var(--rc-orange);
+  .j-pls-a {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #2b2a28;
+    text-wrap: pretty;
   }
 
   /* Boxed panels: key points, abbreviations, research in context */
@@ -674,6 +720,13 @@
     font-weight: 600;
   }
 
+  /* The article type's colour along the top edge of the first page, where the tab has no room */
+  .j-band {
+    position: absolute;
+    inset: -1px -1px auto;
+    height: 4px;
+    background: var(--journal);
+  }
   /* Vertical section tab on the page edge */
   .j-tab {
     position: absolute;
@@ -692,6 +745,14 @@
     text-transform: uppercase;
   }
 
+  /* Panel heading inside a multi-panel figure: "A. One study, from question to journal" */
+  .j-panel-head {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--rc-navy);
+  }
   /* Figure panel letters (A, B, C) */
   .panel-label {
     position: absolute;
@@ -718,6 +779,185 @@
     gap: 0.25rem 1rem;
     font-family: var(--font-sans);
     font-size: 0.8125rem;
+  }
+}
+
+/* ─── Expand: a quiet, clearly clickable line that opens reference material ─ */
+@layer components {
+  .j-expand-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.6rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px #d7d5d1;
+    background: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--rc-navy);
+    cursor: pointer;
+    list-style: none;
+  }
+  .j-expand-summary::-webkit-details-marker {
+    display: none;
+  }
+  .j-expand-summary:hover {
+    box-shadow: inset 0 0 0 1px var(--rc-navy);
+  }
+  /* Tables show their first rows; the rest wait behind "Show all" */
+  .j-rows:has(> .j-expand:not([open])) tr.more {
+    display: none;
+  }
+}
+
+/* ─── Registration: open, opening soon, full or closed ───────────────────
+   The padlock is the journals' Open Access mark: orange and open when you can
+   register, grey and shut when you cannot. The words always say which. */
+@layer components {
+  .reg-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.3;
+  }
+  .reg-lock {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+  .reg-state {
+    font-weight: 700;
+  }
+  .reg-detail {
+    color: var(--rc-ink-secondary);
+  }
+  .reg-open {
+    color: #b3480f;
+  }
+  .reg-open .reg-lock {
+    color: var(--rc-orange);
+  }
+  .reg-soon {
+    color: var(--rc-navy);
+  }
+  .reg-full,
+  .reg-closed {
+    color: var(--rc-ink-muted);
+  }
+  .reg-when {
+    margin-top: 0.3rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--rc-ink);
+  }
+  .reg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 0.9rem;
+  }
+  .reg-panel .reg-actions > .btn-primary,
+  .reg-panel .reg-actions > .btn-disabled {
+    width: 100%;
+  }
+  .reg-notify {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--rc-navy);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--rc-orange) 60%, transparent);
+    text-underline-offset: 3px;
+  }
+  .reg-notify:hover {
+    text-decoration-color: var(--rc-orange);
+  }
+  .reg-row .reg-actions {
+    margin-top: 0.6rem;
+  }
+  /* The homepage strip: the state on the left, the button beside it */
+  @media (min-width: 640px) {
+    .reg-strip .reg-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      column-gap: 1.25rem;
+    }
+    .reg-strip .reg-actions {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin-top: 0;
+    }
+  }
+  .reg-strip .btn-sm {
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
+  }
+  .reg-chip {
+    display: inline-grid;
+    place-items: center;
+  }
+  .reg-chip .reg-lock {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .reg-chip.reg-open {
+    color: var(--rc-orange);
+  }
+  /* An open class draws the eye once: the padlock springs open as it arrives */
+  @media (prefers-reduced-motion: no-preference) {
+    .reg-open .reg-lock path {
+      animation: reg-unlock 700ms cubic-bezier(0.3, 1.4, 0.5, 1) 600ms both;
+      transform-origin: 5px 7px;
+    }
+    @keyframes reg-unlock {
+      from {
+        transform: rotate(18deg);
+      }
+      to {
+        transform: none;
+      }
+    }
+  }
+}
+
+/* ─── Page counter: the "2 / 5" a PDF viewer shows while you scroll ─────── */
+@layer components {
+  .page-counter {
+    position: fixed;
+    top: 7rem;
+    right: 1rem;
+    z-index: 45;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgb(35 35 35 / 0.78);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 250ms ease-out,
+      transform 250ms ease-out;
+  }
+  .page-counter.on {
+    opacity: 1;
+    transform: none;
+  }
+  /* The phone action bar waits until the page's own action panel has scrolled away */
+  .action-bar {
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .action-bar.away {
+    transform: translateY(110%);
   }
 }
 

@@ -1,76 +1,86 @@
 ---
 // First page of the article. The order follows Circulation (journal name, article type with a
-// rule, Title Case title, byline); the dateline and the abstract panel follow EJHF (a tinted
-// panel with labels in their own column and dotted rules between parts). On the web the
-// abstract is the summary a skimmer reads, the key words are links, and the right-hand panel
-// carries the page's action.
+// rule, Title Case title, byline). In place of an abstract, the page opens with a Plain Language
+// Summary, as many journals now print one: three short questions a newcomer actually has, in a
+// tinted panel. The right-hand panel carries the page's action; on a phone it follows the summary,
+// so a reader knows what this is before they see a price.
 import { withBase } from '../../lib/paths';
 import Contents from './Contents.astro';
 
 interface Props {
 	type: string;
 	title: string;
-	/** This page's number in the volume, as in "Res Consult. 2026;10:e001". */
+	/** This page's number in the volume, as in "Ann Res Consult. 2026;10:e001". */
 	page: string;
-	/** Structured abstract ({label, text} per part) or one unlabelled paragraph. */
-	abstract?: { label?: string; text: string }[];
-	keywords?: { label: string; href?: string }[];
+	/** Plain Language Summary: a question and its one-sentence answer, or a bare point. */
+	summary?: { q?: string; a: string }[];
+	/** A row at the foot of the summary that sends one kind of reader to their own page. */
+	fork?: { lead: string; label: string; href: string };
+	/** Set the summary's questions side by side, as the homepage does. */
+	columns?: boolean;
 	sections?: { id: string; label: string }[];
-	dateline?: string;
 }
 
-const { type, title, page, abstract, keywords, sections, dateline = 'First published 2016; revised September 2026.' } = Astro.props;
+const { type, title, page, summary, fork, columns = false, sections } = Astro.props;
 const hasAside = Astro.slots.has('aside');
-const labelled = abstract?.some((a) => a.label);
-const link = (href: string) => (href.startsWith('/') ? withBase(href) : href);
+const asked = summary?.some((s) => s.q);
+// Titles take a paper's shape, "Name: what it is". The name is set a weight heavier, so a reader
+// who has never seen a paper finds the subject first.
+const colon = title.indexOf(':');
+const lead = colon > 0 ? title.slice(0, colon + 1) : title;
+const rest = colon > 0 ? title.slice(colon + 1) : '';
 ---
 
 <header class="relative">
-	<span class="j-tab hidden xl:block" aria-hidden="true">{type}</span>
+	<span class="j-band lg:hidden" aria-hidden="true"></span>
+	<span class="j-tab hidden lg:block" aria-hidden="true">{type}</span>
 	<div class="pad pt-6 pb-8 md:pt-8">
 		<div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-			<a href={withBase('/')} class="flex items-center gap-2.5" aria-label="Research Consultancy home">
+			<a href={withBase('/')} class="flex items-center gap-2.5" aria-label="Annals of Research Consultancy: Research Consultancy home">
 				<img src={withBase('/RC-Logo-NoText.png')} alt="" width="30" height="30" class="size-7.5 rounded-[4px]" />
-				<span class="j-journal">Research Consultancy</span>
+				<span class="j-journal">Annals of Research Consultancy</span>
 			</a>
 			<p class="text-right text-[12px] leading-snug text-ink-muted">
-				<i>Res Consult</i> (2026) · Volume 10<br class="hidden sm:inline" /><span class="sm:hidden"> · </span>{page}
+				<i>Ann Res Consult</i> (2026) · Volume 10<br class="hidden sm:inline" /><span class="sm:hidden"> · </span>{page}
 			</p>
 		</div>
 
-		<div class:list={['grid grid-cols-[minmax(0,1fr)] gap-8 pt-8 md:pt-10 [&>*]:min-w-0', hasAside && 'lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14']}>
+		<div class:list={['grid grid-cols-[minmax(0,1fr)] gap-x-14 gap-y-8 pt-8 md:pt-10 [&>*]:min-w-0', hasAside && 'lg:grid-cols-[minmax(0,1fr)_22rem]']}>
 			<div>
 				<p class="j-kind">{type}</p>
-				<h1 class="j-title mt-4 max-w-[24ch]">{title}</h1>
+				<h1 class:list={['j-title mt-4', hasAside ? 'max-w-[24ch]' : 'max-w-[26ch]']}>
+					<span class="j-title-lead">{lead}</span>{rest && <span class="j-title-rest">{rest}</span>}
+				</h1>
 				<slot name="byline" />
-				<p class="mt-3 text-[12.5px] text-ink-muted italic">{dateline}</p>
-				<slot name="actions" />
 			</div>
-			{hasAside && <div class="lg:pt-12"><slot name="aside" /></div>}
-		</div>
 
-		{abstract && (
-			<div class="j-abstract mt-8 bg-[#f2f0eb] px-5 py-1 sm:px-6">
-				{abstract.map((part) => (
-					<div class:list={['border-b border-dotted border-[#b9b3a9] py-3.5 last:border-0', labelled && 'sm:grid sm:grid-cols-[8.5rem_1fr] sm:gap-5']}>
-						{part.label && <p class="j-abstract-label mb-1 sm:mb-0">{part.label}</p>}
-						<p>{part.text}</p>
+			{summary && (
+				<section aria-labelledby="pls-title" class="j-pls lg:col-start-1">
+					<h2 id="pls-title" class="px-5 pt-4 text-[12px] font-bold tracking-[0.08em] text-navy uppercase sm:px-6">Plain Language Summary</h2>
+					<div class:list={['px-5 pb-1 sm:px-6', columns && 'md:grid md:grid-cols-3 md:gap-8 md:pb-4']}>
+						{summary.map((s) => (
+							<div class:list={[
+								'border-b border-dotted border-[#b9b3a9] py-3.5 last:border-0',
+								columns ? 'md:border-b-0 md:py-3' : asked && 'sm:grid sm:grid-cols-[10rem_1fr] sm:gap-5',
+							]}>
+								{s.q && <p class:list={['j-pls-q mb-1 sm:mb-0', columns && 'md:mb-1.5 md:text-[1.0625rem]']}>{s.q}</p>}
+								<p class="j-pls-a">{s.a}</p>
+							</div>
+						))}
 					</div>
-				))}
-			</div>
-		)}
+					{fork && (
+						<a href={withBase(fork.href)} class="group flex items-center justify-between gap-4 border-t border-[#d9d4cb] bg-white/70 px-5 py-3.5 transition-colors hover:bg-white sm:px-6">
+							<span class="text-[15px] leading-snug"><span class="text-ink-secondary">{fork.lead}</span> <span class="font-semibold text-navy underline decoration-orange/60 underline-offset-[3px] group-hover:decoration-orange">{fork.label}</span></span>
+							<svg viewBox="0 0 16 16" class="size-4 shrink-0 text-orange transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+						</a>
+					)}
+				</section>
+			)}
 
-		{keywords && (
-			<p class="j-keywords mt-5">
-				<span class="font-semibold text-navy">Key Words:</span>{' '}
-				{keywords.map((k, i) => (
-					<span>
-						{i > 0 && <span class="sq" aria-hidden="true"></span>}
-						{k.href ? <a href={link(k.href)} class="underline decoration-orange/50 underline-offset-[3px] hover:text-navy hover:decoration-orange">{k.label}</a> : k.label}
-					</span>
-				))}
-			</p>
-		)}
+			{Astro.slots.has('action') && <div class="lg:col-start-1"><slot name="action" /></div>}
+
+			{hasAside && <div class="lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:pt-12"><slot name="aside" /></div>}
+		</div>
 
 		{Astro.slots.has('illustration') && <div class="mt-8"><slot name="illustration" /></div>}
 	</div>

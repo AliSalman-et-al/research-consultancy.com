@@ -1,15 +1,13 @@
+import type { Klass } from '../lib/registration';
 import type { Accent } from './accents';
-import { contact, enrol } from './site';
 
 export type Art = 'manuscript' | 'forest' | 'network' | 'trend' | 'bars' | 'loop';
 
 export interface Course {
 	slug: string;
 	name: string;
-	/** The course page's title, set as an AHA article title. */
+	/** The course page's title: a paper's shape, in plain words. */
 	paperTitle: string;
-	/** Keys into the abbreviations list for this page's box. */
-	abbreviations: string[];
 	/** The course page's journal colour, matching the course's icon. */
 	accent: Accent;
 	stage: 'Start' | 'Publish';
@@ -21,26 +19,21 @@ export interface Course {
 	art: Art;
 	tint: string; // figure-palette band behind the icon
 	ink: string;
-	/** Shown in the course's booking panel. Fee is a separate field so it can lead. */
-	fee: string;
 	facts: { label: string; value: string }[];
 	prerequisite: string;
 	outcomes: string[];
 	curriculum: { title: string; items: { title: string; body?: string }[] }[];
 	afterClass: string;
 	example?: { text: string; href: string };
-	enrolHref: string;
-	enrolLabel: string;
+	/** Announced classes, each with its own dates and payment link. Empty means none announced. */
+	classes: Klass[];
 }
-
-const askOnWhatsApp = contact.whatsapp.href;
 
 export const courses: Course[] = [
 	{
 		slug: 'level-1',
 		accent: 'green',
-		paperTitle: 'Rationale and Design of Level 1, a Two-Day Introductory Course in Clinical Research',
-		abbreviations: ['ICMJE', 'USMLE'],
+		paperTitle: 'Level 1: A Two‑Day Introduction to Clinical Research for Complete Beginners',
 		name: 'Level 1',
 		stage: 'Start',
 		tagline: 'The first course. Study design, writing and statistics in two days.',
@@ -50,7 +43,6 @@ export const courses: Course[] = [
 		art: 'manuscript',
 		tint: 'bg-green/15',
 		ink: 'text-green',
-		fee: '$35',
 		facts: [
 			{ label: 'Length', value: '2 days, 6 hours each' },
 			{ label: 'Time', value: '5:30 to 11:30 AM, U.S. Central' },
@@ -87,14 +79,12 @@ export const courses: Course[] = [
 		],
 		afterClass:
 			'Level 1 gives you enough to start a small study on your own. Mentored projects start in the method courses, which build on what Level 1 teaches.',
-		enrolHref: enrol.level1,
-		enrolLabel: 'Enroll in Level 1',
+		classes: [],
 	},
 	{
 		slug: 'meta-analysis',
 		accent: 'purple',
-		paperTitle: 'Rationale and Design of the Meta-Analysis Masterclass, a Three-Day Course With Mentored Projects',
-		abbreviations: ['PRISMA', 'ICMJE'],
+		paperTitle: 'Meta-Analysis Masterclass: Combining Published Studies Into Your First Paper',
 		name: 'Meta-Analysis Masterclass',
 		stage: 'Publish',
 		tagline: 'Pool published trials into one answer. Three days, then a project.',
@@ -104,7 +94,6 @@ export const courses: Course[] = [
 		art: 'forest',
 		tint: 'bg-purple/40',
 		ink: 'text-purple-deep',
-		fee: 'Pay online to reserve',
 		facts: [
 			{ label: 'Length', value: '3 days, 6 hours each' },
 			{ label: 'Time', value: '5:00 to 11:00 AM, U.S. Central' },
@@ -151,14 +140,13 @@ export const courses: Course[] = [
 			text: 'One group pooled 32 studies of about 270,000 patients to ask whether blood thinners can be stopped after ablation for atrial fibrillation.',
 			href: 'https://www.globalcardiology.info/site/article/view/115',
 		},
-		enrolHref: enrol.metaAnalysis,
-		enrolLabel: 'Reserve your seat',
+		// The last class's payment link was https://buy.stripe.com/14AfZhfOk1Rjckw1O8f7i0c
+		classes: [],
 	},
 	{
 		slug: 'cdc-wonder',
 		accent: 'teal',
-		paperTitle: 'Rationale and Design of a Course in U.S. Mortality Research Using CDC WONDER',
-		abbreviations: ['CDC WONDER', 'ICMJE'],
+		paperTitle: 'CDC WONDER: Using U.S. Death Records to Write Your First Paper',
 		name: 'CDC WONDER',
 		stage: 'Publish',
 		tagline: 'Study U.S. deaths since 1999 with free national data.',
@@ -168,7 +156,6 @@ export const courses: Course[] = [
 		art: 'trend',
 		tint: 'bg-teal/15',
 		ink: 'text-teal',
-		fee: '$100 in September 2025',
 		facts: [
 			{ label: 'Length', value: '3 days, 6 hours each' },
 			{ label: 'Software', value: 'CDC WONDER, Joinpoint' },
@@ -200,14 +187,12 @@ export const courses: Course[] = [
 			text: 'One group studied 170,610 deaths linked to peritonitis from 1999 to 2023. The death rate fell until 2010, then rose.',
 			href: 'https://doi.org/10.1186/s12982-026-02595-6',
 		},
-		enrolHref: askOnWhatsApp,
-		enrolLabel: 'Ask about the next class',
+		classes: [],
 	},
 	{
 		slug: 'nis',
 		accent: 'rust',
-		paperTitle: 'Rationale and Design of a Course in Hospital Outcomes Research Using the National Inpatient Sample',
-		abbreviations: ['NIS', 'ICMJE'],
+		paperTitle: 'National Inpatient Sample: Using U.S. Hospital Records to Write Your First Paper',
 		name: 'National Inpatient Sample',
 		stage: 'Publish',
 		tagline: 'Study U.S. hospital stays, outcomes and costs in STATA.',
@@ -217,7 +202,6 @@ export const courses: Course[] = [
 		art: 'bars',
 		tint: 'bg-orange/15',
 		ink: 'text-[#b3480f]',
-		fee: 'Ask on WhatsApp',
 		facts: [
 			{ label: 'Length', value: '3 days, 6 hours each' },
 			{ label: 'Software', value: 'STATA' },
@@ -249,14 +233,12 @@ export const courses: Course[] = [
 			text: 'One group studied 226,115 hernia repairs. Patients on Medicaid had more complications and longer stays than privately insured patients.',
 			href: 'https://www.instagram.com/researchconsultancyrc/',
 		},
-		enrolHref: askOnWhatsApp,
-		enrolLabel: 'Ask about the next class',
+		classes: [],
 	},
 	{
 		slug: 'nrd',
 		accent: 'magenta',
-		paperTitle: 'Rationale and Design of a Course in Readmissions Research Using the Nationwide Readmissions Database',
-		abbreviations: ['NRD', 'NIS', 'ICMJE'],
+		paperTitle: 'Nationwide Readmissions Database: Studying Why Patients Return to Hospital',
 		name: 'Nationwide Readmissions Database',
 		stage: 'Publish',
 		tagline: 'Follow patients back to hospital after discharge.',
@@ -266,7 +248,6 @@ export const courses: Course[] = [
 		art: 'loop',
 		tint: 'bg-pink/15',
 		ink: 'text-[#b8228a]',
-		fee: 'Ask on WhatsApp',
 		facts: [
 			{ label: 'Length', value: '2 days, 6 hours each' },
 			{ label: 'Software', value: 'STATA' },
@@ -298,8 +279,7 @@ export const courses: Course[] = [
 			text: 'One group studied nearly 30,000 admissions for clot removal after stroke and found what predicted a return to hospital within 30 days.',
 			href: 'https://doi.org/10.1212/WNL.0000000000217891',
 		},
-		enrolHref: askOnWhatsApp,
-		enrolLabel: 'Ask about the next class',
+		classes: [],
 	},
 ];
 

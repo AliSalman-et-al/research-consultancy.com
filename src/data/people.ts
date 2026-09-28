@@ -21,7 +21,7 @@ export const leaders: Leader[] = [
 		place: 'Baylor University Medical Center, Dallas',
 		publications: '500+',
 		photo: 'people/shahzeb-khan.jpg',
-		bio: 'Cardiologist and grant-funded researcher. Cardiology fellowship at Duke; MS, Rush University. Associate editor of JCF Intersections, ESC Heart Failure and Heart Failure Reviews, and a 2025 Cardiology Research All-Star. Co-founded RC in 2016, leads the CDC WONDER course and runs mock interviews for Match mentees.'
+		bio: 'Cardiologist and grant-funded researcher. Cardiology fellowship at Duke; MS, Rush University. Associate editor of JCF Intersections, ESC Heart Failure and Heart Failure Reviews, and a 2025 Cardiology Research All-Star. Co-founded RC in 2016, leads the CDC WONDER course and runs mock interviews for Match Mentorship students.'
 	},
 	{
 		name: 'Dr. Kaneez Fatima',
@@ -31,7 +31,7 @@ export const leaders: Leader[] = [
 		place: 'Baylor Scott & White Research Institute',
 		publications: '170+',
 		photo: 'people/kaneez-fatima.jpg',
-		bio: 'Co-founded RC in 2016. Teaches statistics in the workshops and helps Match mentees arrange U.S. clinical rotations. One student wrote that Dr. Fatima taught in a workshop what another teacher could not in a year.'
+		bio: 'Co-founded RC in 2016. Teaches statistics in the workshops and helps Match Mentorship students arrange U.S. clinical rotations. One student wrote that Dr. Fatima taught in a workshop what another teacher could not in a year.'
 	},
 	{
 		name: 'Dr. M. Shariq Usman',
@@ -41,7 +41,7 @@ export const leaders: Leader[] = [
 		place: 'UT Southwestern Medical Center',
 		publications: '130+',
 		photo: 'people/shariq-usman-headshot.jpg',
-		bio: 'Teaches the Meta-Analysis Masterclass, supervises project groups to submission and coaches Match mentees for interviews. Former postdoctoral fellow at the University of Mississippi Medical Center.'
+		bio: 'Teaches the Meta-Analysis Masterclass, supervises project groups to submission and coaches Match Mentorship students for interviews. Former postdoctoral fellow at the University of Mississippi Medical Center.'
 	},
 	{
 		name: 'Dr. Tariq Jamal Siddiqi',

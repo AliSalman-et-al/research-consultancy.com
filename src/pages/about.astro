@@ -12,9 +12,9 @@ import { withBase } from '../lib/paths';
 import { accArticle } from '../data/site';
 
 const sections = [
-	{ id: 'introduction', label: 'Introduction' },
-	{ id: 'history', label: 'Ten years' },
-	{ id: 'mission', label: 'Mission' },
+	{ id: 'introduction', label: 'Why We Started' },
+	{ id: 'history', label: 'Who We Have Trained' },
+	{ id: 'mission', label: 'What We Are For' },
 ];
 
 const refs = [
@@ -26,8 +26,12 @@ const refs = [
 	<ArticleHead
 		type="Perspective"
 		page="e011"
-		title="Closing the Research Training Gap for Medical Students Outside the United States"
-		abstract={[{ label: 'Abstract', text: 'Residency programs expect research, but most medical schools outside the United States never teach it. We started Research Consultancy in 2016 to teach research methods to students in any country and to supervise their first projects. This Perspective explains why, and what ten years have produced: more than 3,500 students, seven in ten of them women and one in three from a rural area.' }]}
+		title="Research Consultancy at Ten: Why We Started It and Who It Has Trained"
+		summary={[
+			{ a: 'Most medical schools outside the United States do not teach research, so in 2016 we started teaching it, first in person and since 2020 online to any country.' },
+			{ a: 'By 2024, more than 3,500 students had trained with us. Seven in ten were women, and one in three came from a rural area.' },
+			{ a: 'Four physician-scientists at U.S. hospitals lead RC and teach its courses.' },
+		]}
 		sections={sections}
 	>
 		<div slot="byline" class="mt-6 max-w-[40rem]">
@@ -37,7 +41,7 @@ const refs = [
 		<Figure slot="aside" src="events/leadership-group.jpg" alt="RC faculty standing together at a scientific meeting" label="Figure 1" caption="RC faculty at a scientific meeting." imgClass="aspect-[4/3]" loading="eager" sizes="(min-width: 1024px) 24rem, 100vw" />
 	</ArticleHead>
 
-	<JSection title="Introduction" id="introduction" hideTitle>
+	<JSection title="Why We Started" label="Introduction" id="introduction">
 		<div class="j-main j-prose">
 			<p class="drop-cap">
 				Most medical schools outside the United States treat research as an extra. Students who want to learn it rarely find
@@ -49,17 +53,9 @@ const refs = [
 				2020 the classes moved to Zoom, and students from any country could join.<Cite n={1} />
 			</p>
 		</div>
-		<aside class="j-margin border border-navy bg-[#f5f8fb] self-start">
-			<p class="bg-navy px-4 py-2 text-[13px] font-semibold text-white">Research in context</p>
-			<dl class="space-y-3 p-4">
-				<div><dt class="text-[13px] font-semibold text-navy">Evidence before RC</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Research training for medical students outside the United States was scarce and rarely supervised.</dd></div>
-				<div><dt class="text-[13px] font-semibold text-navy">Added value</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Each method course ends in a project, supervised by physician-scientists who publish in the same field.</dd></div>
-				<div><dt class="text-[13px] font-semibold text-navy">Implications</dt><dd class="mt-0.5 text-[15px] leading-snug text-ink-secondary">Research can be taught at a distance and at scale, if supervision follows the teaching.</dd></div>
-			</dl>
-		</aside>
 	</JSection>
 
-	<JSection title="Ten Years" id="history" newPage>
+	<JSection title="Who We Have Trained" label="Results" id="history" newPage>
 		<div class="j-main j-prose">
 			<p>
 				By 2024, RC had trained more than 3,500 students. Seven in ten were women, and one in three came from a rural area
@@ -84,7 +80,7 @@ const refs = [
 		<Timeline class="j-span mt-2" label="Figure 3" />
 	</JSection>
 
-	<JSection title="Mission" id="mission">
+	<JSection title="What We Are For" label="Conclusions" id="mission">
 		<dl class="j-main grid gap-6 sm:grid-cols-2">
 			<div class="border-t-[3px] border-navy pt-3">
 				<dt class="j-subhead">Vision</dt>

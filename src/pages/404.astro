@@ -12,9 +12,9 @@ import { nav } from '../data/site';
 		type="Retraction Notice"
 		page="e404"
 		title="This Page Has Been Retracted"
-		abstract={[{ text: 'The page you asked for does not exist. The link may be old, or the address may have a typo. The authors regret the error and refer readers to the pages below, which do exist.' }]}
+		summary={[{ a: 'The page you asked for does not exist. The link may be old, or the address may have a typo. The authors regret the error and refer readers to the pages below, which do exist.' }]}
 	/>
-	<JSection title="Pages That Exist" id="contents">
+	<JSection title="Pages That Exist" label="Corrigendum" id="contents">
 		<ul class="j-main space-y-2.5 text-[16px]">
 			<li><a href={withBase('/')} class="link">Home</a></li>
 			{nav.map((n) => <li><a href={withBase(n.href)} class="link">{n.label}</a></li>)}
