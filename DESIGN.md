@@ -277,7 +277,7 @@ AHA colours each journal's article types; RC gives each page's article type one 
 The desk stays warm grey (`#efeeeb`) and the site header and footer stay light. A navy desk was tried and rejected.
 
 ### The physical page
-- **Paper.** Pages are plain white, as a PDF renders them, with a hairline border and a soft layered shadow at every screen size. Below 1024px the sheet sits 10px in from each side, so a phone shows desk around the page the way a phone PDF viewer does. An off-white stock with grain was tried and rejected; the page breaks and shadows carry the effect.
+- **Paper.** Pages are plain white, as a PDF renders them, with a hairline border and a soft layered shadow at every screen size. On phones the sheet sits 10px in from each side, and 24px on tablets, so the screen shows desk around the page the way a PDF viewer does. An off-white stock with grain was tried and rejected; the page breaks and shadows carry the effect.
 - **Page counter.** While the reader scrolls, a small dark pill ("2 / 4") shows the current page under the header and fades a second after scrolling stops, as a PDF viewer's does. It counts the page breaks.
 - **Article-type colour on phones.** The side tab needs a margin, so from 1024px it sits on the sheet's left edge; below that a 4px band in the same colour runs along the first page's top edge.
 - **Pages.** Sections marked `newPage` start a new page: the foot of the page that ends (copyright, page number), a strip of desk that cuts through the sheet's edges, and the head of the next page (page number, italic running head). Page numbers are a CSS counter; the running head is the layout's `runningHead` ("Your Name et al." on the homepage).
@@ -393,7 +393,8 @@ Sections are separated by a grey rule over each section head and a moderate gap 
 Buttons keep a 44px minimum height. Links in body text are underlined in orange, so they read as links without relying on colour alone.
 
 #### Collapsing Strategy
-- Below 1024px, the sheet keeps its border and shadow, 10px in from each side of the screen.
+- On every screen the sheet keeps its border and shadow: 10px in from each side on phones, 24px on tablets.
+- On tablets the header shows the logo mark and "Research Consultancy"; on phones, the mark alone.
 - The first screen on a phone reads: folio, article type, title, byline, Plain Language Summary, then the page's action. The site header shrinks to the logo mark and the menu.
 - The phone action bar stays hidden while the page's own action panel is on screen or below it, so the same button never shows twice.
 - The article grid collapses to one column: section head, then text, then its figure.

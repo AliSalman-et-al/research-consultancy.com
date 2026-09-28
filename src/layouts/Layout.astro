@@ -52,7 +52,7 @@ const ogImage = Astro.site ? new URL(withBase('/RC-Logo.png'), Astro.site).href 
 	<body class="pb-16 lg:pb-0">
 		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-canvas focus:px-3 focus:py-2">Skip to content</a>
 		<SiteHeader cta={cta} register={register} />
-		<main id="main" class="px-2.5 py-2.5 lg:px-6 lg:py-10">
+		<main id="main" class="px-2.5 py-2.5 md:px-6 md:py-8 lg:py-10">
 			<div class="frame sheet relative" style={`--rh:${JSON.stringify(runningHead)}`}>
 				<slot />
 			</div>
