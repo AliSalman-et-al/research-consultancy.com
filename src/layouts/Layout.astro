@@ -33,7 +33,9 @@ const {
 } = Astro.props;
 const typeColor = accents[accent];
 const fullTitle = title === 'Research Consultancy' ? title : `${title} | Research Consultancy`;
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+// The 404 page stands in for missing addresses, so it has no address of its own to index.
+const notFound = Astro.url.pathname.replace(/\/$/, '').endsWith('/404');
+const canonical = Astro.site && !notFound ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : withBase('/rc-og.jpg');
 ---
 
@@ -54,6 +56,7 @@ const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : 
 		{canonical && <link rel="canonical" href={canonical} />}
 		{canonical && <meta property="og:url" content={canonical} />}
 		<meta property="og:type" content="website" />
+		{notFound && <meta name="robots" content="noindex" />}
 		<meta name="twitter:card" content="summary" />
 		<title>{fullTitle}</title>
 		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...jsonLd })} />}
