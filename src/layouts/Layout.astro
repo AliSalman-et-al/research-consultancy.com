@@ -33,6 +33,7 @@ const {
 } = Astro.props;
 const typeColor = accents[accent];
 const fullTitle = title === 'Research Consultancy' ? title : `${title} | Research Consultancy`;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : withBase('/rc-og.jpg');
 ---
 
@@ -50,6 +51,10 @@ const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : 
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImage} />
+		{canonical && <link rel="canonical" href={canonical} />}
+		{canonical && <meta property="og:url" content={canonical} />}
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary" />
 		<title>{fullTitle}</title>
 		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...jsonLd })} />}
 	</head>
