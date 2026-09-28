@@ -30,7 +30,7 @@ const {
 } = Astro.props;
 const typeColor = accents[accent];
 const fullTitle = title === 'Research Consultancy' ? title : `${title} | Research Consultancy`;
-const ogImage = Astro.site ? new URL(withBase('/RC-Logo.png'), Astro.site).href : withBase('/RC-Logo.png');
+const ogImage = Astro.site ? new URL(withBase('/rc-og.jpg'), Astro.site).href : withBase('/rc-og.jpg');
 ---
 
 <!doctype html>
@@ -39,7 +39,7 @@ const ogImage = Astro.site ? new URL(withBase('/RC-Logo.png'), Astro.site).href 
 		<meta charset="utf-8" />
 		<script is:inline>document.documentElement.classList.add('js');</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/png" href={withBase('/RC-Logo-NoText.png')} />
+		<link rel="icon" type="image/png" href={withBase('/rc-icon.png')} />
 		<link rel="icon" href={withBase('/favicon.ico')} />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
