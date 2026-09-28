@@ -1,6 +1,6 @@
 ---
 import { courses } from '../../data/courses';
-import { contact, social } from '../../data/site';
+import { contact, nav, social } from '../../data/site';
 import { withBase } from '../../lib/paths';
 
 const columns = [
@@ -10,13 +10,8 @@ const columns = [
 	},
 	{
 		title: 'Research Consultancy',
-		items: [
-			{ label: 'Match Mentorship', href: '/match-mentorship' },
-			{ label: 'Mentors', href: '/mentors' },
-			{ label: 'Student Results', href: '/results' },
-			{ label: 'About us', href: '/about' },
-			{ label: 'Contact', href: '/contact' },
-		],
+		// The header's pages, less Courses, which has its own column
+		items: nav.filter((n) => n.href !== '/courses'),
 	},
 	{
 		title: 'Follow',
