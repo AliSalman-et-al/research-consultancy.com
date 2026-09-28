@@ -475,7 +475,7 @@ Printed elements are square: that is what makes the page read as a journal. Roun
 Defaults: "Start with Level 1" to the Level 1 page site-wide, so the header never leads to a closed class. Never print a price.
 
 **`registration`** (`Registration.astro`, logic in `src/lib/registration.ts`). A course has announced **classes**, each with its own dates, closing date and payment link; Match Mentorship has application windows. The state is worked out from today's date at build time and again in the reader's browser, so a class closes on time without a redeploy. Four states, each with the same button so a closed class reads as an inactive button, not a missing one:
-- **Open:** an orange open padlock (the journals' Open Access mark) with "Registration open · Closes Oct 12", the class dates, and a solid orange "Register for Level 1 →". The padlock springs open once as it appears.
+- **Open:** an orange open padlock (the journals' Open Access mark) with "Registration open · Closes Oct 12", the class dates, and a solid orange "Register for Level 1 →". The padlock swings open once as it appears.
 - **Opening soon:** a navy padlock with "Opens Nov 1", the button inactive, and "Tell me when it opens".
 - **Full** and **closed:** a grey shut padlock with "Class full" or "Registration closed · No class announced yet", the button inactive (dashed grey border, muted text, `aria-disabled`), and "Tell me when it opens", which opens WhatsApp with a message naming the course.
 
