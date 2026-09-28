@@ -35,7 +35,7 @@ const B = '#8a8580';
 			<li class="flex items-center gap-1.5"><span class="size-3 rounded-full border-2 bg-white" style={`border-color:${B}`}></span>{bName}</li>
 		</ul>
 		<div class="grid grid-cols-[minmax(0,max-content)_minmax(0,1fr)] items-center gap-x-3 gap-y-1.5 sm:gap-x-4">
-			<div class="pointer-events-none relative mr-16 self-stretch" style={`grid-column:2;grid-row:1 / span ${rows.length}`} aria-hidden="true">
+			<div class="pointer-events-none relative mr-12 self-stretch sm:mr-16" style={`grid-column:2;grid-row:1 / span ${rows.length}`} aria-hidden="true">
 				{ticks.map((t) => <span class="absolute inset-y-0 w-px bg-[#e4e1db]" style={`left:${pct(t)}%`}></span>)}
 			</div>
 			{rows.map((r, i) => {
@@ -43,25 +43,25 @@ const B = '#8a8580';
 				const hi = Math.max(r.a, r.b);
 				return (
 					<>
-						<div class="max-w-[6.5rem] py-0.5 text-right font-sans text-[12px] leading-tight sm:max-w-none sm:text-[13px]" style={`grid-column:1;grid-row:${i + 1}`}>
+						<div class="max-w-[5.25rem] py-0.5 text-right font-sans text-[12px] leading-tight sm:max-w-none sm:text-[13px]" style={`grid-column:1;grid-row:${i + 1}`}>
 							<span class="text-ink">{r.label}</span>
 							{r.sub && <span class="hidden text-[11px] text-ink-muted sm:block">{r.sub}</span>}
 						</div>
 						<div class="relative h-7" style={`grid-column:2;grid-row:${i + 1}`} title={`${r.label}: ${aName} ${r.a}, ${bName} ${r.b}`}>
-							<div class="absolute inset-y-0 left-0 right-16">
+							<div class="absolute inset-y-0 left-0 right-12 sm:right-16">
 								<span class="grow-x absolute top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#d7d3cc]" style={`left:${pct(lo)}%;width:${pct(hi) - pct(lo)}%;--i:${i}`}></span>
 								<span class="pop absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-white" style={`left:${pct(r.b)}%;border-color:${B};--i:${i * 4}`}></span>
 								<span class="pop absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-[#fbfaf7]" style={`left:${pct(r.a)}%;background:${A};--i:${i * 4 + 2}`}></span>
 							</div>
-							<span class="absolute top-1/2 right-0 w-14 -translate-y-1/2 text-right font-sans text-[12px] font-semibold whitespace-nowrap text-ink tabular-nums">{r.a} <span class="font-normal text-ink-muted">vs {r.b}</span></span>
+							<span class="absolute top-1/2 right-0 w-11 -translate-y-1/2 sm:w-14 text-right font-sans text-[12px] font-semibold whitespace-nowrap text-ink tabular-nums">{r.a} <span class="font-normal text-ink-muted">vs {r.b}</span></span>
 						</div>
 					</>
 				);
 			})}
-			<div class="relative mr-16 h-4" style={`grid-column:2;grid-row:${rows.length + 1}`} aria-hidden="true">
+			<div class="relative mr-12 h-4 sm:mr-16" style={`grid-column:2;grid-row:${rows.length + 1}`} aria-hidden="true">
 				{ticks.map((t) => <span class="j-axis absolute -translate-x-1/2 text-[11px]" style={`left:${pct(t)}%`}>{t}</span>)}
 			</div>
-			<p class="j-axis mr-16 text-center text-[11.5px]" style={`grid-column:2;grid-row:${rows.length + 2}`}>{axis}</p>
+			<p class="j-axis mr-12 text-center text-[11.5px] sm:mr-16" style={`grid-column:2;grid-row:${rows.length + 2}`}>{axis}</p>
 		</div>
 	</div>
 	<Caption label={label} title={title}><slot /></Caption>

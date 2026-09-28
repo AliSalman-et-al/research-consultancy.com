@@ -868,6 +868,14 @@
   .reg-panel .reg-actions > .btn-disabled {
     width: 100%;
   }
+  /* Course names can be long; a registration button wraps rather than overflow a phone */
+  .reg-actions > .btn-primary,
+  .reg-actions > .btn-disabled {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.3;
+  }
   .reg-notify {
     font-family: var(--font-sans);
     font-size: 0.875rem;
