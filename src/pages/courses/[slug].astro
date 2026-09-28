@@ -6,7 +6,6 @@ import MethodFigure from '../../components/figures/MethodFigure.astro';
 import ActionPanel from '../../components/journal/ActionPanel.astro';
 import ArticleEnd from '../../components/journal/ArticleEnd.astro';
 import ArticleHead from '../../components/journal/ArticleHead.astro';
-import Expand from '../../components/journal/Expand.astro';
 import JSection from '../../components/journal/JSection.astro';
 import NextSteps from '../../components/journal/NextSteps.astro';
 import Registration from '../../components/journal/Registration.astro';
@@ -79,28 +78,34 @@ const sections = [
 
 	<JSection title="What You Will Learn" label="Curriculum" id="curriculum">
 		<div class="j-span">
-			<p class="max-w-[41rem] text-[1.0625rem] leading-relaxed text-ink-secondary">
-				{course.curriculum.length > 1 ? `${course.curriculum.length} days, live on Zoom:` : 'Live on Zoom. The class covers:'}
-				{' '}{course.curriculum.length > 1 ? course.curriculum.map((b) => b.title.replace(/^Day \d\.\s*/, '').toLowerCase()).join(', then ') : course.curriculum[0].items.map((i) => i.title.charAt(0).toLowerCase() + i.title.slice(1)).join('; ')}.
-			</p>
-			{course.curriculum.length > 1 && (
-				<Expand label={`Show the day-by-day curriculum (${topics} topics)`} class="mt-4">
-					<div class:list={['grid gap-10', course.curriculum.length === 2 && 'md:grid-cols-2', course.curriculum.length >= 3 && 'md:grid-cols-3']}>
+			{course.curriculum.length > 1 ? (
+				<>
+					<p class="max-w-[41rem] text-[1.0625rem] leading-relaxed text-ink-secondary">{course.curriculum.length} days, live on Zoom, {topics} topics. Select a topic to see what it covers.</p>
+					<div class:list={['mt-5 grid gap-x-10 gap-y-6', course.curriculum.length === 2 && 'md:grid-cols-2', course.curriculum.length >= 3 && 'md:grid-cols-3']}>
 						{course.curriculum.map((block) => (
 							<div>
 								<h3 class="j-subhead border-b-2 border-navy pb-2">{block.title}</h3>
 								<ul class="divide-y divide-hairline">
 									{block.items.map((item) => (
-										<li class="py-3">
-											<p class="font-medium">{item.title}</p>
-											{item.body && <p class="mt-1 text-[14.5px] leading-relaxed text-ink-muted">{item.body}</p>}
+										<li>
+											<details class="group">
+												<summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-3 font-medium [&::-webkit-details-marker]:hidden">
+													{item.title}
+													<svg viewBox="0 0 16 16" class="size-4 shrink-0 text-ink-muted transition-transform group-open:rotate-90" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3.5 4.5 4.5L6 12.5" /></svg>
+												</summary>
+												<p class="-mt-1 pb-3 text-[14.5px] leading-relaxed text-ink-muted">{item.body}</p>
+											</details>
 										</li>
 									))}
 								</ul>
 							</div>
 						))}
 					</div>
-				</Expand>
+				</>
+			) : (
+				<p class="max-w-[41rem] text-[1.0625rem] leading-relaxed text-ink-secondary">
+					Live on Zoom. The class covers {course.curriculum[0].items.map((i) => i.title.charAt(0).toLowerCase() + i.title.slice(1)).join('; ')}.
+				</p>
 			)}
 		</div>
 	</JSection>

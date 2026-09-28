@@ -481,7 +481,9 @@ Defaults: "Start with Level 1" to the Level 1 page site-wide, so the header neve
 
 Sizes: `panel` (course pages), `row` (the homepage strip and closing line), `status` (the badge alone, in the Courses table and panel), `badge` (a padlock only, in the Central Illustration's course chips), `button` (the header and phone bar). On the dev server, `?preview` (or `?preview=open`, `soon`, `full`, `closed`) swaps in placeholder classes; they never reach the published site.
 
-**`expand`** (`Expand.astro`): a journal website's "Expand" control for reference material a reader scans: the day-by-day curriculum, full paper lists, tables past their fifth row (rows marked `more` inside a `.j-rows` figure). A pill with a chevron and a label that says exactly what opens ("Show all 12 papers").
+**Curriculum topics.** A course page lists every topic by day, visible; each topic opens on its own to show what it covers, so a beginner sees the whole syllabus at a glance.
+
+**`expand`** (`Expand.astro`): a journal website's "Expand" control for reference material a reader scans: full paper lists, tables past their fifth row (rows marked `more` inside a `.j-rows` figure). A pill with a chevron and a label that says exactly what opens ("Show all 12 papers").
 
 **`button-utility`** (mobile menu toggle)
 - White surface, ink text, `{rounded.md}`, padding `4px 14px`, 1px `{colors.hairline}` border.
