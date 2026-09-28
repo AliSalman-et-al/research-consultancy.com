@@ -39,7 +39,7 @@ export const courses: Course[] = [
 		tagline: 'The first course. Study design, writing and statistics in two days.',
 		question: "I've never done research. Where do I start?",
 		summary:
-			'Level 1 is where every RC student starts. In two days you learn how clinical studies are designed, how to turn a question into a paper, and how to analyze a dataset in SPSS. More than 6,000 students have taken it.',
+			'Level 1 is where every RC student starts. In two days you learn how clinical studies are designed, how to turn a question into a paper, and how to analyze a dataset in SPSS, a statistics program. More than 6,000 students have taken it.',
 		art: 'manuscript',
 		tint: 'bg-green/15',
 		ink: 'text-green',
@@ -114,13 +114,13 @@ export const courses: Course[] = [
 				items: [
 					{ title: 'The core ideas', body: 'Distributions, P values and confidence intervals.' },
 					{ title: 'Effect measures', body: 'Odds ratios, risk ratios and mean differences, and when each one fits.' },
-					{ title: 'Designing the review', body: 'A PICO question and which studies can be pooled.' },
+					{ title: 'Designing the review', body: 'A precise question (which patients, which treatment, compared with what, measured how) and which studies can be pooled.' },
 				],
 			},
 			{
 				title: 'Day 2. Building the review',
 				items: [
-					{ title: 'Searching and screening', body: 'A search you can reproduce, screened with PRISMA.' },
+					{ title: 'Searching and screening', body: 'A search you can reproduce, screened by the standard checklist journals expect.' },
 					{ title: 'Quality', body: 'Rating each study for risk of bias.' },
 					{ title: 'Software', body: 'Review Manager and OpenMetaAnalyst, set up on your laptop.' },
 				],
