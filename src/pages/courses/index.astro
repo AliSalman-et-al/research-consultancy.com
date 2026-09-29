@@ -9,7 +9,7 @@ import Registration from '../../components/journal/Registration.astro';
 import CourseArt from '../../components/site/CourseArt.astro';
 import Layout from '../../layouts/Layout.astro';
 import { withBase } from '../../lib/paths';
-import { courses, method } from '../../data/courses';
+import { courses } from '../../data/courses';
 import { contact, testimonials } from '../../data/site';
 
 const fact = (c: (typeof courses)[number], label: string) => c.facts.find((f) => f.label === label)?.value;
@@ -98,28 +98,13 @@ const voices = [testimonials[0], testimonials[2], testimonials[3]];
 			<p>
 				Each method course has two parts. First, the class: two or three days, live on Zoom, with the software running on
 				your own laptop. Then, when the class ends, you join a project group whose mentor has published the same kind of
-				paper. You run the analysis and write the draft, and the group submits the paper to a journal (Figure 1).
+				paper. You run the analysis and write the draft, and the group submits the paper to a journal.
 			</p>
 			<p>
 				Level 1 is different. It teaches enough to start a small study on your own, such as a letter to the editor or a
 				case report, and has no project group attached.
 			</p>
 		</div>
-		<figure class="j-margin">
-			<ol class="j-plate relative space-y-4">
-				<span class="absolute top-8 bottom-8 left-[2.1rem] w-px bg-navy/20 sm:left-[2.6rem]" aria-hidden="true"></span>
-				{method.map((step, i) => (
-					<li class="relative grid grid-cols-[2.25rem_1fr] items-start gap-3">
-						<span class:list={['relative z-10 grid size-9 place-items-center rounded-full text-[13px] font-bold tabular-nums ring-4 ring-[#fbfaf7]', i === 0 ? 'bg-navy text-white' : i === method.length - 1 ? 'bg-orange text-navy' : 'bg-white text-navy shadow-[inset_0_0_0_1.5px_#02264d]']}>{i + 1}</span>
-						<div>
-							<p class="text-[15px] font-semibold text-ink">{step.title}</p>
-							<p class="text-[14px] leading-snug text-ink-secondary">{step.body}</p>
-						</div>
-					</li>
-				))}
-			</ol>
-			<Caption label="Figure 1" title="How a method course runs, from the live class to a submitted paper.">Step 1 is the live class. Steps 2 to 4 happen in the project group after it.</Caption>
-		</figure>
 	</JSection>
 
 	<JSection title="What Students Say" label="Testimonials" id="voices">

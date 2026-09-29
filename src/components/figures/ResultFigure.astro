@@ -1,0 +1,67 @@
+---
+// Figure: the actual pooled results of a student group's published meta-analysis, drawn as a
+// summary forest plot on a log scale. Real numbers from the paper, linked in the caption.
+import Caption from '../journal/Caption.astro';
+
+export interface Result {
+	title: string;
+	/** What the ratio compares, for the caption. */
+	comparison: string;
+	measure: string;
+	rows: { outcome: string; est: number; lo: number; hi: number; p: string }[];
+	lower: string;
+	higher: string;
+	legend: string;
+	cite: { text: string; href: string };
+}
+
+interface Props {
+	label: string;
+	result: Result;
+	class?: string;
+}
+
+const { label, result: r, class: className } = Astro.props;
+const LO = 0.2;
+const HI = 2;
+const pos = (x: number) => ((Math.log(x) - Math.log(LO)) / (Math.log(HI) - Math.log(LO))) * 100;
+const ticks = [0.25, 0.5, 1, 2];
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<div class="grid grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-3 sm:grid-cols-[minmax(0,9rem)_minmax(0,1fr)_auto]" role="img" aria-label={`${r.measure} ${r.rows.map((x) => `${x.outcome} ${x.est} (${x.lo} to ${x.hi})`).join('; ')}`}>
+			<span></span>
+			<span></span>
+			<span class="text-right text-[11px] font-semibold text-ink-muted" aria-hidden="true">{r.measure} (95% CI)</span>
+			{r.rows.map((x) => {
+				const sig = x.hi < 1 || x.lo > 1;
+				return (
+					<>
+						<span class="text-[13.5px] leading-tight font-semibold text-ink" aria-hidden="true">{x.outcome}</span>
+						<span class="relative h-7" aria-hidden="true">
+							<span class="absolute inset-y-0 w-px bg-ink/50" style={`left:${pos(1)}%`}></span>
+							<span class="absolute top-1/2 h-[2px] -translate-y-1/2 bg-navy" style={`left:${pos(x.lo)}%;width:${pos(x.hi) - pos(x.lo)}%`}></span>
+							<span class:list={['absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rotate-45', sig ? 'bg-orange' : 'bg-navy']} style={`left:${pos(x.est)}%`}></span>
+						</span>
+						<span class="text-right text-[12.5px] whitespace-nowrap text-ink tabular-nums" aria-hidden="true">{x.est.toFixed(2)} ({x.lo.toFixed(2)} to {x.hi.toFixed(2)})<span class="block text-[11px] text-ink-muted">P {x.p}</span></span>
+					</>
+				);
+			})}
+			<span></span>
+			<span class="relative h-4" aria-hidden="true">
+				{ticks.map((t) => <span class="j-axis absolute -translate-x-1/2 text-[11px]" style={`left:${pos(t)}%`}>{t}</span>)}
+			</span>
+			<span></span>
+			<span></span>
+			<span class="relative h-4 text-[11px] font-semibold text-ink-muted" aria-hidden="true">
+				<span class="absolute right-[calc(100%-var(--one))] pr-1.5 whitespace-nowrap" style={`--one:${pos(1)}%`}>← {r.lower}</span>
+				<span class="absolute left-[var(--one)] pl-1.5 whitespace-nowrap" style={`--one:${pos(1)}%`}>{r.higher} →</span>
+			</span>
+			<span></span>
+		</div>
+	</div>
+	<Caption label={label} title={r.title}>
+		{r.legend}{' '}<a href={r.cite.href} class="link font-normal" rel="noopener">{r.cite.text}</a>
+	</Caption>
+</figure>

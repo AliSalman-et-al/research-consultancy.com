@@ -1,0 +1,120 @@
+---
+// Figure: why research matters for international graduates, from NRMP's own reports.
+// A: research output of matched and unmatched applicants since Step 1 went pass/fail.
+// B: the publication gap between matched and unmatched applicants, by specialty.
+import Caption from '../journal/Caption.astro';
+import Cite from '../journal/Cite.astro';
+
+interface Props {
+	label: string;
+	/** Reference numbers for the trend and the specialty data. */
+	cite: { trend: number; specialty: number };
+	class?: string;
+}
+
+const { label, cite, class: className } = Astro.props;
+
+// NRMP Charting Outcomes, IMGs, Table 2 (2020, 2022, 2024): mean abstracts, presentations and
+// publications of non-U.S. IMGs. NRMP split this measure into three in 2026, so the series ends in 2024.
+const trend = [
+	{ year: 2020, matched: 6.6, unmatched: 7.0 },
+	{ year: 2022, matched: 7.6, unmatched: 6.6 },
+	{ year: 2024, matched: 8.3, unmatched: 7.3 },
+];
+// NRMP Charting Outcomes, non-U.S. IMGs, 2026, Table 9: median publications, matched vs not matched.
+// Specialties where matched applicants reported more, with at least 12 matched applicants.
+const gaps = [
+	{ name: 'Radiation Oncology', a: 19, b: 3 },
+	{ name: 'Anesthesiology', a: 4, b: 2 },
+	{ name: 'Pathology', a: 7, b: 4 },
+	{ name: 'Neurology', a: 5, b: 3 },
+	{ name: 'General Surgery', a: 8, b: 5 },
+	{ name: 'Radiology', a: 6, b: 4 },
+	{ name: 'Internal Medicine', a: 3, b: 2 },
+	{ name: 'Psychiatry', a: 3, b: 2 },
+];
+
+// Panel A geometry
+const W = 320;
+const H = 170;
+const L = 34;
+const R = 84;
+const T = 14;
+const B = 26;
+const X = (i: number) => L + (i / (trend.length - 1)) * (W - L - R);
+const Y = (v: number) => T + ((9 - v) / (9 - 5)) * (H - T - B);
+const line = (k: 'matched' | 'unmatched') => trend.map((d, i) => `${i ? 'L' : 'M'}${X(i)},${Y(d[k])}`).join(' ');
+// Radiation Oncology's 19 runs off a 0 to 10 scale, drawn with a break, so the other gaps stay readable.
+const MAX = 10;
+const pct = (v: number) => (Math.min(v, MAX) / MAX) * 100;
+const O = '#f67737';
+const G = '#8a8580';
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-10">
+		<div>
+			<p class="j-panel-head">A. Research output since Step 1 went pass/fail</p>
+			<svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img" aria-label={`Mean abstracts, presentations and publications. ${trend.map((d) => `${d.year}: matched ${d.matched}, not matched ${d.unmatched}`).join('; ')}`}>
+				<g font-family="Inter Variable, sans-serif" font-size="10.5" fill="#615d59">
+					{[5, 6, 7, 8, 9].map((v) => (
+						<g>
+							<line x1={L} x2={W - R} y1={Y(v)} y2={Y(v)} stroke="#e4e1db" />
+							<text x={L - 8} y={Y(v) + 3.5} text-anchor="end">{v}</text>
+						</g>
+					))}
+					{trend.map((d, i) => <text x={X(i)} y={H - 8} text-anchor="middle">{d.year}</text>)}
+					<rect x={X(0.5) - 1} y={T} width="1" height={H - T - B} fill="#bdb9b3" />
+					<text x={X(0.5) + 4} y={T + 9} font-size="9.5">Step 1 pass/fail</text>
+				</g>
+				<path d={line('unmatched')} fill="none" stroke={G} stroke-width="2" stroke-dasharray="4 3" />
+				<path d={line('matched')} fill="none" stroke={O} stroke-width="2.5" />
+				{trend.map((d, i) => (
+					<g>
+						<circle cx={X(i)} cy={Y(d.unmatched)} r="4" fill="#fff" stroke={G} stroke-width="2" />
+						<circle cx={X(i)} cy={Y(d.matched)} r="4.5" fill={O} stroke="#fff" stroke-width="1.5" />
+					</g>
+				))}
+				<g font-family="Inter Variable, sans-serif" font-size="10.5" font-weight="600">
+					<text x={X(2) + 9} y={Y(8.3) + 4} fill="#b3480f">Matched {trend[2].matched}</text>
+					<text x={X(2) + 9} y={Y(7.3) + 4} fill="#615d59">Not {trend[2].unmatched}</text>
+				</g>
+			</svg>
+			<p class="mt-1 text-center text-[11.5px] text-ink-muted">Mean abstracts, presentations and publications</p>
+		</div>
+
+		<div>
+			<p class="j-panel-head">B. Median publications by specialty, 2026</p>
+			<ul class="mb-2 flex gap-4 text-[11.5px] text-ink-secondary" aria-hidden="true">
+				<li class="flex items-center gap-1.5"><span class="size-2.5 rounded-full" style={`background:${O}`}></span>Matched</li>
+				<li class="flex items-center gap-1.5"><span class="size-2.5 rounded-full border-2 bg-white" style={`border-color:${G}`}></span>Did not match</li>
+			</ul>
+			<ul class="space-y-1.5">
+				{gaps.map((g) => (
+					<li class="grid grid-cols-[7.5rem_minmax(0,1fr)_3.25rem] items-center gap-2 text-[12.5px]" title={`${g.name}: matched ${g.a}, did not match ${g.b}`}>
+						<span class="truncate text-right text-ink">{g.name}</span>
+						<span class="relative h-5" aria-hidden="true">
+							<span class="absolute top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#d7d3cc]" style={`left:${pct(g.b)}%;width:${pct(g.a) - pct(g.b)}%`}></span>
+							<span class="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-white" style={`left:${pct(g.b)}%;border-color:${G}`}></span>
+							<span class="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-[#fbfaf7]" style={`left:${pct(g.a)}%;background:${O}`}></span>
+							{g.a > MAX && <span class="absolute top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#b3480f]" style="left:calc(100% - 1.6rem)">//</span>}
+						</span>
+						<span class="text-right font-semibold tabular-nums">{g.a}<span class="font-normal text-ink-muted"> vs {g.b}</span></span>
+					</li>
+				))}
+			</ul>
+			<div class="relative mt-1 ml-[8rem] mr-[3.75rem] h-4 text-[10.5px] text-ink-muted" aria-hidden="true">
+				{[0, 2, 4, 6, 8, 10].map((t) => <span class="absolute -translate-x-1/2" style={`left:${pct(t)}%`}>{t}</span>)}
+			</div>
+		</div>
+	</div>
+	<Caption label={label} title="Research and the Match for international medical graduates.">
+		<b>A</b>, Mean abstracts, presentations and publications reported by graduates of schools outside the United States,
+		by Match result. In 2020 applicants who did not match reported slightly more; since Step 1 became pass/fail, those who
+		matched have reported more.<Cite n={cite.trend} /> NRMP split this measure in 2026, so the series ends in 2024.{' '}
+		<b>B</b>, Median publications in 2026, in specialties where matched applicants reported more and at least 12 matched.
+		The scale is broken for Radiation Oncology. In Family Medicine the medians were equal (2 vs 2) and in Pediatrics lower (2 vs 3). In Neurological Surgery,
+		matched applicants reported a median of 70 publications against 28.<Cite n={cite.specialty} /> All counts are
+		self-reported.
+	</Caption>
+</figure>

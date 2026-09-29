@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import BarFigure from '../components/figures/BarFigure.astro';
 import MatchYear from '../components/figures/MatchYear.astro';
 import ActionPanel from '../components/journal/ActionPanel.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
@@ -38,6 +39,21 @@ const faqs = [
 	{ q: 'Can you promise a paper or a match?', a: 'No, and be wary of anyone who does. You join real projects, and authorship depends on what you contribute.' },
 ];
 
+// NRMP Program Director Survey, 2020, Figure 1: percentage of programs citing each factor in
+// selecting applicants to interview, all specialties (N=650). The non-exam factors that lead the
+// list, and research. Orange marks what Match Mentorship works on.
+const factors = [
+	{ label: 'Letters from the specialty', value: 84, text: '84%', highlight: true },
+	{ label: 'Personal statement', value: 78, text: '78%', highlight: true },
+	{ label: "Dean's letter (MSPE)", value: 76, text: '76%' },
+	{ label: 'Commitment to the specialty', value: 70, text: '70%', highlight: true },
+	{ label: 'Grades in required clerkships', value: 69, text: '69%' },
+	{ label: 'Rotation in the department', value: 66, text: '66%' },
+	{ label: 'Knows the applicant personally', value: 65, text: '65%', highlight: true },
+	{ label: 'Leadership', value: 63, text: '63%' },
+	{ label: 'Research involvement', value: 36, text: '36%', highlight: true },
+];
+
 // Three quotes, chosen for being short and specific. Every student's words are on Student Results.
 const quotes = [
 	{ name: 'Osman Wafai', program: 'HCA Centerpoint, Kansas City', quote: 'What helped most by far was the mock interview, which provided invaluable insight and feedback.' },
@@ -61,6 +77,7 @@ const sections = [
 
 const refs = [
 	{ text: 'National Resident Matching Program. Charting Outcomes: characteristics of applicants who matched to their preferred specialty. Non-U.S. IMGs, 2026 Main Residency Match. July 2026.', href: nrmp },
+	{ text: 'National Resident Matching Program. Results of the 2020 NRMP Program Director Survey. August 2020; and Charting Outcomes: Program Director Survey Results, 2026 Main Residency Match. August 2026.', href: 'https://www.nrmp.org/wp-content/uploads/2021/08/2020-PD-Survey.pdf' },
 	{ text: 'Research Consultancy. Match 2025 and Match 2026 results and student stories. 2025-2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
 ];
 ---
@@ -96,11 +113,25 @@ const refs = [
 				matched in the specialty they ranked first. In most specialties, the ones who matched had published more than the ones who did not.<Cite n={1} />
 			</p>
 			<p>
-				Papers are only part of it. A program also reads your letters, your personal statement and how you interview, and
-				all of it has to be ready when applications open in September. Match Mentorship plans the year backward from that
+				Papers are only part of it. When program directors choose whom to interview, most weigh letters from the specialty,
+				the personal statement and commitment to the specialty (Figure 1), and all of it has to be ready when applications
+				open in September. Match Mentorship plans the year backward from that
 				date and gives each part to someone who has done it. Our four faculty run it themselves.
 			</p>
 		</div>
+		<BarFigure
+			class="j-margin"
+			label="Figure 1"
+			title="What program directors consider when choosing whom to interview."
+			rows={factors}
+			max={100}
+			ticks={[0, 25, 50, 75, 100]}
+			axis="Programs citing the factor"
+		>
+			Percentage of 650 U.S. program directors citing each factor, all specialties, 2020. Exam results, not shown, led the
+			list. Orange marks what Match Mentorship works on. In the 2026 survey, letters from the specialty were again among the
+			three most cited factors (86%).<Cite n={2} />
+		</BarFigure>
 	</JSection>
 
 	<JSection title="What You Get" label="Methods" id="methods" newPage>
@@ -146,17 +177,17 @@ const refs = [
 			<h3 class="j-subhead">Timeline</h3>
 			<p>
 				Research comes first, so your papers are submitted before programs start reading applications. Editing, interviews
-				and the rank list follow the Match calendar (Figure 1).
+				and the rank list follow the Match calendar (Figure 2).
 			</p>
 		</div>
-		<MatchYear class="j-span" label="Figure 1" />
+		<MatchYear class="j-span" label="Figure 2" />
 	</JSection>
 
 	<JSection title="Where Students Matched" label="Results" id="results" newPage>
 		<div class="j-main j-prose">
 			<p>
 				Of the 2025 group, 90% matched. Of the 2026 group, 80% matched: 16 students, two of them at Yale programs. One had
-				gone unmatched the year before. One graduated in 2007.<Cite n={2} />
+				gone unmatched the year before. One graduated in 2007.<Cite n={3} />
 			</p>
 			<p>
 				These are the students who chose to join, and many had strong scores, so the rates are not a controlled comparison.{' '}

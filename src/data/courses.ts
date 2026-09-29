@@ -1,3 +1,4 @@
+import type { Result } from '../components/figures/ResultFigure.astro';
 import type { Klass } from '../lib/registration';
 import type { Accent } from './accents';
 
@@ -27,6 +28,8 @@ export interface Course {
 	example?: { text: string; href: string };
 	/** Announced classes, each with its own dates and payment link. Empty means none announced. */
 	classes: Klass[];
+	/** A student group's published result, drawn in place of the illustrative method figure. */
+	result?: Result;
 }
 
 export const courses: Course[] = [
@@ -142,6 +145,21 @@ export const courses: Course[] = [
 		},
 		// The last class's payment link was https://buy.stripe.com/14AfZhfOk1Rjckw1O8f7i0c
 		classes: [],
+		result: {
+			title: 'Pooled results of a meta-analysis by an RC project group: stopping anticoagulation after ablation for atrial fibrillation.',
+			comparison: 'patients who stopped oral anticoagulation compared with those who continued',
+			measure: 'RR',
+			rows: [
+				{ outcome: 'Thromboembolic events', est: 0.93, lo: 0.72, hi: 1.2, p: '= 0.58' },
+				{ outcome: 'Major bleeding', est: 0.37, lo: 0.27, hi: 0.52, p: '< 0.00001' },
+				{ outcome: 'All-cause death', est: 0.87, lo: 0.7, hi: 1.08, p: '= 0.22' },
+			],
+			lower: 'Lower after stopping',
+			higher: 'Higher',
+			legend:
+				'32 studies, 271,808 patients, 88,513 of whom stopped oral anticoagulation. Risk ratios compare patients who stopped with those who continued. Stopping cut major bleeding by about two-thirds without a clear rise in strokes or other clots. Diamonds mark each pooled estimate, orange where the 95% CI excludes 1; lines show the 95% CI. RR indicates risk ratio; and CI, confidence interval. Cheema AAA, Cheema AA, et al. Global Cardiology.',
+			cite: { text: 'Read the paper', href: 'https://www.globalcardiology.info/site/article/view/115' },
+		},
 	},
 	{
 		slug: 'cdc-wonder',
@@ -281,12 +299,4 @@ export const courses: Course[] = [
 		},
 		classes: [],
 	},
-];
-
-// How every method course runs, from the live class to a submitted paper.
-export const method = [
-	{ title: 'Learn', body: 'A live class teaches the method.' },
-	{ title: 'Apply', body: 'You join a project group and run the analysis yourself.' },
-	{ title: 'Revise', body: 'A mentor who has published the same kind of paper checks each draft.' },
-	{ title: 'Submit', body: 'The group sends the paper to a PubMed-indexed journal, and the abstract to a conference.' },
 ];

@@ -421,7 +421,6 @@ The page is paper, so almost nothing floats. Depth comes from one layer: the she
 
 ### Decorative Depth
 Richness comes from **figures**, not effects:
-- **Graphical abstract** in five colours
 - **U.S. map** of matches and research posts
 - **Timeline** of the decade, 2016 to 2026
 - **Central Illustration** with a navy title bar
@@ -530,12 +529,15 @@ Figures are the richest element on every page and must carry real information:
 - **Timeline.** Milestones from 2016 to 2026, one colour per year band.
 - **Bar figures** (`BarFigure`). One measure, navy bars, orange for RC's own rows, the value printed at the end of every bar, recessive gridlines and an optional dashed threshold line. Bars grow in once when scrolled into view. When rows carry portraits (the homepage's four students), each name and face sits above its bar, so long labels never squeeze the bars.
 - **Study anatomy** (`StudyAnatomy`). Panel A traces one real student paper through its five stages (question, data, analysis, abstract, paper), each named with the real detail and the paper linked. Panel B shows what four kinds of first study need (patients, ethics review, hospital access), and why RC teaches the two that need none. It answers "what is research, concretely?" for a first-time visitor.
-- **Dumbbell chart** (`Dumbbell`). Two values per row joined by a line, filled orange for the group that did better and hollow grey for the other, with the pair printed at the end. The homepage uses it for median publications of matched and unmatched non-U.S. IMGs in the ten specialties they apply to most (NRMP 2026).
 - **Swimmer plot** (`Swimmer`). On phones each student gets a full-width lane with the name above and the outcome below, drawn at about one unit per pixel so the markers keep their size. After oncology papers: one lane per student from the first RC course to today, with a shape per milestone (open circle course, diamond first abstracts, filled circle first paper, triangle mentor role, star fellowship, match or major paper). Year-only dates sit at mid-year and the caption says so.
 - **Match table** (`MatchTable`). On Student Results: one table for every Match year, grouped by year, with each student's own words in their row. It shows six students, then "Show all"; on phones each student is a stacked entry rather than a four-column table.
-- **Waffle figures** (`Waffle`). 100 squares per panel for shares of RC's students (70% women, 33% rural).
-- **Comparison tables with external data.** The homepage and Match Mentorship open with NRMP Charting Outcomes 2026 (non-U.S. IMGs): matched and unmatched applicants reported the same median number of publications, which is why RC argues for mentorship, letters and interviews as well as papers. External numbers are cited; RC's numbers are never presented as a controlled comparison.
-- **Method figures, one per course.** Level 1: the anatomy of a paper. Meta-analysis: a forest plot. CDC WONDER: a joinpoint trend line. NIS: grouped bars. NRD: a cumulative readmission curve. Every caption says **Illustrative data**.
+- **Research figure** (`ResearchFigure`, homepage Figure 1). Two panels from NRMP's own reports. A: research output (mean abstracts, presentations and publications) of matched and unmatched non-U.S. international graduates, 2020 to 2024, showing matched applicants pulling ahead once Step 1 went pass/fail. B: median publications, matched vs not, by specialty in 2026, on a 0 to 10 scale with a marked break for radiation oncology's 19. The caption names the specialties left out and why.
+- **Team figure** (`TeamFigure`, homepage Figure 3). The mentoring model drawn with the real people: the 4 faculty with photos and paper counts, the research analysts and mentors as avatars, the students as a band. It replaced a three-box diagram.
+- **Journal figure** (`JournalFigure`, homepage Figure 4). Journals that have published students' papers, grouped by field, each linking to a real paper; journals RC reports but cannot link are named in the caption.
+- **Result figure** (`ResultFigure`). A course page's student group result from the published paper, drawn as a summary forest plot on a log scale, orange where the CI excludes 1. The Meta-Analysis Masterclass shows its group's pooled risk ratios; other courses keep their illustrative method figure until their papers' numbers are available.
+- **Program director factors** (a `BarFigure` on Match Mentorship). What program directors cite when choosing whom to interview (NRMP 2020, with the 2026 top three in the caption), orange where Match Mentorship helps.
+- **Method figures, one per course, where no real result is available.** Level 1: the anatomy of a paper. CDC WONDER: a joinpoint trend line. NIS: grouped bars. NRD: a cumulative readmission curve. Every caption says **Illustrative data**.
+- **What a figure may be.** Real data, real people or a real artifact that answers a question a student has. No diagram that restates its paragraph, and no chart of one or two numbers.
 
 ### Examples (illustrative)
 

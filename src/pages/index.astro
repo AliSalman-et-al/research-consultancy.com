@@ -1,9 +1,9 @@
 ---
-import BarFigure from '../components/figures/BarFigure.astro';
-import Dumbbell from '../components/figures/Dumbbell.astro';
-import ModelFigure from '../components/figures/ModelFigure.astro';
+import JournalFigure from '../components/figures/JournalFigure.astro';
+import ResearchFigure from '../components/figures/ResearchFigure.astro';
 import Pathway from '../components/figures/Pathway.astro';
 import StudyAnatomy from '../components/figures/StudyAnatomy.astro';
+import TeamFigure from '../components/figures/TeamFigure.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import Cite from '../components/journal/Cite.astro';
@@ -37,31 +37,11 @@ const summary = [
 	},
 ];
 
-// NRMP Charting Outcomes, non-U.S. IMGs, 2026 Main Residency Match, Table 9: median publications
-// by preferred specialty and Match status. The ten specialties with the most non-U.S. IMG applicants.
-const pubsBySpecialty = [
-	{ label: 'Internal Medicine', sub: '5,379 applicants', a: 3, b: 2 },
-	{ label: 'Family Medicine', sub: '833', a: 2, b: 2 },
-	{ label: 'Pediatrics', sub: '604', a: 2, b: 3 },
-	{ label: 'Neurology', sub: '397', a: 5, b: 3 },
-	{ label: 'General Surgery', sub: '332', a: 8, b: 5 },
-	{ label: 'Psychiatry', sub: '297', a: 3, b: 2 },
-	{ label: 'Pathology', sub: '284', a: 7, b: 4 },
-	{ label: 'Anesthesiology', sub: '184', a: 4, b: 2 },
-	{ label: 'Diagnostic Radiology', sub: '127', a: 6, b: 4 },
-	{ label: 'Obstetrics and Gynecology', sub: '114', a: 3, b: 2 },
-];
-
-const studentOutput = [
-	{ label: 'Aimen Shafiq', sub: 'Level 1 in first year; now a cardiology postdoc, UMMC', value: 47, photo: 'fellows/aimen-shafiq.jpg' },
-	{ label: 'Asad Cheema', sub: 'about a year after Level 1', value: 35, photo: 'people/asad-cheema.jpg' },
-	{ label: 'Adeena Jamil', sub: 'Level 1 in second year; now a postdoc, Baylor Scott & White', value: 24, photo: 'fellows/adeena-jamil.jpg' },
-	{ label: 'Ezza Bashir', sub: 'submitted by the residency application; matched in 2026', value: 10, photo: 'match/ezza-bashir.jpg' },
-];
-
 const refs = [
 	{ text: 'National Resident Matching Program. Charting Outcomes: characteristics of applicants who matched to their preferred specialty. Non-U.S. IMGs, 2026 Main Residency Match. July 2026.', href: nrmp },
 	{ text: 'United States Medical Licensing Examination. USMLE Step 1 transition to pass/fail only score reporting. January 2022.', href: 'https://www.usmle.org/usmle-step-1-transition-passfail-only-score-reporting' },
+	{ text: 'National Resident Matching Program. Charting Outcomes in the Match: international medical graduates. 2020, 2022 and 2024 Main Residency Match, Table 2.', href: 'https://www.nrmp.org/wp-content/uploads/2024/09/Charting_Outcomes_IMG2024.pdf' },
+	{ text: 'National Resident Matching Program. Charting Outcomes: Program Director Survey Results, 2026 Main Residency Match. Narrative summary. August 2026.', href: 'https://www.nrmp.org/wp-content/uploads/2026/08/2026-PD-Survey-Report-Narrative-FINAL.pdf' },
 	{ text: 'Khan MS. Fostering the next generation of physician-scientists in developing countries. American College of Cardiology, Fellows in Training Section. January 22, 2024.', href: accArticle },
 	{ text: 'Research Consultancy. The year in review, 2025. December 2025.', href: 'https://www.facebook.com/researchconsultancyrc' },
 	{ text: 'Research Consultancy. Match 2025 and Match 2026 results. March 2026.', href: 'https://www.facebook.com/researchconsultancyrc' },
@@ -121,31 +101,24 @@ const refs = [
 	<JSection title="Why Research Matters for the Match" label="Introduction" id="introduction">
 		<div class="j-main j-prose">
 			<p class="drop-cap">
-				Residency programs in the United States expect applicants to have done research, and the competition is hardest for
-				international graduates. In the 2026 Match, 41.5% of international medical graduates from schools outside the United States matched
-				in the specialty they ranked first.<Cite n={1} /> Since the first U.S. licensing exam, Step 1, became pass/fail in
-				2022, programs have leaned more on the rest of the application: the Step 2 score, U.S. clinical experience, letters
-				and research.<Cite n={2} />
+				The Match is hardest for international graduates. In 2026, 41.5% of graduates of medical schools outside the United
+				States matched in the specialty they ranked first.<Cite n={1} /> Since Step 1 became pass/fail in 2022,<Cite n={2} />{' '}
+				programs have one less number to sort applicants by, and research has become one of the clearest ways to stand out.
 			</p>
 			<p>
-				Publications go with matching. In 8 of the 10 specialties that international graduates apply to most, applicants
-				who matched had published more than those who did not (Figure 1).
+				NRMP's own data show it. Before the change, international graduates who matched reported slightly less research than
+				those who did not; since Step 1 went pass/fail, those who matched have reported more, and their output keeps
+				rising (Figure 1A).<Cite n={3} /> In most specialties, matched applicants had published half as much again or twice
+				as much as those who did not match: in pathology a median of 7 papers against 4, and in radiation oncology 19
+				against 3 (Figure 1B).<Cite n={1} />
+			</p>
+			<p>
+				A research project with U.S. faculty in your specialty brings more than papers. It brings a letter from someone who
+				has seen your work, and letters from the specialty are among the three things program directors cite most when
+				choosing whom to interview.<Cite n={4} />
 			</p>
 		</div>
-		<Dumbbell
-			class="j-margin"
-			label="Figure 1"
-			title="Median publications of international medical graduates who did and did not match, by specialty, 2026 Match."
-			rows={pubsBySpecialty}
-			aName="Matched"
-			bName="Did not match"
-			max={10}
-			ticks={[0, 2, 4, 6, 8, 10]}
-			axis="Median publications"
-		>
-			Graduates of schools outside the United States, in the 10 specialties they apply to most, with the number of
-			applicants. Publications are one factor among several; matched applicants also had higher exam scores.<Cite n={1} />
-		</Dumbbell>
+		<ResearchFigure class="j-span" label="Figure 1" cite={{ trend: 3, specialty: 1 }} />
 
 		<div class="j-main j-prose">
 			<h3 class="j-subhead">What a Study Is</h3>
@@ -156,7 +129,7 @@ const refs = [
 			</p>
 			<p>
 				Few medical schools outside the United States teach these steps, and students who want to learn seldom find a
-				mentor.<Cite n={3} /> RC was founded in 2016 to teach them.
+				mentor.<Cite n={5} /> RC was founded in 2016 to teach them.
 			</p>
 		</div>
 		<StudyAnatomy class="j-span" label="Figure 2" wide />
@@ -178,39 +151,32 @@ const refs = [
 			<h3 class="j-subhead">A Mentored Project</h3>
 			<p>
 				When the course ends, each student joins a small project group. A mentor, usually a former RC student, leads the
-				group and reads every draft, and faculty at U.S. hospitals choose the questions and check the methods (Figure 3).
+				group and reads every draft, research analysts check the statistics, and faculty at U.S. hospitals choose the
+				questions and check the methods (Figure 3).
 				Students run the analysis, write the paper and are named as authors for the work they did.
 			</p>
 		</div>
-		<ModelFigure class="j-margin" label="Figure 3" />
+		<TeamFigure class="j-margin" label="Figure 3" />
 	</JSection>
 
 	<JSection title="What Students Have Achieved" label="Results" id="results" newPage>
 		<div class="j-main j-prose">
 			<p>
-				By 2024, more than 3,500 students had trained with RC and published more than 600 papers.<Cite n={3} /> In 2025
+				By 2024, more than 3,500 students had trained with RC and published more than 600 papers.<Cite n={5} /> In 2025
 				alone, students published more than 150 papers, in journals including <em>The Lancet</em>, <em>JAMA</em> and{' '}
-				<em>Circulation</em>, and presented 40 abstracts at the American College of Cardiology meeting.<Cite n={4} />
+				<em>Circulation</em>, and presented 40 abstracts at the American College of Cardiology meeting.<Cite n={6} />
 			</p>
-			<p>Students who stay publish more each year. Figure 4 shows 4 who began with Level 1.</p>
+			<p>
+				They publish in their own specialties, not only in cardiology (Figure 4). Four students' paths from their first
+				course, with dates, are in the <a href={withBase('/results#careers')}>Supplemental Material</a>.
+			</p>
 			<p>
 				In Match Mentorship, RC's 12-month program for residency applicants, 90% of students matched in 2025 and 80% in
-				2026.<Cite n={5} /> More than 20 others have held research posts at U.S. hospitals, a common step before
-				applying.<Cite n={3} /> <a href={withBase('/results')}>See every result</a>.
+				2026.<Cite n={7} /> More than 20 others have held research posts at U.S. hospitals, a common step before
+				applying.<Cite n={5} /> <a href={withBase('/results')}>See every result</a>.
 			</p>
 		</div>
-		<BarFigure
-			class="j-margin"
-			label="Figure 4"
-			title="Publications by 4 RC students after Level 1."
-			rows={studentOutput}
-			ticks={[0, 10, 20, 30, 40, 50]}
-			max={50}
-			axis="Publications"
-		>
-			Published papers, except Ezza Bashir's, which were submitted. These students show what is possible; most publish
-			fewer. UMMC indicates University of Mississippi Medical Center.
-		</BarFigure>
+		<JournalFigure class="j-margin" label="Figure 4" />
 	</JSection>
 
 	<JSection title="Why It Works" label="Discussion" id="discussion" newPage>

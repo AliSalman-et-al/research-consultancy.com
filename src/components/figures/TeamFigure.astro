@@ -1,0 +1,71 @@
+---
+// Figure: RC's mentoring model drawn with the people in it, not generic boxes. Faculty at the top,
+// then the research analysts and mentors who work with each project group, then the students.
+// It answers the question a beginner actually has: who would supervise me?
+import { Image } from 'astro:assets';
+import { leaders, mentors } from '../../data/people';
+import { photo } from '../../lib/photos';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+const analysts = mentors.filter((m) => m.role.includes('Analyst'));
+const groupMentors = mentors.filter((m) => !m.role.includes('Analyst'));
+const surname = (n: string) => n.replace(/^Dr\.\s*/, '').split(' ').slice(-1)[0];
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<p class="j-panel-head">Faculty <span class="font-normal text-ink-muted">· choose the questions and check the methods</span></p>
+		<ul class="grid grid-cols-4 gap-2">
+			{leaders.map((p) => (
+				<li class="text-center">
+					<Image src={photo(p.photo)} alt={`Portrait of ${p.name}`} width={112} height={112} class="mx-auto size-12 rounded-full object-cover object-top ring-2 ring-navy sm:size-14" />
+					<p class="mt-1.5 text-[12.5px] leading-tight font-semibold">{surname(p.name)}</p>
+					<p class="text-[11.5px] text-ink-muted tabular-nums">{p.publications} papers</p>
+				</li>
+			))}
+		</ul>
+
+		<p class="my-3 flex items-center gap-2 text-[11.5px] font-semibold text-ink-muted" aria-hidden="true">
+			<span class="h-px flex-1 bg-[#e4e1db]"></span>supervise<svg viewBox="0 0 12 12" class="size-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7" /></svg><span class="h-px flex-1 bg-[#e4e1db]"></span>
+		</p>
+
+		<div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+			<div>
+				<p class="j-panel-head mb-2">{analysts.length} research analysts</p>
+				<ul class="flex flex-wrap gap-1.5">
+					{analysts.map((m) => (
+						<li title={`${m.name}, ${m.role}, ${m.publications} papers`}><Image src={photo(m.photo)} alt={m.name} width={72} height={72} class="size-9 rounded-full object-cover object-top" /></li>
+					))}
+				</ul>
+				<p class="mt-2 text-[12.5px] leading-snug text-ink-secondary">Check each project's statistics.</p>
+			</div>
+			<div>
+				<p class="j-panel-head mb-2">{groupMentors.length} mentors</p>
+				<ul class="flex flex-wrap gap-1.5">
+					{groupMentors.map((m) => (
+						<li title={`${m.name}, ${m.role}, ${m.publications} papers`}><Image src={photo(m.photo)} alt={m.name} width={72} height={72} class="size-9 rounded-full object-cover object-top" /></li>
+					))}
+				</ul>
+				<p class="mt-2 text-[12.5px] leading-snug text-ink-secondary">Most are former RC students. Each guides a project group to publication.</p>
+			</div>
+		</div>
+
+		<p class="my-3 flex items-center gap-2 text-[11.5px] font-semibold text-ink-muted" aria-hidden="true">
+			<span class="h-px flex-1 bg-[#e4e1db]"></span>guide<svg viewBox="0 0 12 12" class="size-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M2.5 7 6 10.5 9.5 7" /></svg><span class="h-px flex-1 bg-[#e4e1db]"></span>
+		</p>
+
+		<p class="bg-[#fde4d5] px-4 py-3 text-[14px] leading-snug text-[#6e2e0b]">
+			<span class="font-semibold">Students, 3,500+ since 2016.</span> They run the analysis and write the paper, and are named as authors.
+		</p>
+	</div>
+	<Caption label={label} title="RC's mentoring model, with the people in it.">
+		Mentors are drawn from the student tier, so the model grows with every class. Publication counts as listed by RC,
+		September 2026. Model adapted from Khan, 2024.
+	</Caption>
+</figure>

@@ -1,6 +1,5 @@
 ---
 import Timeline from '../components/figures/Timeline.astro';
-import Waffle from '../components/figures/Waffle.astro';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
 import Cite from '../components/journal/Cite.astro';
@@ -58,26 +57,14 @@ const refs = [
 	<JSection title="Who We Have Trained" label="Results" id="history" newPage>
 		<div class="j-main j-prose">
 			<p>
-				By 2024, RC had trained more than 3,500 students. Seven in ten were women, and one in three came from a rural area
-				(Figure 2).<Cite n={1} />
+				By 2024, RC had trained more than 3,500 students. Seven in ten were women, and one in three came from a rural area.<Cite n={1} />
 			</p>
 			<p>
-				Figure 3 marks the milestones. The first years were about teaching methods. By 2023 our students were presenting at
+				Figure 2 marks the milestones. The first years were about teaching methods. By 2023 our students were presenting at
 				the big U.S. cardiology meetings, and by 2026 they were matching at programs such as Yale.
 			</p>
 		</div>
-		<Waffle
-			class="j-margin"
-			label="Figure 2"
-			title="Sex and rural origin of RC students, 2016 to 2024."
-			panels={[
-				{ pct: 70, name: 'Women', rest: 'Men', color: '#f67737' },
-				{ pct: 33, name: 'From rural areas', rest: 'Urban', color: '#1b8a8f' },
-			]}
-		>
-			Each square is 1% of more than 3,500 students.<Cite n={1} />
-		</Waffle>
-		<Timeline class="j-span mt-2" label="Figure 3" />
+		<Timeline class="j-span mt-2" label="Figure 2" />
 	</JSection>
 
 	<JSection title="What We Are For" label="Conclusions" id="mission">

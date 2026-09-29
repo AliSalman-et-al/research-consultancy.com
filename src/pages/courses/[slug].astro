@@ -3,6 +3,7 @@
 // course is and who can join (the summary), what it teaches, what you can do afterwards, and what
 // happens when the class ends. Registration sits beside the summary and closes the page.
 import MethodFigure from '../../components/figures/MethodFigure.astro';
+import ResultFigure from '../../components/figures/ResultFigure.astro';
 import ActionPanel from '../../components/journal/ActionPanel.astro';
 import ArticleEnd from '../../components/journal/ArticleEnd.astro';
 import ArticleHead from '../../components/journal/ArticleHead.astro';
@@ -134,7 +135,7 @@ const sections = [
 				))}
 			</ol>
 		</div>
-		<MethodFigure class="j-margin" art={course.art} />
+		{course.result ? <ResultFigure class="j-margin" label="Figure 1" result={course.result} /> : <MethodFigure class="j-margin" art={course.art} />}
 	</JSection>
 
 	<JSection title="After the Class" label="Follow-up" id="follow-up">

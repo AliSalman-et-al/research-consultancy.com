@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import ArticleEnd from '../components/journal/ArticleEnd.astro';
 import ArticleHead from '../components/journal/ArticleHead.astro';
-import BarFigure from '../components/figures/BarFigure.astro';
 import Caption from '../components/journal/Caption.astro';
 import Expand from '../components/journal/Expand.astro';
 import JSection from '../components/journal/JSection.astro';
@@ -14,8 +13,6 @@ import { photo } from '../lib/photos';
 
 const analysts = mentors.filter((m) => m.role.includes('Analyst'));
 const groupMentors = mentors.filter((m) => !m.role.includes('Analyst'));
-const bars = (people: typeof mentors) =>
-	[...people].sort((a, b) => parseInt(b.publications) - parseInt(a.publications)).map((m) => ({ label: m.name, value: parseInt(m.publications), text: m.publications }));
 
 const sections = [
 	{ id: 'faculty', label: 'Faculty' },
@@ -59,7 +56,7 @@ const summary = [
 			<p class="j-prose">
 				Research analysts are senior mentors who specialize in statistics. They help mentors and project groups analyze
 				their data correctly, in databases such as the National Inpatient Sample and the Nationwide Readmissions Database,
-				and give statistical guidance (Figure 1).
+				and give statistical guidance.
 			</p>
 			<ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4">
 				{analysts.map((m) => (
@@ -67,28 +64,18 @@ const summary = [
 						<Image src={photo(m.photo)} alt={`Portrait of ${m.name}`} widths={[200, 400]} sizes="(min-width: 640px) 9rem, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
 						<p class="mt-2 text-[14px] leading-snug font-semibold">{m.name}</p>
 						<p class="mt-0.5 text-[12px] leading-snug text-ink-muted">{m.role}, {m.place}</p>
+						<p class="mt-1 text-[12px] font-semibold text-navy tabular-nums">{m.publications} papers</p>
 					</li>
 				))}
 			</ul>
 		</div>
-		<BarFigure
-			class="j-margin lg:self-start"
-			label="Figure 1"
-			title="Publications by RC research analysts."
-			rows={bars(analysts)}
-			max={60}
-			ticks={[0, 10, 20, 30, 40, 50, 60]}
-			axis="Papers"
-		>
-			Publication counts as listed by RC, September 2026.
-		</BarFigure>
 	</JSection>
 
 	<JSection title="Mentors" label="Associate Editors" id="mentors" newPage>
 		<div class="j-main">
 			<p class="j-prose">
 				Mentors are experienced researchers, most of them former RC students. Each guides a project group to publication,
-				reviewing its work from the first draft to submission (Figure 2).
+				reviewing its work from the first draft to submission.
 			</p>
 			<ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4">
 				{groupMentors.map((m) => (
@@ -96,22 +83,11 @@ const summary = [
 						<Image src={photo(m.photo)} alt={`Portrait of ${m.name}`} widths={[200, 400]} sizes="(min-width: 640px) 9rem, 45vw" class="aspect-[4/5] w-full object-cover object-top" />
 						<p class="mt-2 text-[14px] leading-snug font-semibold">{m.name}</p>
 						<p class="mt-0.5 text-[12px] leading-snug text-ink-muted">{m.role}, {m.place}</p>
+						<p class="mt-1 text-[12px] font-semibold text-navy tabular-nums">{m.publications} papers</p>
 					</li>
 				))}
 			</ul>
 		</div>
-		<BarFigure
-			class="j-margin lg:sticky lg:top-32 lg:self-start"
-			label="Figure 2"
-			title="Publications by RC mentors."
-			rows={bars(groupMentors)}
-			max={60}
-			ticks={[0, 10, 20, 30, 40, 50, 60]}
-			axis="Papers"
-			mark={{ at: 10, label: '10 papers' }}
-		>
-			Publication counts as listed by RC, September 2026. The dashed line marks 10 full papers.
-		</BarFigure>
 	</JSection>
 
 	<JSection title="Where Students Went Next" label="Alumni" id="fellows" newPage>

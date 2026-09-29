@@ -1,0 +1,52 @@
+---
+// Figure: where RC students publish, grouped by field. Each journal links to the student's actual
+// paper, so every entry can be checked. The point for a Match applicant: students publish in the
+// specialty they are applying to, not only in cardiology.
+import { menteePapers } from '../../data/research';
+import Caption from '../journal/Caption.astro';
+
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const fields: { name: string; color: string; journals: string[] }[] = [
+	{ name: 'General medicine', color: '#02264d', journals: ['JAMA'] },
+	{ name: 'Cardiology', color: '#d9546e', journals: ['Circulation', 'Journal of the American Heart Association', 'Heart Failure Reviews', 'Current Problems in Cardiology', 'Global Cardiology'] },
+	{ name: 'Neurology', color: '#7b4fa0', journals: ['Neurology', 'Parkinsonism & Related Disorders'] },
+	{ name: 'Gastroenterology', color: '#1b8a8f', journals: ['Alimentary Pharmacology & Therapeutics', 'Digestive Diseases and Sciences'] },
+	{ name: 'Surgery', color: '#c98a12', journals: ['Aesthetic Plastic Surgery'] },
+	{ name: 'Public health', color: '#4c9be8', journals: ['Discover Public Health'] },
+];
+const paperIn = (journal: string) => menteePapers.find((p) => p.journal === journal);
+---
+
+<figure class:list={[className]}>
+	<div class="j-plate">
+		<dl class="space-y-2.5">
+			{fields.map((f) => (
+				<div class="border-t border-[#e4e1db] pt-2.5 first:border-0 first:pt-0">
+					<dt class="flex items-center gap-2 text-[12px] font-bold tracking-[0.04em] uppercase" style={`color:color-mix(in srgb, ${f.color} 72%, black)`}>
+						<span class="size-2.5 shrink-0" style={`background:${f.color}`} aria-hidden="true"></span>{f.name}
+					</dt>
+					<dd class="mt-1 flex flex-wrap gap-x-4 gap-y-1">
+						{f.journals.map((j) => {
+							const p = paperIn(j);
+							return p ? (
+								<a href={p.href} rel="noopener" class="text-[15px] leading-snug text-ink italic underline decoration-orange/40 underline-offset-[3px] hover:decoration-orange" title={`${p.title}. ${p.year}.`}>{j}</a>
+							) : (
+								<span class="text-[15px] leading-snug text-ink italic">{j}</span>
+							);
+						})}
+					</dd>
+				</div>
+			))}
+		</dl>
+	</div>
+	<Caption label={label} title="Journals that have published RC students' papers, by field.">
+		Each journal opens a paper by an RC student, published 2024 to 2026. RC also reports student correspondence in
+		<i>The Lancet</i>, letters in <i>JACC</i> and <i>JAMA Cardiology</i>, and papers in <i>Blood</i>.
+	</Caption>
+</figure>
