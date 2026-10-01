@@ -5,5 +5,7 @@
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"
-  }
+  },
+  // Lets `wrangler preview` publish a preview for each pushed branch.
+  "previews": {}
 }
