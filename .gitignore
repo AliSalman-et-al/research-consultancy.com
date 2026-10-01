@@ -27,3 +27,6 @@ pnpm-debug.log*
 /.agents/
 /.codex/
 /.claude
+
+# wrangler local state
+.wrangler/

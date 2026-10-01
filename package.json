@@ -36,10 +36,12 @@
     "us-atlas": "^3.0.1"
   },
   "allowScripts": {
-    "esbuild": true
+    "esbuild": true,
+    "workerd": true
   },
   "devDependencies": {
     "@shadcn/lint": "^0.2.0",
-    "oxlint": "^1.85.0"
+    "oxlint": "^1.85.0",
+    "wrangler": "^4.145.0"
   }
 }
