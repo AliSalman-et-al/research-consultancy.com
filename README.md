@@ -39,8 +39,8 @@ Run the linter with `npm run lint`.
 
 ## Deploy
 
-GitHub Actions builds and deploys the site to GitHub Pages when code is pushed to `main`. The workflow can also be started manually from the Actions tab. The published site is:
+Cloudflare Workers Builds deploys the site when code is pushed to `main`: it runs `npm run build`, then `npx wrangler deploy`, which publishes `dist/` as static assets using `wrangler.jsonc`. Pushes to other branches get preview deployments. The published site is:
 
-<https://alisalman-et-al.github.io/research-consultancy.com/>
+<https://research-consultancy.com/>
 
-The deployment build applies the repository path required by GitHub Pages. Local builds and previews use the root path.
+The site is fully static. Add the `@astrojs/cloudflare` adapter only when a route needs server rendering.
